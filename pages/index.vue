@@ -1,10 +1,11 @@
 <template>
-  <p>Player</p>
-  <div ref="mediaPlayer" style="width: 1024px;height: 600px"></div>
+  <library></library>
+  <!--  <div ref="mediaPlayer" style="width: 1024px;height: 600px"></div>-->
 </template>
 <script setup>
 import {nextTick, onMounted, reactive, ref} from 'vue'
 import Artplayer from "artplayer";
+import Library from "../components/anime/library";
 
 const mediaPlayer = ref(null)
 const playerOption = reactive({
