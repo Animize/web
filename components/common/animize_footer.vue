@@ -23,23 +23,23 @@
 
 import {useState} from "nuxt/app";
 import {watch} from "vue";
+import {loadTheme} from "../../composables/dark-setting";
 
-let isDark = useState(() => false)
+const isDark = useState(() => false)
 
-if (process.client){
-  isDark = localStorage.theme === 'dark'
+if (process.client) {
+  isDark.value = localStorage.theme === 'dark'
 }
 
 watch(isDark, (nextIsDark) => {
-  console.log(`Dark ${isDark} Dark2 ${nextIsDark}`)
-  if (isDark !== nextIsDark) {
-    if (process.client) {
-      if (nextIsDark) {
-        localStorage.setItem('theme', 'dark')
-      } else {
-        localStorage.removeItem('theme')
-      }
+  console.log(`Dark ${isDark.value} Dark2 ${nextIsDark}`)
+  if (process.client) {
+    if (nextIsDark) {
+      localStorage.setItem('theme', 'dark')
+    } else {
+      localStorage.removeItem('theme')
     }
+    loadTheme()
   }
 
 
