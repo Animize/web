@@ -33,7 +33,7 @@
       <ul class="inline-flex items-center -space-x-px">
         <li>
           <a class="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-             @click="page === 0 ? 0 : page--">
+             @click="changePage(page - 2,packages.totalPages)">
             <span class="sr-only">Previous</span>
             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                  xmlns="http://www.w3.org/2000/svg">
@@ -47,13 +47,13 @@
           <a
               :aria-current="numPage === page + 1 ? 'page' : 'false'"
               :class="numPage === page + 1 ? 'z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white' : 'py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'"
-              @click="page = numPage - 1"
+              @click="changePage(numPage,packages.totalPages)"
 
           >{{ numPage }}</a>
         </li>
         <li>
           <a class="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-             @click="page++">
+             @click="changePage(page + 2,packages.totalPages)">
             <span class="sr-only">Next</span>
             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                  xmlns="http://www.w3.org/2000/svg">
@@ -70,7 +70,7 @@
 
 </template>
 <script setup>
-import {useAsyncData, useRoute, useRuntimeConfig, useState} from "nuxt/app";
+import {navigateTo, useAsyncData, useRoute, useRuntimeConfig, useState} from "nuxt/app";
 import {computed, watch} from "vue";
 
 const route = useRoute()
@@ -81,6 +81,8 @@ const queryString = computed(() => {
   return `?page=${page.value}&size=${size.value}`
 })
 
+const pageQuery = computed(() => route.query.page ? route.query.page : 1)
+
 const config = useRuntimeConfig()
 const {data: packages, pending, refresh} = await useAsyncData(
     'packages',
@@ -89,19 +91,32 @@ const {data: packages, pending, refresh} = await useAsyncData(
 
 watch(() => queryString.value, () => refresh())
 
-const checkQuery = async () => {
-  // Check if genre query is available
-  if (route.query.genre) {
-    const genreId = route.query.genre
-    queryString.value = `${queryString.value}&genreIds=${genreId}`
+
+const changePage = async (pageNumber, totalPages) => {
+  console.log(`Change page to ${pageNumber}`)
+  const targetPath = route.path
+
+  if (pageNumber < 1) {
+    pageNumber = 1
+  } else if (pageNumber > totalPages) {
+    pageNumber = pageNumber - 1
   }
-  console.log('CHECK QUERY')
+
+  navigateTo(
+      {
+        path: targetPath,
+        query: {
+          page: pageNumber
+        }
+      }
+  )
 }
 
-watch(route.query,() => checkQuery())
+watch(pageQuery, async (newPageQuery) => {
+  page.value = newPageQuery - 1
+})
 
 refresh()
-checkQuery()
 
 </script>
 
