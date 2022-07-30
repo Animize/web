@@ -70,9 +70,10 @@
 
 </template>
 <script setup>
-import {useAsyncData, useRuntimeConfig, useState} from "nuxt/app";
+import {useAsyncData, useRoute, useRuntimeConfig, useState} from "nuxt/app";
 import {computed, watch} from "vue";
 
+const route = useRoute()
 const page = useState('page', () => 0)
 const size = useState('size', () => 10)
 
@@ -88,7 +89,19 @@ const {data: packages, pending, refresh} = await useAsyncData(
 
 watch(() => queryString.value, () => refresh())
 
+const checkQuery = async () => {
+  // Check if genre query is available
+  if (route.query.genre) {
+    const genreId = route.query.genre
+    queryString.value = `${queryString.value}&genreIds=${genreId}`
+  }
+  console.log('CHECK QUERY')
+}
+
+watch(route.query,() => checkQuery())
+
 refresh()
+checkQuery()
 
 </script>
 
