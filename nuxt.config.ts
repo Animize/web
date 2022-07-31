@@ -11,4 +11,5 @@ export default defineNuxtConfig({
     publicRuntimeConfig: {
         API_BASE_URL: process.env.API_BASE_URL
     },
+    link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}]
 })
