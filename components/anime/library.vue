@@ -48,7 +48,7 @@
       <not_found></not_found>
     </div>
 
-    <nav class="item flex justify-center">
+    <nav v-if="packages.totalPages !== 0 && !pending" class="item flex justify-center">
       <ul class="inline-flex items-center -space-x-px">
         <li>
           <a class="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
@@ -95,9 +95,9 @@ import Genre_chip from "./genre_chip";
 import Not_found from "../common/not_found";
 
 const route = useRoute()
-const page = useState('page', () => 0)
+const page = useState('page', () => route.query.page ? route.query.page - 1 : 0)
 const size = useState('size', () => 10)
-const genres = useState('genres', () => [])
+const genres = useState('genres', () => [route.query.genre])
 const targetPath = route.path
 const genreChip = ref(null)
 
