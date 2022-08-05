@@ -8,6 +8,8 @@ export default defineNuxtConfig({
             postcssOptions: require("./postcss.config.js"),
         },
     },
+    target: "server",
+    ssr: true,
     publicRuntimeConfig: {
         API_BASE_URL: process.env.API_BASE_URL
     },
