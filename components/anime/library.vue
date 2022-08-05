@@ -97,7 +97,7 @@ import Not_found from "../common/not_found";
 const route = useRoute()
 const page = useState('page', () => route.query.page ? route.query.page - 1 : 0)
 const size = useState('size', () => 10)
-const genres = useState('genres', () => [route.query.genre])
+const genres = useState('genres', () => route.query.genre ? [route.query.genre] : [])
 const targetPath = route.path
 const genreChip = ref(null)
 
