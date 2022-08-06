@@ -1,6 +1,6 @@
 <template>
   <div :class="pending ? 'animate-pulse' : ''"
-       class="item w-auto h-auto flex-auto gap-1 p-1.5 overflow-hidden sm:overflow-x-scroll">
+       class="item w-auto h-auto flex-auto gap-1 p-1.5 overflow-hidden overflow-x-scroll">
     <span
         v-for="item in genres"
         :class="item.id === (route.query.genre ? route.query.genre : null) ? 'bg-gray-800 text-white dark:bg-gray-300 dark:text-gray-800' : 'text-gray-500 bg-gray-200 dark:bg-gray-800 dark:text-white' "

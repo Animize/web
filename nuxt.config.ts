@@ -8,10 +8,11 @@ export default defineNuxtConfig({
             postcssOptions: require("./postcss.config.js"),
         },
     },
-    target: "server",
-    ssr: true,
+    target: "static",
+    ssr: false,
     publicRuntimeConfig: {
         API_BASE_URL: process.env.API_BASE_URL
     },
-    link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}]
+    link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}],
+    modules: ['@nuxtjs/tailwindcss'],
 })
