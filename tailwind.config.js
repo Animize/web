@@ -10,6 +10,7 @@ module.exports = {
         "./plugins/**/*.{js,ts}",
         "./*.{vue,js,ts}",
         "./nuxt.config.{js,ts}",
+        "./node_modules/flowbite/**/*.js"
     ],
     darkMode: 'class', // or 'media' or 'class'
     theme: {

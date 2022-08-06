@@ -101,7 +101,7 @@
 
 <script setup>
 import {Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
-import {BellIcon, MenuIcon, XIcon} from '@heroicons/vue/outline'
+import {BellIcon, MenuIcon, XIcon} from '@heroicons/vue/outline/esm/index.js'
 import {useRoute} from "nuxt/app";
 
 const route = useRoute()
