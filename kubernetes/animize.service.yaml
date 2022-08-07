@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: animize-frontend-service
+  namespace: animize
+spec:
+  selector:
+    xyz.dvnlabs.animize: web
+  type: LoadBalancer
+  ports:
+    - name: http-frontend-tcp
+      protocol: TCP
+      port: 3000
+      targetPort: frontend-port
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: animize-frontend-service-udp
+spec:
+  selector:
+    xyz.dvnlabs.animize: web
+  type: LoadBalancer
+  ports:
+    - name: http-frontend-udp
+      protocol: UDP
+      port: 3000
+      targetPort: frontend-port

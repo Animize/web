@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: animize-frontend
+  namespace: animize
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      xyz.dvnlabs.animize: web
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        xyz.dvnlabs.animize: web
+    spec:
+      containers:
+        - env:
+            - name: TZ
+              value: "Asia/Jakarta"
+          image: docker.io/rootdavinalfa/animize-web
+          name: animize-frontend
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 120
+            timeoutSeconds: 8
+            periodSeconds: 5
+          imagePullPolicy: Always
+          ports:
+            - name: frontend-port
+              containerPort: 3000
+          resources: { }
+status: { }

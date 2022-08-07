@@ -1,13 +1,12 @@
 <template>
-  <div class="flex-inline flex-wrap">
-    <Genre_chip ref="genreChip" class="item" @event:genreChange="genreChange"></Genre_chip>
+  <div id="library" class="flex-inline flex-wrap">
     <div v-if="!pending" :class="pending ? 'animate-pulse' : ''"
          class="item w-auto h-auto flex-grow grid p-2 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-5  gap-1.5">
       <div v-for="item in packages.content"
            class="hover:scale-110 dark:hover:bg-gray-700 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 transition duration-300 ease">
         <img alt=""
              class="rounded-t-lg object-center h-68 w-96"
-             v-bind:src="'https://cdn.dvnlabs.xyz/pkg/' + item.id +'.jpg'"/>
+             :src="'https://cdn.dvnlabs.xyz/pkg/' + item.id +'.jpg'"/>
         <div class="p-5">
           <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white line-clamp-3">
             {{
@@ -17,7 +16,7 @@
               item.synopsis
             }}</p>
           <a class="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-             href="#">
+             :href="`/package/${item.id}`">
             Read more
             <svg aria-hidden="true" class="ml-2 -mr-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
                  xmlns="http://www.w3.org/2000/svg">
@@ -89,9 +88,8 @@
 
 </template>
 <script setup>
-import {navigateTo, useAsyncData, useRoute, useRuntimeConfig, useState} from "nuxt/app";
-import {computed, ref, watch} from "vue";
-import Genre_chip from "./genre_chip";
+import {navigateTo, useLazyAsyncData, useRoute, useRuntimeConfig, useState} from "nuxt/app";
+import {computed, watch} from "vue";
 import Not_found from "../common/not_found";
 
 const route = useRoute()
@@ -99,7 +97,6 @@ const page = useState('page', () => route.query.page ? route.query.page - 1 : 0)
 const size = useState('size', () => 10)
 const genres = useState('genres', () => route.query.genre ? [route.query.genre] : [])
 const targetPath = route.path
-const genreChip = ref(null)
 
 
 const queryStringRequest = computed(() => {
@@ -116,12 +113,10 @@ const pageQuery = computed(() => route.query.page ? route.query.page : 1)
 const genreQuery = computed(() => route.query.genre ? route.query.genre : null)
 
 const config = useRuntimeConfig()
-const {data: packages, pending, refresh} = await useAsyncData(
+const {data: packages, pending, refresh} = await useLazyAsyncData(
     'packages',
     () => $fetch(`${config.API_BASE_URL}/packages/page${queryStringRequest.value}`)
 )
-
-const genre = useState('genre', () => null)
 
 
 watch(() => queryStringRequest.value, () => refresh())
@@ -158,33 +153,12 @@ watch(genreQuery, (newGenre) => {
   } else {
     genres.value.pop()
   }
-  genre.value = genreChip.value.genres.filter((value) => value.id === newGenre)[0]
 })
 
-const genreChange = async (id) => {
-  if (id) {
-    navigateTo(
-        {
-          path: targetPath,
-          query: {
-            page: 1,
-            genre: id
-          }
-        }
-    )
-  } else {
-    navigateTo(
-        {
-          path: targetPath,
-          query: {
-            page: 1
-          }
-        }
-    )
-  }
-}
 
-refresh()
+defineExpose({
+  page
+})
 
 </script>
 
