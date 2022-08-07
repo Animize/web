@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-inline dark:bg-gray-900">
+  <div class="flex flex-col dark:bg-gray-900 min-h-screen">
     <navbar class="item w-auto h-auto flex-auto"></navbar>
     <NuxtPage class="item w-auto min-h-screen h-auto flex-grow"></NuxtPage>
     <animize_footer class="item w-auto h-auto flex-auto"></animize_footer>
