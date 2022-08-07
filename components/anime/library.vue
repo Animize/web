@@ -1,6 +1,5 @@
 <template>
-  <div class="flex-inline flex-wrap">
-    <Genre_chip ref="genreChip" class="item" @event:genreChange="genreChange"></Genre_chip>
+  <div id="library" class="flex-inline flex-wrap">
     <div v-if="!pending" :class="pending ? 'animate-pulse' : ''"
          class="item w-auto h-auto flex-grow grid p-2 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-5  gap-1.5">
       <div v-for="item in packages.content"
@@ -89,9 +88,8 @@
 
 </template>
 <script setup>
-import {navigateTo, useAsyncData, useRoute, useRuntimeConfig, useState} from "nuxt/app";
-import {computed, ref, watch} from "vue";
-import Genre_chip from "./genre_chip";
+import {navigateTo, useLazyAsyncData, useRoute, useRuntimeConfig, useState} from "nuxt/app";
+import {computed, watch} from "vue";
 import Not_found from "../common/not_found";
 
 const route = useRoute()
@@ -99,7 +97,6 @@ const page = useState('page', () => route.query.page ? route.query.page - 1 : 0)
 const size = useState('size', () => 10)
 const genres = useState('genres', () => route.query.genre ? [route.query.genre] : [])
 const targetPath = route.path
-const genreChip = ref(null)
 
 
 const queryStringRequest = computed(() => {
@@ -116,12 +113,10 @@ const pageQuery = computed(() => route.query.page ? route.query.page : 1)
 const genreQuery = computed(() => route.query.genre ? route.query.genre : null)
 
 const config = useRuntimeConfig()
-const {data: packages, pending, refresh} = await useAsyncData(
+const {data: packages, pending, refresh} = await useLazyAsyncData(
     'packages',
     () => $fetch(`${config.API_BASE_URL}/packages/page${queryStringRequest.value}`)
 )
-
-const genre = useState('genre', () => null)
 
 
 watch(() => queryStringRequest.value, () => refresh())
@@ -158,33 +153,12 @@ watch(genreQuery, (newGenre) => {
   } else {
     genres.value.pop()
   }
-  genre.value = genreChip.value.genres.filter((value) => value.id === newGenre)[0]
 })
 
-const genreChange = async (id) => {
-  if (id) {
-    navigateTo(
-        {
-          path: targetPath,
-          query: {
-            page: 1,
-            genre: id
-          }
-        }
-    )
-  } else {
-    navigateTo(
-        {
-          path: targetPath,
-          query: {
-            page: 1
-          }
-        }
-    )
-  }
-}
 
-refresh()
+defineExpose({
+  page
+})
 
 </script>
 
