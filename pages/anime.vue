@@ -1,7 +1,9 @@
 <template>
-  <div id="anime" class="flex-inline justify-center p-8">
-    <Genre_chip ref="genreChip" class="item" @event:genreChange="genreChange"></Genre_chip>
-    <library v-if="!pendingGenre" class="item w-auto h-auto flex-grow"></library>
+  <div id="anime">
+    <div class="flex-inline justify-center p-8">
+      <Genre_chip ref="genreChip" class="item" @event:genreChange="genreChange"></Genre_chip>
+      <library v-if="!pendingGenre" class="item w-auto h-auto flex-grow"></library>
+    </div>
   </div>
 
 </template>
