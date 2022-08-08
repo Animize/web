@@ -10,10 +10,11 @@
 <script setup>
 import {loadTheme} from "./composables/dark-setting";
 loadTheme()
+
+import Navbar from "./components/common/navbar";
+import Animize_footer from "./components/common/animize_footer";
+
 useHead({
   title: 'Animize'
 })
-import Navbar from "./components/common/navbar";
-import Animize_footer from "./components/common/animize_footer";
-import {useHead} from "nuxt/app";
 </script>

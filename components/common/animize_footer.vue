@@ -21,8 +21,6 @@
 
 <script setup>
 
-import {useState} from "nuxt/app";
-import {watch} from "vue";
 import {loadTheme} from "../../composables/dark-setting";
 
 const isDark = useState(() => false)
