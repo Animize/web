@@ -1,16 +1,19 @@
 <template>
   <div :id="`animize-${pkgId}`">
+  <Head>
+    <Title>
+      Animize | {{pkg.name}}
+    </Title>
+    <Meta name="description" :content="pkg.synopsis"/>
+  </Head>
     <div class="flex flex-col">
       <div id="anime-header">
-        <img :alt="`animize-${pkgId}-cover-blur`" :src="`https://cdn.dvnlabs.xyz/pkg/${pkgId}.jpg`"
+        <img :alt="`animize-${pkgId}-cover-blur`" :src="pkg.cover ? pkg.cover : '/icon/img_error.png'"
              class="object-cover w-full h-96 blur min-h-0 absolute opacity-30">
-        <!--        <div
-                    :style="`display: block; background-image: url('https://cdn.dvnlabs.xyz/pkg/${pkgId}.jpg');background-size: cover;background-position: center 25%;position:absolute;`"
-                    class="object-cover w-full h-auto opacity-50 min-h-0"/>-->
         <div
             class="flex flex-col items-center md:flex-row relative">
           <img :alt="`animize-${pkgId}-cover`"
-               :src="`https://cdn.dvnlabs.xyz/pkg/${pkgId}.jpg`"
+               :src="pkg.cover ? pkg.cover : '/icon/img_error.png'"
                class="object-cover w-48 h-72 rounded md:h-auto md:w-48 shadow m-8 hover:scale-110"/>
           <div class="flex flex-col justify-between p-4 gap-2 leading-normal h-auto">
             <p class="mb-2 text-5xl font-bold tracking-tight text-gray-800 dark:text-white lg:max-w-[1024px]">
@@ -32,7 +35,7 @@
                 {{ pkg.safeContent }}
               </div>
             </div>
-            <a :href="`https://myanimelist.net/anime/${pkg.malId}`"
+            <a :href="`https://myanimelist.net/anime/${pkg.malId}`" target="_blank"
                class="py-2 px-3 w-40 text-sm font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               <img alt="mal" class="mr-2 -ml-1 w-10 h-10" src="@/assets/icon/mal.svg"/>
               MyAnimeList
@@ -40,15 +43,31 @@
             <div v-if="!pending"
                  class="item w-auto h-auto flex-auto gap-2.5 pt-5 pb-5 overflow-hidden overflow-x-auto">
               <span
-                  v-for="item in pkg.genreList"
+                  v-for="item in pkg.genreList" :key="item.id"
                   class="px-4 py-2 rounded-full font-semibold text-sm cursor-pointer active:bg-gray-300 active:text-gray-800 dark:active:bg-gray-800 dark:active:text-white hover:bg-gray-900 hover:text-white dark:hover:bg-gray-300 dark:hover:text-gray-800 transition duration-300 ease text-gray-500 bg-gray-200 dark:bg-gray-800 dark:text-white mr-1"
               >{{ item.name }}</span>
             </div>
           </div>
         </div>
       </div>
-      <div id="anime-description" class="item flex-col mt-10 p-8 rounded-b dark:bg-gray-800">
-        <p class="text-2xs font-normal dark:text-white text-gray-800" style="white-space: pre-line;">{{ pkg.synopsis }}</p>
+      <div id="anime-description" class="item flex-col mt-8 p-8">
+        <p class="text-2xs font-normal dark:text-white text-gray-800 text-justify" style="white-space: pre-line;">{{ pkg.synopsis }}</p>
+      </div>
+      <div id="anime-episode" class="item flex-inline flex-wrap mt-10 p-8">
+        <div v-if="!episodePending" class="item w-auto h-auto flex-grow grid md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-5  gap-2.5">
+          <div class="flex flex-col items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl h-auto w-72 hover:scale-110 dark:hover:bg-gray-700 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 transition duration-300 ease" v-for="episode in episodes" :key="episode.id">
+            <span class="object-cover w-16 h-32 rounded-l-lg dark:text-white text-6xl dark:bg-gray-600">
+              {{episode.episode}}
+            </span>
+            <span class="text-2xl line-clamp-3 dark:text-white">
+              {{episode.summary ? episode.summary : 'N/A'}}
+            </span>
+          </div>
+        </div>
+        <div v-else class="item w-auto h-auto flex-grow grid p-2 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-5  gap-1.5">
+          <div class="h-32 w-72 hover:scale-110 dark:hover:bg-gray-700 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 transition duration-300 ease" v-for="episode in 10">
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -56,7 +75,6 @@
 
 <script setup>
 
-import {useLazyAsyncData, useRoute} from "nuxt/app";
 
 const route = useRoute()
 const config = useRuntimeConfig()
@@ -65,6 +83,11 @@ const pkgId = route.params.id
 const {data: pkg, pending, refresh} = await useLazyAsyncData(
     'pkg',
     () => $fetch(`${config.API_BASE_URL}/packages/by-id/${pkgId}`)
+)
+
+const {data: episodes, episodePending, episodeRefresh} = await useLazyAsyncData(
+    'episodes',
+    () => $fetch(`${config.API_BASE_URL}/episodes/list?packageID=${pkgId}`)
 )
 
 </script>
