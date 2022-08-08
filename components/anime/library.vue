@@ -2,11 +2,11 @@
   <div id="library" class="flex-inline flex-wrap">
     <div v-if="!pending" :class="pending ? 'animate-pulse' : ''"
          class="item w-auto h-auto flex-grow grid p-2 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-5  gap-1.5">
-      <div v-for="item in packages.content"
+      <div v-for="item in packages.content" :key="item.id"
            class="hover:scale-110 dark:hover:bg-gray-700 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 transition duration-300 ease">
         <img alt=""
              class="rounded-t-lg object-center h-68 w-96"
-             :src="'https://cdn.dvnlabs.xyz/pkg/' + item.id +'.jpg'"/>
+             :src="item.cover ? item.cover : '/icon/img_error.png'"/>
         <div class="p-5">
           <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white line-clamp-3">
             {{
@@ -61,7 +61,7 @@
             </svg>
           </a>
         </li>
-        <li v-for="numPage in packages.totalPages">
+        <li v-for="numPage in packages.totalPages" :key="numPage">
           <a
               :aria-current="numPage === page + 1 ? 'page' : 'false'"
               :class="numPage === page + 1 ? 'z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white' : 'py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'"
@@ -88,8 +88,6 @@
 
 </template>
 <script setup>
-import {navigateTo, useLazyAsyncData, useRoute, useRuntimeConfig, useState} from "nuxt/app";
-import {computed, watch} from "vue";
 import Not_found from "../common/not_found";
 
 const route = useRoute()
