@@ -9,6 +9,7 @@ spec:
   selector:
     matchLabels:
       xyz.dvnlabs.animize: web
+  minReadySeconds: 10
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -24,6 +25,8 @@ spec:
         - env:
             - name: TZ
               value: "Asia/Jakarta"
+            - name: NUXT_API_BASE_URL
+              value: "https://srv.animize.my.id"
           image: docker.io/rootdavinalfa/animize-web
           name: animize-frontend
           readinessProbe:
@@ -40,7 +43,7 @@ spec:
             initialDelaySeconds: 120
             timeoutSeconds: 8
             periodSeconds: 5
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - name: frontend-port
               containerPort: 3000
