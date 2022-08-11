@@ -7,7 +7,6 @@
 <script setup>
 import {nextTick, onMounted, reactive, ref} from 'vue'
 import Artplayer from "artplayer";
-import Library from "../components/anime/library";
 
 const mediaPlayer = ref(null)
 const playerOption = reactive({

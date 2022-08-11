@@ -3,7 +3,7 @@
     <div class="sm:flex sm:items-center sm:justify-between">
       <a class="flex items-center mb-4 sm:mb-0" href="/">
         <img alt="Animize Logo" class="mr-3 h-8" src="../../assets/icon/animize.svg"/>
-        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Animize</span>
+        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white" style="font-family: Slackey, cursive;">Animize</span>
       </a>
       <label class="inline-flex relative items-center cursor-pointer" for="dark-toggle">
         <input id="dark-toggle" v-model="isDark" class="sr-only peer" type="checkbox">

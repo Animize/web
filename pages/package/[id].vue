@@ -2,7 +2,7 @@
   <div :id="`animize-${pkgId}`">
   <Head>
     <Title>
-      Animize | {{pkg.name}}
+      {{pkg.name}}
     </Title>
     <Meta name="description" :content="pkg.synopsis"/>
   </Head>
