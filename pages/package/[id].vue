@@ -44,10 +44,11 @@
             </a>
             <div
                 class="item w-auto h-auto flex-auto gap-2.5 pt-5 pb-5 overflow-hidden overflow-x-auto">
-              <span
+              <NuxtLink
+                  :to="`/anime?page=1&genre=${item.id}`"
                   v-for="item in pkg.genreList" :key="item.id"
                   class="px-4 py-2 rounded-full font-semibold text-sm cursor-pointer active:bg-gray-300 active:text-gray-800 dark:active:bg-gray-800 dark:active:text-white hover:bg-gray-900 hover:text-white dark:hover:bg-gray-300 dark:hover:text-gray-800 transition duration-300 ease text-gray-500 bg-gray-200 dark:bg-gray-800 dark:text-white mr-1"
-              >{{ item.name }}</span>
+              >{{ item.name }}</NuxtLink>
             </div>
           </div>
         </div>
