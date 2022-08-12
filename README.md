@@ -1,42 +1,20 @@
-# Nuxt 3 Minimal Starter
 
-Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.
+# Animize Web
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Animize_web&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Animize_web)
 
-## Setup
+This repository contain code base for Animize frontend.
 
-Make sure to install the dependencies:
 
-```bash
-# yarn
-yarn install
 
-# npm
-npm install
+### Tools
+- Node 16 (LTS)
+- Nuxt 3 (RC)
+- Tailwind
+- yarn
 
-# pnpm
-pnpm install --shamefully-hoist
-```
+### API Documentation
 
-## Development Server
+You can access API documentation at [Animize Swagger](https://srv.animize.my.id/swagger-ui.html)
 
-Start the development server on http://localhost:3000
-
-```bash
-npm run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-npm run build
-```
-
-Locally preview production build:
-
-```bash
-npm run preview
-```
-
-Checkout the [deployment documentation](https://v3.nuxtjs.org/guide/deploy/presets) for more information.
+### Disclaimer
+We publish the code in hope more people to help us built a free of ads anime portal. So please don't publish new site with ads
