@@ -14,7 +14,7 @@
           class="item"
           @event:genreChange="genreChange"
       ></Genre_chip>
-      <library v-if="!pendingGenre" class="item w-auto h-auto flex-grow"></library>
+      <library class="item w-auto h-auto flex-grow"></library>
     </div>
   </div>
 </template>
@@ -32,13 +32,21 @@ const page = useState('page', () => 0)
 
 watch(animeQuery, (query) => {
   nextTick(()=>{
-    genre.value = genreChip.value.genres.filter((gnr) => gnr.id === query.genre)[0];
+    if (genreChip.value){
+      if (genreChip.value.genres){
+        genre.value = genreChip.value.genres.filter((gnr) => gnr.id === query.genre)[0]
+      }
+    }
   })
 })
 onMounted(()=>{
   nextTick(()=>{
-    pendingGenre.value = genreChip.value.pending
-    genre.value = genreChip.value.genres.filter((gnr) => gnr.id === animeQuery.value.genre)[0]
+    if (genreChip.value){
+      pendingGenre.value = genreChip.value.pending
+      if (genreChip.value.genres){
+        genre.value = genreChip.value.genres.filter((gnr) => gnr.id === animeQuery.value.genre)[0]
+      }
+    }
   })
 })
 
