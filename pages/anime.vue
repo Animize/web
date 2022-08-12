@@ -14,7 +14,7 @@
           class="item"
           @event:genreChange="genreChange"
       ></Genre_chip>
-      <library class="item w-auto h-auto flex-grow"></library>
+      <library v-if="!pendingGenre" class="item w-auto h-auto flex-grow"></library>
     </div>
   </div>
 </template>
@@ -22,12 +22,11 @@
 <script setup>
 import Library from "../components/anime/library";
 import Genre_chip from "../components/anime/genre_chip";
-import {nextTick, onMounted} from "vue";
 
 const genreChip = ref(null);
-const libra = ref(null);
 const route = useRoute();
 const animeQuery = computed(() => route.query)
+const pendingGenre = useState('pendingGenre',() => true)
 const genre = useState('genre', () => null)
 const page = useState('page', () => 0)
 
@@ -38,6 +37,7 @@ watch(animeQuery, (query) => {
 })
 onMounted(()=>{
   nextTick(()=>{
+    pendingGenre.value = genreChip.value.pending
     genre.value = genreChip.value.genres.filter((gnr) => gnr.id === animeQuery.value.genre)[0]
   })
 })
