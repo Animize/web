@@ -39,7 +39,7 @@
             <a :href="`https://myanimelist.net/anime/${pkg.malId}`"
                class="py-2 px-3 w-40 text-sm font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                target="_blank">
-              <img alt="mal" class="mr-2 -ml-1 w-10 h-10" src="@/assets/icon/mal.svg"/>
+              <img alt="mal" class="mr-2 -ml-1 w-10 h-10" src="~/assets/icon/mal.svg"/>
               MyAnimeList
             </a>
             <div
