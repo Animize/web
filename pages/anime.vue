@@ -8,7 +8,7 @@
         Page {{ page + 1 }}
       </Title>
     </Head>
-    <div class="flex-inline justify-center p-8">
+    <div class="flex-inline justify-center p-6">
       <Genre_chip
           ref="genreChip"
           class="item"

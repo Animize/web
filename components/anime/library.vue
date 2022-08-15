@@ -1,33 +1,20 @@
 <template>
   <div id="library" class="flex-inline flex-wrap">
     <div v-if="!pending" :class="pending ? 'animate-pulse' : ''"
-         class="item w-auto h-auto flex-grow grid p-2 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-5  gap-1.5">
-      <div v-for="item in packages.content" :key="item.id"
-           class="hover:scale-110 dark:hover:bg-gray-700 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 transition duration-300 ease">
+         class="item w-auto h-auto flex-grow grid p-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-5  gap-1.5">
+      <NuxtLink v-for="item in packages.content" :key="item.id"
+                :to="`/package/${item.id}`"
+                class="relative z-0 w-36 h-52 sm:w-64 sm:h-96  md:w-3/6 md:h-5/6 lg:h-auto lg:w-auto dark:hover:bg-gray-700 rounded shadow max-w-sm bg-white shadow-md dark:bg-gray-800 transition duration-300 ease">
         <img :src="item.cover ? item.cover : '/icon/img_error.png'"
              alt=""
-             class="rounded-t-lg object-center h-68 w-96"/>
-        <div class="p-5">
-          <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white line-clamp-3">
+             class="rounded object-center w-full h-full absolute z-0">
+        <div class="h-auto w-full pr-2 pl-2 z-10 bg-gradient-to-b from-transparent to-black rounded-b absolute bottom-0">
+          <h5 class="mb-4 text-sm font-semibold tracking-tight text-white line-clamp-3 ">
             {{
               item.name
             }}</h5>
-          <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 line-clamp-6">{{
-              item.synopsis
-            }}</p>
-          <NuxtLink
-              :to="`/package/${item.id}`"
-              class="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            Read more
-            <svg aria-hidden="true" class="ml-2 -mr-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
-                 xmlns="http://www.w3.org/2000/svg">
-              <path clip-rule="evenodd"
-                    d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                    fill-rule="evenodd"></path>
-            </svg>
-          </NuxtLink>
         </div>
-      </div>
+      </NuxtLink>
     </div>
     <animize_loading v-if="pending"></animize_loading>
 
