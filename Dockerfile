@@ -16,6 +16,5 @@ RUN yarn install
 RUN yarn build
 
 EXPOSE 3000
-RUN rm -rf node_modules
 
 ENTRYPOINT [ "yarn", "start" ]
