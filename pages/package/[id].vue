@@ -9,12 +9,12 @@
     <animize_loading v-if="pending"></animize_loading>
     <div v-if="!pending" class="flex flex-col">
       <div id="anime-header">
-        <img :alt="`animize-${pkgId}-cover-blur`" :src="pkg.cover ? pkg.cover : '/icon/img_error.png'"
+        <img :alt="`animize-${pkgId}-cover-blur`" :srcset="pkg.cover ? pkg.cover : '/icon/img_notfound.png'"
              class="object-cover w-full h-96 blur min-h-0 absolute opacity-30">
         <div
             class="flex flex-col items-center md:flex-row relative">
           <img :alt="`animize-${pkgId}-cover`"
-               :src="pkg.cover ? pkg.cover : '/icon/img_error.png'"
+               :srcset="pkg.cover ? pkg.cover : '/icon/img_notfound.png'"
                class="object-cover w-48 h-72 rounded md:h-auto md:w-48 shadow m-8 hover:scale-110"/>
           <div class="flex flex-col justify-between p-4 gap-2 leading-normal h-auto">
             <p class="mb-2 text-5xl font-bold tracking-tight text-gray-800 dark:text-white lg:max-w-[1024px]">
@@ -37,7 +37,7 @@
               </div>
             </div>
             <a :href="`https://myanimelist.net/anime/${pkg.malId}`"
-               class="py-2 px-3 w-40 text-sm font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+               class="py-2 px-3 w-40 button-primary"
                target="_blank">
               <img alt="mal" class="mr-2 -ml-1 w-10 h-10" src="~/assets/icon/mal.svg"/>
               MyAnimeList

@@ -1,33 +1,28 @@
 <template>
   <div id="library" class="flex-inline flex-wrap">
     <div v-if="!pending" :class="pending ? 'animate-pulse' : ''"
-         class="item w-auto h-auto flex-grow grid p-2 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-5  gap-1.5">
-      <div v-for="item in packages.content" :key="item.id"
-           class="hover:scale-110 dark:hover:bg-gray-700 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 transition duration-300 ease">
-        <img :src="item.cover ? item.cover : '/icon/img_error.png'"
+         class="item w-auto h-auto flex-grow grid p-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-5  gap-1.5">
+      <NuxtLink v-for="item in packages.content" :key="item.id"
+                :to="`/package/${item.id}`"
+                class="group relative z-0 w-5/6 aspect-[7/10] rounded drop-shadow-md hover:drop-shadow-2xl max-w-sm bg-white shadow-md dark:bg-gray-800 transition duration-300 ease">
+        <img :srcset="item.cover ? item.cover : '/icon/img_notfound.png'"
              alt=""
-             class="rounded-t-lg object-center h-68 w-96"/>
-        <div class="p-5">
-          <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white line-clamp-3">
+             class="rounded object-center transition-all duration-300	group-hover:opacity-50 group-hover:blur w-full h-full absolute z-0">
+        <div
+            class="h-auto w-full pr-2 pl-2 z-10 bg-gradient-to-t from-gray-900 rounded-b absolute bottom-0 visible group-hover:invisible">
+          <h5 class="mb-4 text-sm font-semibold tracking-tight text-white line-clamp-3 ">
             {{
               item.name
             }}</h5>
-          <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 line-clamp-6">{{
-              item.synopsis
-            }}</p>
-          <NuxtLink
-              :to="`/package/${item.id}`"
-              class="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            Read more
-            <svg aria-hidden="true" class="ml-2 -mr-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
-                 xmlns="http://www.w3.org/2000/svg">
-              <path clip-rule="evenodd"
-                    d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                    fill-rule="evenodd"></path>
-            </svg>
-          </NuxtLink>
         </div>
-      </div>
+        <div
+            class="h-full w-full p-6 z-20 invisible group-hover:visible bg-gradient-to-t from-gray-900 rounded absolute">
+          <h5 class="mb-4 text-sm font-semibold  text-white line-clamp-6 sm:line-clamp-7 md:line-clamp-8 lg:line-clamp-12">
+            {{
+              item.synopsis
+            }}</h5>
+        </div>
+      </NuxtLink>
     </div>
     <animize_loading v-if="pending"></animize_loading>
 
