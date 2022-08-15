@@ -4,14 +4,22 @@
          class="item w-auto h-auto flex-grow grid p-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-5  gap-1.5">
       <NuxtLink v-for="item in packages.content" :key="item.id"
                 :to="`/package/${item.id}`"
-                class="relative z-0 w-36 h-52 sm:w-64 sm:h-96  md:w-3/6 md:h-5/6 lg:h-auto lg:w-auto dark:hover:bg-gray-700 rounded shadow max-w-sm bg-white shadow-md dark:bg-gray-800 transition duration-300 ease">
-        <img :src="item.cover ? item.cover : '/icon/img_error.png'"
+                class="group relative z-0 w-5/6 aspect-[7/10] rounded drop-shadow-md hover:drop-shadow-2xl max-w-sm bg-white shadow-md dark:bg-gray-800 transition duration-300 ease">
+        <img :srcset="item.cover ? item.cover : '/icon/img_notfound.png'"
              alt=""
-             class="rounded object-center w-full h-full absolute z-0">
-        <div class="h-auto w-full pr-2 pl-2 z-10 bg-gradient-to-b from-transparent to-black rounded-b absolute bottom-0">
+             class="rounded object-center transition-all duration-300	group-hover:opacity-50 group-hover:blur w-full h-full absolute z-0">
+        <div
+            class="h-auto w-full pr-2 pl-2 z-10 bg-gradient-to-t from-gray-900 rounded-b absolute bottom-0 visible group-hover:invisible">
           <h5 class="mb-4 text-sm font-semibold tracking-tight text-white line-clamp-3 ">
             {{
               item.name
+            }}</h5>
+        </div>
+        <div
+            class="h-full w-full p-6 z-20 invisible group-hover:visible bg-gradient-to-t from-gray-900 rounded absolute">
+          <h5 class="mb-4 text-sm font-semibold  text-white line-clamp-6 sm:line-clamp-7 md:line-clamp-8 lg:line-clamp-12">
+            {{
+              item.synopsis
             }}</h5>
         </div>
       </NuxtLink>
