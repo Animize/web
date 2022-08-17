@@ -1,6 +1,6 @@
 <template>
   <div id="library" class="flex-inline flex-wrap">
-    <div v-if="!pending" :class="pending ? 'animate-pulse' : ''"
+    <div v-if="totalPage !== 0 && !pending" :class="pending ? 'animate-pulse' : ''"
          class="item w-auto h-auto flex-grow grid p-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-5  gap-1.5">
       <NuxtLink v-for="item in packages.content" :key="item.id"
                 :to="`/package/${item.id}`"
