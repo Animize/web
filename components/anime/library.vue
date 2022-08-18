@@ -106,10 +106,10 @@ const {data: libraryPackages, pending, refresh} = await useLazyAsyncData(
 )
 
 const packages = useState('packages', () => libraryPackages)
-const totalPages = useState('totalPages', () => packages.totalPages ? packages.totalPages : 0)
+const totalPages = useState('totalPages', () => 0)
 
 watch(libraryPackages, (nPkg) => {
-  totalPages.value = nPkg.totalPages
+  totalPages.value = nPkg.numberOfElements
   packages.value = nPkg
 })
 
