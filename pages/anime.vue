@@ -151,12 +151,12 @@ onMounted(() => {
 })
 
 watch(animeQuery, (anmQuery) => {
-  if (animeQuery.value.page) {
-    page.value = animeQuery.value.page - 1
+  if (anmQuery.page) {
+    page.value = anmQuery.page - 1
   }
 
-  if (animeQuery.value.sort) {
-    let srt = animeQuery.value.sort
+  if (anmQuery.sort) {
+    let srt = anmQuery.sort
     sort.value = sortBy.filter(value => value.id === Number(srt))[0]
   } else {
     sort.value = sortBy[0]
@@ -165,13 +165,13 @@ watch(animeQuery, (anmQuery) => {
   selectedSort.value = sort.value
 
 
-  if (animeQuery.value.search) {
-    search.value = animeQuery.value.search
+  if (anmQuery.search) {
+    search.value = anmQuery.search
   } else {
     search.value = null
   }
-  if (animeQuery.value.genre) {
-    genres.value = animeQuery.value.genre.split(',')
+  if (anmQuery.genre) {
+    genres.value = anmQuery.genre.split(',')
   } else {
     genres.value = []
   }
