@@ -1,6 +1,7 @@
 
 # Animize Web
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Animize_web&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Animize_web)
+[![Docker Image CI](https://github.com/Animize/web/actions/workflows/build-docker-image.yml/badge.svg?branch=release)](https://github.com/Animize/web/actions/workflows/build-docker-image.yml)
 
 This repository contain code base for Animize frontend.
 
