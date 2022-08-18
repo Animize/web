@@ -88,6 +88,8 @@
 import {Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot} from '@headlessui/vue'
 
 const config = useRuntimeConfig()
+const route = useRoute()
+const targetPath = route.path
 const open = useState('open', () => false)
 const nameSearch = useState('nameSearch', () => '')
 const currentGenreFilter = useState('currentGenreFilter', () => [])
@@ -122,13 +124,38 @@ const resetFilterAction = async () => {
 }
 
 const applyAction = async () => {
-  console.log(currentGenreFilter.value)
-  console.log(nameSearch.value)
+
+  let parsedId = currentGenreFilter.value.map(gnr => gnr.id).join(',')
+
+  const query = {
+    page: route.query.page ? route.query.page : 1,
+    genre: parsedId,
+    sort: route.query.sort,
+    search: nameSearch.value
+  }
+
+  open.value = false
+
+  navigateTo(
+      {
+        path: targetPath,
+        query: query
+      }
+  )
 }
+onMounted(() =>{
+  nextTick(() =>{
+    refresh()
+  })
+})
+
 
 
 defineExpose({
-  open
+  open,
+  genres,
+  currentGenreFilter,
+  nameSearch
 })
 </script>
 

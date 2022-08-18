@@ -1,7 +1,7 @@
 <template>
   <div id="library" class="flex-inline flex-wrap">
-    <div v-if="totalPage !== 0 && !pending" :class="pending ? 'animate-pulse' : ''"
-         class="item w-auto h-auto flex-grow grid p-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-5  gap-1.5">
+    <div v-if="totalPages !== 0 && !pending" :class="pending ? 'animate-pulse' : ''"
+         class="item w-auto h-auto flex-grow grid p-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4  gap-1.5">
       <NuxtLink v-for="item in packages.content" :key="item.id"
                 :to="`/package/${item.id}`"
                 class="group relative z-0 w-5/6 aspect-[7/10] rounded drop-shadow-md hover:drop-shadow-2xl max-w-sm bg-white shadow-md dark:bg-gray-800 transition duration-300 ease">
@@ -26,13 +26,13 @@
     </div>
     <animize_loading v-if="pending"></animize_loading>
 
-    <not_found v-if="totalPage === 0 && !pending" class="flex items-center justify-center h-screen"></not_found>
+    <not_found v-if="totalPages === 0 && !pending" class="flex items-center justify-center h-screen"></not_found>
 
-    <nav v-if="totalPage !== 0 && !pending" class="item flex justify-center">
+    <nav v-if="totalPages !== 0 && !pending" class="item flex justify-center">
       <ul class="inline-flex items-center -space-x-px">
         <li>
           <a class="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-             @click="changePage(page - 2,totalPage)">
+             @click="changePage(page - 2,totalPages)">
             <span class="sr-only">Previous</span>
             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                  xmlns="http://www.w3.org/2000/svg">
@@ -42,17 +42,17 @@
             </svg>
           </a>
         </li>
-        <li v-for="numPage in totalPage" :key="numPage">
+        <li v-for="numPage in totalPages" :key="numPage">
           <a
               :aria-current="numPage === page + 1 ? 'page' : 'false'"
               :class="numPage === page + 1 ? 'z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white' : 'py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'"
-              @click="changePage(numPage,totalPage)"
+              @click="changePage(numPage,totalPages)"
 
           >{{ numPage }}</a>
         </li>
         <li>
           <a class="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-             @click="changePage(page + 2,totalPage)">
+             @click="changePage(page + 2,totalPages)">
             <span class="sr-only">Next</span>
             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                  xmlns="http://www.w3.org/2000/svg">
@@ -73,14 +73,23 @@ import Not_found from "@/components/common/not_found";
 import Animize_loading from "@/components/common/animize_loading"
 
 const route = useRoute()
-const page = useState('page', () => route.query.page ? route.query.page - 1 : 0)
-const size = useState('size', () => 10)
-const genres = useState('genres', () => route.query.genre ? [route.query.genre] : [])
+const page = useState('page', () => 0)
+const size = useState('size', () => 16)
+const sort = useState('sort', () => null)
+const genres = useState('genres', () => [])
+const search = useState('search', () => null)
 const targetPath = route.path
 
 
 const queryStringRequest = computed(() => {
   let query = `?page=${page.value}&size=${size.value}`
+  if (sort.value) {
+    query += `&sort=${sort.value.field},${sort.value.direction}`
+  }
+
+  if (search.value){
+    query += `&name=${search.value}`
+  }
 
   for (const genre of genres.value) {
     query += `&genreIds=${genre}`
@@ -89,19 +98,20 @@ const queryStringRequest = computed(() => {
   return query
 })
 
-const pageQuery = computed(() => route.query.page ? route.query.page : 1)
-const genreQuery = computed(() => route.query.genre ? route.query.genre : null)
-
 const config = useRuntimeConfig()
-const {data: packages, pending, refresh} = await useLazyAsyncData(
-    'packages',
+const {data: libraryPackages, pending, refresh} = await useLazyAsyncData(
+    'libraryPackages',
     () => $fetch(`${config.API_BASE_URL}/packages/page${queryStringRequest.value}`)
 )
-const totalPage = useState('totalPage', () => packages.totalPages ? packages.totalPages : 0)
 
-watch(packages, (nPkg) => {
-  totalPage.value = nPkg.totalPages ? nPkg.totalPages : 0
+const packages = useState('packages', () => libraryPackages)
+const totalPages = useState('totalPages', () => packages.totalPages ? packages.totalPages : 0)
+
+watch(libraryPackages, (nPkg) => {
+  totalPages.value = nPkg.totalPages
+  packages.value = nPkg
 })
+
 
 watch(() => queryStringRequest.value, () => refresh())
 
@@ -115,7 +125,9 @@ const changePage = async (pageNumber, totalPages) => {
 
   const query = {
     page: pageNumber,
-    genre: route.query.genre
+    genre: route.query.genre,
+    sort: route.query.sort,
+    search: route.query.search
   }
 
   navigateTo(
@@ -126,17 +138,13 @@ const changePage = async (pageNumber, totalPages) => {
   )
 }
 
-watch(pageQuery, async (newPageQuery) => {
-  page.value = newPageQuery - 1
-})
 
-watch(genreQuery, (newGenre) => {
-  if (newGenre) {
-    genres.value.pop()
-    genres.value.push(newGenre)
-  } else {
-    genres.value.pop()
-  }
+defineExpose({
+  sort,
+  page,
+  size,
+  genres,
+  search
 })
 
 </script>

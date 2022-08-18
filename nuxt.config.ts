@@ -17,5 +17,8 @@ export default defineNuxtConfig({
     modules: ['@nuxtjs/tailwindcss'],
     loading: {
         color: 'green'
-    }
+    },
+    plugins: [
+        {src: '~/plugins/flowbite.client.js', ssr: false}
+    ]
 })
