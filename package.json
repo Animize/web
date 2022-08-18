@@ -8,6 +8,7 @@
     "start": "nuxt start"
   },
   "devDependencies": {
+    "@nuxt/image-edge": "^1.0.0-27657146.da85542",
     "nuxt": "3.0.0-rc.8"
   },
   "dependencies": {
