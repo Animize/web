@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   name: animize-frontend
   namespace: animize
 spec:
@@ -17,7 +16,6 @@ spec:
       maxUnavailable: 1
   template:
     metadata:
-      creationTimestamp: null
       labels:
         xyz.dvnlabs.animize: web
     spec:
