@@ -38,8 +38,8 @@
           </div>
         </div>
         <div class="item h-auto left-0">
-          <button class="button button-neutral transition-colors ease-out duration-200" @click="openAnimeFilter">
-            <svg aria-hidden="true" class="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 512.000000 512.000000"
+          <button class="button button-neutral transition-colors ease-out duration-200 dark:fill-white dark:hover:fill-gray-900 fill-gray-900 hover:fill-white" @click="openAnimeFilter">
+            <svg aria-hidden="true" class="h-8 w-8" viewBox="0 0 512.000000 512.000000"
                  xmlns="http://www.w3.org/2000/svg">
               <g
                   stroke="none" transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)">
