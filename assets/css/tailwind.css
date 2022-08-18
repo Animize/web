@@ -4,8 +4,45 @@
 @tailwind components;
 @tailwind utilities;
 
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
 @layer components {
+
+    .button {
+        @apply inline-flex items-center py-2 px-3 m-2 text-sm font-medium text-center rounded-lg
+    }
+
     .button-primary {
-        @apply inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
+        @apply text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
+    }
+
+    .button-neutral {
+        @apply dark:text-white text-gray-900 dark:hover:text-gray-900 hover:text-white dark:hover:bg-gray-300 hover:bg-gray-900 rounded-lg
+    }
+
+    .chip {
+        @apply px-4 py-2 border-2 rounded-full font-semibold text-sm cursor-pointer active:bg-gray-300 active:text-gray-800 dark:active:bg-gray-800 dark:active:text-white hover:bg-gray-900 hover:text-white dark:hover:bg-gray-300 dark:hover:text-gray-800
+    }
+
+    .chip-selected {
+        @apply border-2 bg-gray-800 text-white dark:bg-gray-300 dark:text-gray-800
     }
 }
