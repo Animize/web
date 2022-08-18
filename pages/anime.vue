@@ -38,7 +38,9 @@
           </div>
         </div>
         <div class="item h-auto left-0">
-          <button class="button button-neutral transition-colors ease-out duration-200 dark:fill-white dark:hover:fill-gray-900 fill-gray-900 hover:fill-white" @click="openAnimeFilter">
+          <button
+              class="button button-neutral transition-colors ease-out duration-200 dark:fill-white dark:hover:fill-gray-900 fill-gray-900 hover:fill-white"
+              @click="openAnimeFilter">
             <svg aria-hidden="true" class="h-8 w-8" viewBox="0 0 512.000000 512.000000"
                  xmlns="http://www.w3.org/2000/svg">
               <g
@@ -62,8 +64,8 @@
         </div>
 
       </div>
-      <anime_filter ref="animeFilter"></anime_filter>
-      <library ref="libra" class="w-auto h-auto"></library>
+      <anime_filter></anime_filter>
+      <library class="w-auto h-auto"></library>
     </div>
   </div>
 </template>
@@ -71,14 +73,9 @@
 <script setup>
 import Library from "../components/anime/library";
 import Anime_filter from "../components/anime/anime_filter";
-
-const genreChip = ref(null);
-const animeFilter = ref(null);
-const libra = ref(null);
 const route = useRoute();
 const targetPath = route.path
 const animeQuery = computed(() => route.query)
-const page = useState('page', () => 0)
 const dropdownOpen = useState('dropdownOpen', () => false)
 
 const sortBy = [
@@ -115,61 +112,79 @@ const sortBy = [
   }
 ]
 const selectedSort = useState('selectedSort', () => sortBy[0])
+const page = useState('page', () => 0)
+const sort = useState('sort', () => null)
+const genres = useState('genres', () => [])
+const search = useState('search', () => null)
+const dialogOpen = useState('dialogOpen', () => false)
+
 
 
 onMounted(() => {
   nextTick(() => {
     if (animeQuery.value.page) {
-      libra.value.page = animeQuery.value.page - 1
+      page.value = animeQuery.value.page - 1
     }
 
     if (animeQuery.value.sort) {
       let srt = animeQuery.value.sort
-      selectedSort.value = sortBy.filter(value => value.id === Number(srt))[0]
-      libra.value.sort = sortBy.filter(value => value.id === Number(srt))[0]
+      sort.value = sortBy.filter(value => value.id === Number(srt))[0]
     } else {
-      selectedSort.value = sortBy[0]
-      libra.value.sort = sortBy[0]
+      sort.value = sortBy[0]
     }
 
+    selectedSort.value = sort.value
+
+
     if (animeQuery.value.search) {
-      libra.value.search = animeQuery.value.search
+      search.value = animeQuery.value.search
     } else {
-      libra.value.search = null
+      search.value = null
     }
     if (animeQuery.value.genre) {
-      libra.value.genres = animeQuery.value.genre.split(',')
+      genres.value = animeQuery.value.genre.split(',')
     } else {
-      libra.value.genres = []
+      genres.value = []
     }
 
   })
 })
 
 watch(animeQuery, (anmQuery) => {
-  libra.value.page = anmQuery.page - 1
-  let srt = anmQuery.sort
-  libra.value.sort = sortBy.filter(value => value.id === Number(srt))[0]
-  if (anmQuery.search) {
-    libra.value.search = anmQuery.search
-  } else {
-    libra.value.search = null
+  if (animeQuery.value.page) {
+    page.value = animeQuery.value.page - 1
   }
-  if (anmQuery.genre) {
-    libra.value.genres = anmQuery.genre.split(',')
+
+  if (animeQuery.value.sort) {
+    let srt = animeQuery.value.sort
+    sort.value = sortBy.filter(value => value.id === Number(srt))[0]
   } else {
-    libra.value.genres = []
+    sort.value = sortBy[0]
+  }
+
+  selectedSort.value = sort.value
+
+
+  if (animeQuery.value.search) {
+    search.value = animeQuery.value.search
+  } else {
+    search.value = null
+  }
+  if (animeQuery.value.genre) {
+    genres.value = animeQuery.value.genre.split(',')
+  } else {
+    genres.value = []
   }
 })
 
-const changeSelectedSortAction = (sort) => {
+const changeSelectedSortAction = (srt) => {
   dropdownOpen.value = false
-  selectedSort.value = sort
+  selectedSort.value = srt
 
   const query = {
     page: page.value + 1,
     genre: route.query.genre,
-    sort: sort.id,
+    sort: srt.id,
     search: route.query.search
   }
 
@@ -181,9 +196,11 @@ const changeSelectedSortAction = (sort) => {
   )
 }
 
-const openAnimeFilter = () => {
+const openAnimeFilter = async () => {
+
   nextTick(() => {
-    animeFilter.value.open = true
+    dialogOpen.value = true
+
   })
 
 }

@@ -14,7 +14,10 @@ export default defineNuxtConfig({
         API_BASE_URL: process.env.API_BASE_URL
     },
     link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}],
-    modules: ['@nuxtjs/tailwindcss'],
+    modules: [
+        '@nuxtjs/tailwindcss',
+        '@nuxt/image-edge'
+    ],
     loading: {
         color: 'green'
     }

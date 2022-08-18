@@ -1,6 +1,6 @@
 <template>
-  <TransitionRoot :show="open" as="template">
-    <Dialog as="div" class="relative z-10" @close="open = false">
+  <TransitionRoot :show="dialogOpen" as="template">
+    <Dialog as="div" class="relative z-10" @close="dialogOpen = false">
       <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0" enter-to="opacity-100"
                        leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
         <div class="fixed inset-0 backdrop-blur-sm bg-opacity-75 transition-opacity"/>
@@ -90,7 +90,7 @@ import {Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot} from 
 const config = useRuntimeConfig()
 const route = useRoute()
 const targetPath = route.path
-const open = useState('open', () => false)
+const dialogOpen = useState('dialogOpen', () => false)
 const nameSearch = useState('nameSearch', () => '')
 const currentGenreFilter = useState('currentGenreFilter', () => [])
 
@@ -134,7 +134,7 @@ const applyAction = async () => {
     search: nameSearch.value
   }
 
-  open.value = false
+  dialogOpen.value = false
 
   navigateTo(
       {
@@ -152,7 +152,7 @@ onMounted(() =>{
 
 
 defineExpose({
-  open,
+  dialogOpen,
   genres,
   currentGenreFilter,
   nameSearch

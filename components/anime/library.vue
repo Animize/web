@@ -5,9 +5,10 @@
       <NuxtLink v-for="item in packages.content" :key="item.id"
                 :to="`/package/${item.id}`"
                 class="group relative z-0 w-5/6 aspect-[7/10] rounded drop-shadow-md hover:drop-shadow-2xl max-w-sm bg-white shadow-md dark:bg-gray-800 transition duration-300 ease">
-        <img :srcset="item.cover ? item.cover : '/icon/img_notfound.png'"
-             alt=""
-             class="rounded object-center transition-all duration-300	group-hover:opacity-50 group-hover:blur w-full h-full absolute z-0">
+        <nuxt-img :src="item.cover ? item.cover : '/icon/img_notfound.png'"
+                  loading="lazy"
+                  alt=""
+                  class="rounded object-center transition-all duration-300	group-hover:opacity-50 group-hover:blur w-full h-full absolute z-0"/>
         <div
             class="h-auto w-full pr-2 pl-2 z-10 bg-gradient-to-t from-gray-900 rounded-b absolute bottom-0 visible group-hover:invisible">
           <h5 class="mb-4 text-sm font-semibold tracking-tight text-white line-clamp-3 ">
@@ -87,7 +88,7 @@ const queryStringRequest = computed(() => {
     query += `&sort=${sort.value.field},${sort.value.direction}`
   }
 
-  if (search.value){
+  if (search.value) {
     query += `&name=${search.value}`
   }
 
@@ -105,10 +106,10 @@ const {data: libraryPackages, pending, refresh} = await useLazyAsyncData(
 )
 
 const packages = useState('packages', () => libraryPackages)
-const totalPages = useState('totalPages', () => packages.totalPages ? packages.totalPages : 0)
+const totalPages = useState('totalPages', () => 0)
 
 watch(libraryPackages, (nPkg) => {
-  totalPages.value = nPkg.totalPages
+  totalPages.value = nPkg.numberOfElements
   packages.value = nPkg
 })
 
