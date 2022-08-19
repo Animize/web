@@ -119,10 +119,10 @@ watch(libraryPackages, (nPkg) => {
 watch(() => queryStringRequest.value, () => refresh())
 
 
-const changePage = async (pageNumber, totalPages) => {
+const changePage = async (pageNumber, totPage) => {
   if (pageNumber < 1) {
     pageNumber = 1
-  } else if (pageNumber > totalPages) {
+  } else if (pageNumber > totPage) {
     pageNumber = pageNumber - 1
   }
 
