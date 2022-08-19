@@ -1,14 +1,14 @@
 <template>
   <div id="library" class="flex-inline flex-wrap">
-    <div v-if="totalPages !== 0 && !pending" :class="pending ? 'animate-pulse' : ''"
+    <div v-if="totalElements !== 0 && !pending" :class="pending ? 'animate-pulse' : ''"
          class="item w-auto h-auto flex-grow grid p-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4  gap-1.5">
       <NuxtLink v-for="item in packages.content" :key="item.id"
                 :to="`/package/${item.id}`"
                 class="group relative z-0 w-5/6 aspect-[7/10] rounded drop-shadow-md hover:drop-shadow-2xl max-w-sm bg-white shadow-md dark:bg-gray-800 transition duration-300 ease">
         <nuxt-img :src="item.cover ? item.cover : '/icon/img_notfound.png'"
-                  loading="lazy"
                   alt=""
-                  class="rounded object-center transition-all duration-300	group-hover:opacity-50 group-hover:blur w-full h-full absolute z-0"/>
+                  class="rounded object-center transition-all duration-300	group-hover:opacity-50 group-hover:blur w-full h-full absolute z-0"
+                  loading="lazy"/>
         <div
             class="h-auto w-full pr-2 pl-2 z-10 bg-gradient-to-t from-gray-900 rounded-b absolute bottom-0 visible group-hover:invisible">
           <h5 class="mb-4 text-sm font-semibold tracking-tight text-white line-clamp-3 ">
@@ -27,9 +27,9 @@
     </div>
     <animize_loading v-if="pending"></animize_loading>
 
-    <not_found v-if="totalPages === 0 && !pending" class="flex items-center justify-center h-screen"></not_found>
+    <not_found v-if="totalElements === 0 && !pending" class="flex items-center justify-center h-screen"></not_found>
 
-    <nav v-if="totalPages !== 0 && !pending" class="item flex justify-center">
+    <nav v-if="totalElements !== 0 && !pending" class="item flex justify-center">
       <ul class="inline-flex items-center -space-x-px">
         <li>
           <a class="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
@@ -107,9 +107,11 @@ const {data: libraryPackages, pending, refresh} = await useLazyAsyncData(
 
 const packages = useState('packages', () => libraryPackages)
 const totalPages = useState('totalPages', () => 0)
+const totalElements = useState('totalElements', () => 0)
 
 watch(libraryPackages, (nPkg) => {
-  totalPages.value = nPkg.numberOfElements
+  totalPages.value = nPkg.totalPages
+  totalElements.value = nPkg.totalElements
   packages.value = nPkg
 })
 
