@@ -10,12 +10,12 @@
     <div v-if="!pending" class="flex flex-col">
       <div id="anime-header">
         <nuxt-img :alt="`animize-${pkgId}-cover-blur`" :src="pkg.cover ? pkg.cover : '/icon/img_notfound.png'"
-             class="object-cover w-full h-96 blur min-h-0 absolute opacity-30"/>
+                  class="object-cover w-full h-96 blur min-h-0 absolute opacity-30"/>
         <div
             class="flex flex-col items-center md:flex-row relative">
           <nuxt-img :alt="`animize-${pkgId}-cover`"
-               :src="pkg.cover ? pkg.cover : '/icon/img_notfound.png'"
-               class="object-cover w-48 h-72 rounded md:h-auto md:w-48 shadow m-8 hover:scale-110"/>
+                    :src="pkg.cover ? pkg.cover : '/icon/img_notfound.png'"
+                    class="object-cover w-48 h-72 rounded md:h-auto md:w-48 shadow m-8 hover:scale-110"/>
           <div class="flex flex-col justify-between p-4 gap-2 leading-normal h-auto">
             <p class="mb-2 text-5xl font-bold tracking-tight text-gray-800 dark:text-white lg:max-w-[1024px]">
               {{ pkg.name }}</p>
@@ -61,9 +61,10 @@
       <div id="anime-episode" class="item flex-inline flex-wrap mt-10 p-8">
         <div v-if="!episodePending"
              class="item w-auto h-auto flex-grow grid md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-5  gap-2.5">
-          <div
+          <NuxtLink
               v-for="episode in episodes"
               :key="episode.id"
+              :to="`/play/${episode.id}`"
               class="flex flex-col items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl h-auto w-72 hover:scale-110 dark:hover:bg-gray-700 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 transition duration-300 ease">
             <span class="object-cover w-16 h-32 rounded-l-lg dark:text-white text-6xl dark:bg-gray-600">
               {{ episode.episode }}
@@ -71,7 +72,7 @@
             <span class="text-2xl line-clamp-3 dark:text-white">
               {{ episode.summary ? episode.summary : 'N/A' }}
             </span>
-          </div>
+          </NuxtLink>
         </div>
         <div v-else class="item w-auto h-auto flex-grow grid p-2 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-5  gap-1.5">
           <div
