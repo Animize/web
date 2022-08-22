@@ -29,7 +29,9 @@
                   leave-from-class="transform scale-100 opacity-100"
                   leave-to-class="transform scale-95 opacity-0"
               >
-                <ListboxOptions class="item z-10 absolute w-full h-auto rounded-b bg-gray-200 dark:bg-gray-800">
+                <ListboxOptions
+                    :class="sortBy.length > 10 ? 'h-96 overflow-y-scroll' : ''"
+                    class="item z-10 absolute w-full h-auto rounded-b bg-gray-200 dark:bg-gray-800">
                   <ListboxOption
                       v-for="sort in sortBy"
                       :key="sort"
@@ -38,13 +40,13 @@
                       as="template"
                   >
                     <li
-                        :class="active ? 'bg-gray-400 dark:bg-gray-600 dark:text-white p-2' : ''"
-                        class="hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white p-2 flex-row"
+                        :class="active ? 'active:bg-gray-400 active:dark:bg-gray-600 active:dark:text-white p-2' : ''"
+                        class="hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white dark:text-white p-2 flex flex-row justify-between"
                     >
-                      <CheckIcon v-if="selected" aria-hidden="true" class="item h-5 w-5"/>
                       <span class="item">
 
                         {{ sort.title }}</span>
+                      <CheckIcon v-if="selected" aria-hidden="true" class="item h-5 w-5 items-end"/>
                     </li>
                   </ListboxOption>
                 </ListboxOptions>
@@ -196,8 +198,6 @@ watch(animeQuery, (anmQuery) => {
 })
 
 watch(selectedSort, (selSort) => {
-  console.log(selSort)
-  console.log(selectedSort.value)
   dropdownOpen.value = false
   const query = {
     page: page.value + 1,
