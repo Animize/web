@@ -7,35 +7,50 @@
     </Head>
     <div class="justify-center p-2">
       <div class="flex flex-row justify-between gap-6 p-2 w-full h-auto">
-        <div class="item w-1/3 h-auto" tabindex="-1">
-          <div
-              :class="dropdownOpen ? 'rounded-t' : 'rounded'"
-              class="flex flex-col h-auto w-full bg-gray-200 dark:bg-gray-800 focus:ring-2 focus:ring-black focus:dark:ring-white"
-              @click="dropdownOpen ? dropdownOpen = false : dropdownOpen = true"
-          >
-            <span class="item text-gray-900 dark:text-white font-semibold text-xl p-2">Sort By</span>
-            <button
-                class="item w-fit text-gray-900 dark:text-white font-normal text-xl mt-1 text-center  p-2"
-                type="button"
-            >{{ selectedSort.title }}
-            </button>
-          </div>
-          <div :style="dropdownOpen ? '' : 'display:none;'"
-               class="item z-10 absolute h-auto w-1/3 rounded-b bg-gray-200 dark:bg-gray-800"
-          >
-            <ul class="text-xl text-gray-900 dark:text-white font-normal h-48 overflow-y-scroll">
-              <li v-for="sort in sortBy"
-                  :id="sort.title"
-                  :key="sort.title"
-                  :class="sort.title === selectedSort.title ? 'bg-gray-100 dark:bg-gray-600 dark:text-white p-2' : ''"
-                  class="hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white p-2"
-                  tabindex="-1"
-                  @click="changeSelectedSortAction(sort)"
+        <div class="item w-1/3 h-auto">
+          <Listbox v-model="selectedSort">
+            <div class="relative">
+              <ListboxButton
+                  :class="dropdownOpen ? 'rounded-t' : 'rounded'"
+                  class="flex flex-col relative cursor-default h-auto w-full bg-gray-200 dark:bg-gray-800 focus:ring-2 focus:ring-black focus:dark:ring-white"
+                  @click="dropdownOpen ? dropdownOpen = false : dropdownOpen = true"
               >
-                <span>{{ sort.title }}</span>
-              </li>
-            </ul>
-          </div>
+                <span class="item text-gray-900 dark:text-white font-semibold text-xl p-2">Sort By</span>
+                <span
+                    class="item w-fit text-gray-900 dark:text-white font-normal text-xl mt-1 text-center  p-2"
+                >{{ selectedSort.title }}
+              </span>
+              </ListboxButton>
+              <transition
+                  enter-active-class="transition duration-100 ease-out"
+                  enter-from-class="transform scale-95 opacity-0"
+                  enter-to-class="transform scale-100 opacity-100"
+                  leave-active-class="transition duration-75 ease-out"
+                  leave-from-class="transform scale-100 opacity-100"
+                  leave-to-class="transform scale-95 opacity-0"
+              >
+                <ListboxOptions class="item z-10 absolute w-full h-auto rounded-b bg-gray-200 dark:bg-gray-800">
+                  <ListboxOption
+                      v-for="sort in sortBy"
+                      :key="sort"
+                      v-slot="{active,selected}"
+                      :value="sort"
+                      as="template"
+                  >
+                    <li
+                        :class="active ? 'bg-gray-400 dark:bg-gray-600 dark:text-white p-2' : ''"
+                        class="hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white p-2 flex-row"
+                    >
+                      <CheckIcon v-if="selected" aria-hidden="true" class="item h-5 w-5"/>
+                      <span class="item">
+
+                        {{ sort.title }}</span>
+                    </li>
+                  </ListboxOption>
+                </ListboxOptions>
+              </transition>
+            </div>
+          </Listbox>
         </div>
         <div class="item h-auto left-0">
           <button
@@ -73,6 +88,10 @@
 <script setup>
 import Library from "../components/anime/library";
 import Anime_filter from "../components/anime/anime_filter";
+import {Listbox, ListboxButton, ListboxOption, ListboxOptions} from '@headlessui/vue'
+import {CheckIcon} from '@heroicons/vue/solid/esm/index.js'
+
+
 const route = useRoute();
 const targetPath = route.path
 const animeQuery = computed(() => route.query)
@@ -117,7 +136,6 @@ const sort = useState('sort', () => null)
 const genres = useState('genres', () => [])
 const search = useState('search', () => null)
 const dialogOpen = useState('dialogOpen', () => false)
-
 
 
 onMounted(() => {
@@ -177,14 +195,14 @@ watch(animeQuery, (anmQuery) => {
   }
 })
 
-const changeSelectedSortAction = (srt) => {
+watch(selectedSort, (selSort) => {
+  console.log(selSort)
+  console.log(selectedSort.value)
   dropdownOpen.value = false
-  selectedSort.value = srt
-
   const query = {
     page: page.value + 1,
     genre: route.query.genre,
-    sort: srt.id,
+    sort: selSort.id,
     search: route.query.search
   }
 
@@ -194,7 +212,8 @@ const changeSelectedSortAction = (srt) => {
         query: query
       }
   )
-}
+})
+
 
 const openAnimeFilter = async () => {
 
