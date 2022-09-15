@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@nuxt/image-edge": "^1.0.0-27657146.da85542",
-    "nuxt": "3.0.0-rc.8"
+    "nuxt": "3.0.0-rc.10"
   },
   "dependencies": {
     "@headlessui/vue": "^1.6.7",
