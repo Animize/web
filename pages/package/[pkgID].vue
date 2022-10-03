@@ -64,22 +64,17 @@
           <NuxtLink
               v-for="episode in episodes"
               :key="episode.id"
-              :to="`/play/${episode.id}`"
+              :to="`/package/${pkgId}-ep/${episode.id}`"
               class="flex flex-col items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl h-auto w-72 hover:scale-110 dark:hover:bg-gray-700 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 transition duration-300 ease">
             <span class="object-cover w-16 h-32 rounded-l-lg dark:text-white text-6xl dark:bg-gray-600">
               {{ episode.episode }}
             </span>
             <span class="text-2xl line-clamp-3 dark:text-white">
-              {{ episode.summary ? episode.summary : 'N/A' }}
+              {{ episode.summary ? episode.summary : 'Nothing to be told' }}
             </span>
           </NuxtLink>
         </div>
-        <div v-else class="item w-auto h-auto flex-grow grid p-2 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-5  gap-1.5">
-          <div
-              v-for="episode in 10"
-              class="h-32 w-72 hover:scale-110 dark:hover:bg-gray-700 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 transition duration-300 ease">
-          </div>
-        </div>
+
       </div>
     </div>
   </div>
@@ -91,7 +86,7 @@ import Animize_loading from "@/components/common/animize_loading"
 
 const route = useRoute()
 const config = useRuntimeConfig()
-const pkgId = useState(() => route.params.id)
+const pkgId = useState(() => route.params.pkgID)
 
 const {data: pkg, pending, refresh: refresh} = await useLazyAsyncData(
     'pkg',
@@ -109,7 +104,7 @@ watch(pkgId, () => {
 })
 
 onMounted(() => {
-  pkgId.value = route.params.id
+  pkgId.value = route.params.pkgID
 })
 </script>
 
