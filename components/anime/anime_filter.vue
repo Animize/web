@@ -94,6 +94,9 @@ const dialogOpen = useState('dialogOpen', () => false)
 const nameSearch = useState('nameSearch', () => '')
 const currentGenreFilter = useState('currentGenreFilter', () => [])
 
+const genreQuery = computed(() => route.query.genre)
+const searchQuery = computed(() => route.query.search)
+
 const {data: genres, pending, refresh} = await useLazyAsyncData(
     'genres',
     () => $fetch(`${config.API_BASE_URL}/genre/list`)
@@ -143,12 +146,24 @@ const applyAction = async () => {
       }
   )
 }
-onMounted(() =>{
-  nextTick(() =>{
-    refresh()
+onMounted(() => {
+  nextTick(async () => {
+    await refresh()
+    if (genreQuery.value) {
+      let selected = genreQuery.value.split(',').filter(e => e)
+      genres.value.forEach(e => {
+        if (selected.indexOf(e.id) !== -1) {
+          selectedGenreAction(e)
+        }
+      })
+    }
+
+    if (searchQuery.value) {
+      nameSearch.value = searchQuery.value
+    }
+
   })
 })
-
 
 
 defineExpose({
