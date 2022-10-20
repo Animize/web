@@ -54,12 +54,10 @@
 </template>
 
 <script setup>
-import Artplayer from "artplayer";
 import {Disclosure, DisclosureButton, DisclosurePanel} from '@headlessui/vue'
 import Not_found from "../../../components/common/not_found";
 import Animize_loading from "../../../components/common/animize_loading";
 
-const artPlayer = useState('artPlayer', () => null);
 const route = useRoute()
 const config = useRuntimeConfig()
 const anmID = useState('anmID', () => route.params.anmID)
@@ -90,41 +88,6 @@ const {data: sources, sourcesPending, refresh: sourcesRefresh} = await useLazyAs
 
 sourcesRefresh()
 episodesRefresh()
-
-
-watch(sources, () => {
-  initializePlayer()
-})
-
-const initializePlayer = () => {
-  let mapSource = sources.value.map(srcs => {
-    return {
-      html: `${srcs.provider} - ${srcs.contentQuality}`,
-      url: srcs.sourcesURL
-    }
-  })
-
-  artPlayer.value.switchUrl(mapSource[0].url)
-  artPlayer.value.title = packages ? packages.name : ''
-  artPlayer.value.quality = mapSource
-}
-
-watchEffect(() => {
-  if (animizePlayer.value) {
-    artPlayer.value = new Artplayer({
-      autoplay: false,
-      backdrop: true,
-      setting: true,
-      playbackRate: true,
-      aspectRatio: true,
-      pip: true,
-      fullscreen: true,
-      loop: true,
-      screenshot: true,
-      container: animizePlayer.value,
-    })
-  }
-})
 
 </script>
 
