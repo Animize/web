@@ -22,7 +22,7 @@
             <p class="font-normal text-2xs text-gray-800 dark:text-white">Current episode: {{ pkg.currentEpisode }} of
               {{ pkg.maxEpisode }}</p>
             <div class="font-normal flex inline-flex gap-2.5">
-              <div class="flex flex-inline text-sm font-medium text-center items-center text-white">
+              <div class="flex flex-inline text-sm font-medium text-center items-center dark:text-white">
                 <svg aria-hidden="true" class="item w-10 h-10 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"
                      xmlns="http://www.w3.org/2000/svg"><title>Rating</title>
                   <path
