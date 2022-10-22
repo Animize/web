@@ -2,7 +2,7 @@ FROM node:16.16.0-alpine
 ARG API_BASE_URL
 
 RUN apk update && apk upgrade
-RUN apk add git
+RUN apk add git htop
 
 RUN mkdir -p /app/animize
 WORKDIR /app/animize
