@@ -2,59 +2,43 @@
   <div class="p-4">
     <Head v-if="!episodePending">
       <Title>
-        {{packages.name ? packages.name : 'Animize'}} | Episode {{episode.episode ? episode.episode : '0'}}
+        {{packages ? packages.name : 'Animize'}} | Episode {{episode.episode ? episode.episode : '0'}}
       </Title>
-      <Meta :content="episode ?`Episode ${episode.episode}, ${episode.summary ? episode.summary : 'Nothing to be told'}`  : 'Animize'" name="description"/>
+      <Meta
+          :content="episode ?`Episode ${episode.episode}, ${episode.summary ? episode.summary : 'Nothing to be told'}`  : 'Animize'"
+          name="description"/>
     </Head>
     <div v-if="episode && !episodePending" class="flex-inline flex-col">
-      <div class="item w-full items-center flex flex-col md:flex-row text-justify m-2 gap-2 p-2">
-        <div class="item w-full md:w-2/3">
-          <video-player ref="animizePlayer"
-                        :controls="true"
-                        :sources="videoPlayerSource"
-                        class="w-full aspect-[10/7]"
-                        @mounted="videoPlayerOnMounted"
-          />
-        </div>
-        <div class="item w-full md:w-1/3 md:h-96">
-          <Disclosure :v-slot="hideEpisodeSelector" as="div"
-                      class="dark:bg-gray-800 rounded shadow-lg flex-col h-auto w-auto">
-            <DisclosureButton
-                class="item dark:text-white text-gray-900 text-2xl h-auto w-full line-clamp-2 dark:bg-gray-700 p-2 text-start">
-              Episodes
-            </DisclosureButton>
-            <transition
-                enter-active-class="transition duration-100 ease-out"
-                enter-from-class="transform scale-95 opacity-0"
-                enter-to-class="transform scale-100 opacity-100"
-                leave-active-class="transition duration-75 ease-out"
-                leave-from-class="transform scale-100 opacity-100"
-                leave-to-class="transform scale-95 opacity-0"
-            >
-              <DisclosurePanel
-                  :class="episodes.length > 5 ? 'overflow-y-scroll' : ''"
-                  class=" h-auto flex-col">
-                <NuxtLink
-                    v-for="episode in episodes"
-                    :key="episode.id"
-                    :to="`/package/${pkgID}-ep/${episode.id}`"
-                    class="item flex flex-col items-start hover:text-white dark:hover:bg-gray-900 dark:text-white hover:bg-gray-800 dark:hover:bg-gray-600 p-8">
-            <span class="item text-xl">
-              Episode {{ episode.episode }}
-            </span>
-                  <span class="item line-clamp-2 dark:text-white italic">
-              {{ episode.summary ? episode.summary : 'Nothing to be told' }}
-            </span>
-                </NuxtLink>
-              </DisclosurePanel>
-            </transition>
-          </Disclosure>
-        </div>
+      <div class="item w-full items-center flex flex-col md:flex-row text-justify m-2 gap-2">
+        <video-player ref="animizePlayer"
+                      :controls="true"
+                      :sources="videoPlayerSource"
+                      class="w-full aspect-[10/7]"
+                      @mounted="videoPlayerOnMounted"
+        />
+
+      </div>
+      <div class="item w-full items-center flex flex-col md:flex-row text-left m-2 gap-2">
+        <Carousel :items-to-show="1" class="w-full">
+          <Slide v-for="episode in episodes" :key="episode.id">
+            <NuxtLink
+                :to="`/package/${pkgID}-ep/${episode.id}`"
+                class="item flex flex-col items-start dark:text-white p-8 m-2">
+              <span class="item text-xl">Episode {{ episode.episode }}</span>
+              <span class="item line-clamp-2 dark:text-white italic">{{
+                  episode.summary ? episode.summary : 'Nothing to be told'
+                }}</span>
+            </NuxtLink>
+          </Slide>
+          <template #addons>
+            <Navigation/>
+          </template>
+        </Carousel>
       </div>
       <div class="item w-full items-center flex flex-col md:flex-row relative rounded shadow-lg dark:bg-gray-800
           dark:text-white text-gray-800 text-justify m-2 gap-2 p-2">
         <nuxt-img :alt="`animize-${pkgID}-cover`"
-                  :src="packages.cover ? packages.cover : '/icon/img_notfound.png'"
+                  :src="packages ? packages.cover : '/icon/img_notfound.png'"
                   class="object-cover w-48 aspect-[7/10] rounded shadow"/>
         <div class="flex flex-col justify-between gap-2 leading-normal h-auto">
           <div class="item text-3xl font-bold flex-wrap w-full">
@@ -87,18 +71,21 @@
 </template>
 
 <script setup>
-import {Disclosure, DisclosureButton, DisclosurePanel} from '@headlessui/vue'
 import Not_found from "../../../components/common/not_found";
 import Animize_loading from "../../../components/common/animize_loading";
 import {VideoPlayer} from "@videojs-player/vue";
 import 'video.js/dist/video-js.css'
+import {Carousel, Navigation, Slide} from 'vue3-carousel'
+
+import 'vue3-carousel/dist/carousel.css'
 
 
 const route = useRoute()
 const config = useRuntimeConfig()
-const anmID = useState('anmID', () => route.params.anmID)
-const pkgID = useState('pkgID', () => route.params.pkgID)
-const hideEpisodeSelector = useState('hideEpisodeSelector', () => false)
+const anmID = computed(() => route.params.anmID)
+const pkgID = computed(() => route.params.pkgID)
+
+const hideEpisodeSelector = useState('hideEpisodeSelector', () => true)
 const animizePlayer = useState('animizePlayer', () => null)
 
 const {data: episode, episodePending, refresh: episodeRefresh} = await useLazyAsyncData(
@@ -123,12 +110,12 @@ const {data: sources, sourcesPending, refresh: sourcesRefresh} = await useLazyAs
 )
 
 const videoPlayerSource = computed(() => {
-  return sources.value
+  return sources.value ? sources.value
       .map(e => ({
         src: e.sourcesURL,
         label: `${e.contentLang} - ${e.contentQuality}`,
         type: 'video/mp4'
-      }))
+      })) : []
 })
 
 episodesRefresh()
@@ -138,7 +125,10 @@ const videoPlayerOnMounted = () => {
 
 onMounted(() => {
   nextTick(async () => {
+    await packagesRefresh()
     await sourcesRefresh()
+    await episodeRefresh()
+    await episodesRefresh()
   })
 })
 
