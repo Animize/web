@@ -45,4 +45,8 @@
     .chip-selected {
         @apply border-2 bg-gray-800 text-white dark:bg-gray-300 dark:text-gray-800
     }
+
+    .carousel__icon {
+        @apply dark:text-white text-gray-900
+    }
 }
