@@ -17,7 +17,7 @@
                     :src="pkg.cover ? pkg.cover : '/icon/img_notfound.png'"
                     class="object-cover w-48 h-72 rounded md:h-auto md:w-48 shadow m-8 hover:scale-110"/>
           <div class="flex flex-col justify-between p-4 gap-2 leading-normal h-auto">
-            <p class="mb-2 text-5xl font-bold tracking-tight text-gray-800 dark:text-white lg:max-w-[1024px]">
+            <p class="mb-2 animize-text-title lg:max-w-[1024px]">
               {{ pkg.name }}</p>
             <p class="font-normal text-2xs text-gray-800 dark:text-white">Current episode: {{ pkg.currentEpisode }} of
               {{ pkg.maxEpisode }}</p>
