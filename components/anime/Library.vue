@@ -4,7 +4,7 @@
          class="item w-auto h-auto flex-grow grid p-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4  gap-1.5">
       <NuxtLink v-for="item in packages.content" :key="item.id"
                 :to="`/package/${item.id}`"
-                class="group relative z-0 w-5/6 aspect-[7/10] rounded drop-shadow-md hover:drop-shadow-2xl max-w-sm bg-white shadow-md dark:bg-gray-800 transition duration-300 ease">
+                class="group relative z-0 w-5/6 aspect-[7/10] rounded drop-shadow-md hover:drop-shadow-2xl max-w-sm bg-white shadow-md dark:animize-foreground transition duration-300 ease">
         <nuxt-img :src="item.cover ? item.cover : '/icon/img_notfound.png'"
                   alt=""
                   class="rounded object-center transition-all duration-300	group-hover:opacity-50 group-hover:blur w-full h-full absolute z-0"
@@ -25,14 +25,14 @@
         </div>
       </NuxtLink>
     </div>
-    <animize_loading v-if="pending"></animize_loading>
+    <Loading v-if="pending"></Loading>
 
-    <not_found v-if="totalElements === 0 && !pending" class="flex items-center justify-center h-screen"></not_found>
+    <NotFound v-if="totalElements === 0 && !pending" class="flex items-center justify-center h-screen"></NotFound>
 
     <nav v-if="totalElements !== 0 && !pending" class="item flex justify-center">
       <ul class="inline-flex items-center -space-x-px">
         <li>
-          <a class="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          <a class="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:animize-foreground dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
              @click="changePage(page - 2,totalPages)">
             <span class="sr-only">Previous</span>
             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
@@ -46,13 +46,13 @@
         <li v-for="numPage in totalPages" :key="numPage">
           <a
               :aria-current="numPage === page + 1 ? 'page' : 'false'"
-              :class="numPage === page + 1 ? 'z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white' : 'py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'"
+              :class="numPage === page + 1 ? 'z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white' : 'py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:animize-foreground dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'"
               @click="changePage(numPage,totalPages)"
 
           >{{ numPage }}</a>
         </li>
         <li>
-          <a class="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          <a class="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:animize-foreground dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
              @click="changePage(page + 2,totalPages)">
             <span class="sr-only">Next</span>
             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
@@ -70,8 +70,8 @@
 
 </template>
 <script setup>
-import Not_found from "@/components/common/not_found";
-import Animize_loading from "@/components/common/animize_loading"
+import NotFound from "@/components/common/NotFound";
+import Loading from "@/components/common/Loading"
 
 const route = useRoute()
 const page = useState('page', () => 0)

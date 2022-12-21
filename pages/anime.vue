@@ -12,7 +12,7 @@
             <div class="relative">
               <ListboxButton
                   :class="dropdownOpen ? 'rounded-t' : 'rounded'"
-                  class="flex flex-col relative cursor-default h-auto w-full bg-gray-200 dark:bg-gray-800 focus:ring-2 focus:ring-black focus:dark:ring-white"
+                  class="flex flex-col relative cursor-default h-auto w-full bg-gray-200 dark:animize-foreground focus:ring-2 focus:ring-black focus:dark:ring-white"
                   @click="dropdownOpen ? dropdownOpen = false : dropdownOpen = true"
               >
                 <span class="item text-gray-900 dark:text-white font-semibold text-xl p-2">Sort By</span>
@@ -31,7 +31,7 @@
               >
                 <ListboxOptions
                     :class="sortBy.length > 10 ? 'h-96 overflow-y-scroll' : ''"
-                    class="item z-10 absolute w-full h-auto rounded-b bg-gray-200 dark:bg-gray-800">
+                    class="item z-10 absolute w-full h-auto rounded-b bg-gray-200 dark:animize-foreground">
                   <ListboxOption
                       v-for="sort in sortBy"
                       :key="sort"
@@ -88,8 +88,8 @@
 </template>
 
 <script setup>
-import Library from "../components/anime/library";
-import Anime_filter from "../components/anime/anime_filter";
+import Library from "../components/anime/Library";
+import Anime_filter from "../components/anime/AnimeFilter";
 import {Listbox, ListboxButton, ListboxOption, ListboxOptions} from '@headlessui/vue'
 import {CheckIcon} from '@heroicons/vue/solid/esm/index.js'
 

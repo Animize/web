@@ -35,7 +35,7 @@
           </template>
         </Carousel>
       </div>
-      <div class="item w-full items-center flex flex-col md:flex-row relative rounded shadow-lg dark:bg-gray-800
+      <div class="item w-full items-center flex flex-col md:flex-row relative rounded shadow-lg dark:animize-foreground
           dark:text-white text-gray-800 text-justify m-2 gap-2 p-2">
         <nuxt-img :alt="`animize-${pkgID}-cover`"
                   :src="packages ? packages.cover : '/icon/img_notfound.png'"
@@ -49,7 +49,7 @@
           </div>
         </div>
       </div>
-      <div class="item w-full items-center flex-row md:flex-row rounded shadow-lg dark:bg-gray-800
+      <div class="item w-full items-center flex-row md:flex-row rounded shadow-lg dark:animize-foreground
           dark:text-white text-gray-800 text-justify m-2 gap-2 p-2">
         <div class="item flex flex-col text-2xl font-bold flex-wrap w-full">
           Sources
@@ -64,15 +64,15 @@
       </div>
 
     </div>
-    <not_found v-if="!episode && !episodePending" class="flex items-center justify-center h-screen"></not_found>
-    <animize_loading v-if="episodePending" class="flex items-center justify-center h-screen"/>
+    <NotFound v-if="!episode && !episodePending" class="flex items-center justify-center h-screen"></NotFound>
+    <Loading v-if="episodePending" class="flex items-center justify-center h-screen"/>
   </div>
 
 </template>
 
 <script setup>
-import Not_found from "../../../components/common/not_found";
-import Animize_loading from "../../../components/common/animize_loading";
+import NotFound from "../../../components/common/NotFound";
+import Loading from "../../../components/common/Loading";
 import {VideoPlayer} from "@videojs-player/vue";
 import 'video.js/dist/video-js.css'
 import {Carousel, Navigation, Slide} from 'vue3-carousel'
