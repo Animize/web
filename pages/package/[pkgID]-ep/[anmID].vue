@@ -64,15 +64,15 @@
       </div>
 
     </div>
-    <not_found v-if="!episode && !episodePending" class="flex items-center justify-center h-screen"></not_found>
-    <animize_loading v-if="episodePending" class="flex items-center justify-center h-screen"/>
+    <NotFound v-if="!episode && !episodePending" class="flex items-center justify-center h-screen"></NotFound>
+    <Loading v-if="episodePending" class="flex items-center justify-center h-screen"/>
   </div>
 
 </template>
 
 <script setup>
-import Not_found from "../../../components/common/not_found";
-import Animize_loading from "../../../components/common/animize_loading";
+import NotFound from "../../../components/common/NotFound";
+import Loading from "../../../components/common/Loading";
 import {VideoPlayer} from "@videojs-player/vue";
 import 'video.js/dist/video-js.css'
 import {Carousel, Navigation, Slide} from 'vue3-carousel'

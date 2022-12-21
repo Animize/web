@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: "animize_loading"
+  name: "Loading"
 }
 </script>
 

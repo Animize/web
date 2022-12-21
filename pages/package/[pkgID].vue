@@ -6,7 +6,7 @@
       </Title>
       <Meta :content="pkg.synopsis ?`Animize - ${pkg.synopsis}`  : 'Animize'" name="description"/>
     </Head>
-    <animize_loading v-if="pending"></animize_loading>
+    <Loading v-if="pending"></Loading>
     <div v-if="!pending" class="flex flex-col">
       <div id="anime-header">
         <nuxt-img :alt="`animize-${pkgId}-cover-blur`" :src="pkg.cover ? pkg.cover : '/icon/img_notfound.png'"
@@ -81,7 +81,7 @@
 </template>
 
 <script setup>
-import Animize_loading from "@/components/common/animize_loading"
+import Loading from "@/components/common/Loading"
 
 
 const route = useRoute()

@@ -25,9 +25,9 @@
         </div>
       </NuxtLink>
     </div>
-    <animize_loading v-if="pending"></animize_loading>
+    <Loading v-if="pending"></Loading>
 
-    <not_found v-if="totalElements === 0 && !pending" class="flex items-center justify-center h-screen"></not_found>
+    <NotFound v-if="totalElements === 0 && !pending" class="flex items-center justify-center h-screen"></NotFound>
 
     <nav v-if="totalElements !== 0 && !pending" class="item flex justify-center">
       <ul class="inline-flex items-center -space-x-px">
@@ -70,8 +70,8 @@
 
 </template>
 <script setup>
-import Not_found from "@/components/common/not_found";
-import Animize_loading from "@/components/common/animize_loading"
+import NotFound from "@/components/common/NotFound";
+import Loading from "@/components/common/Loading"
 
 const route = useRoute()
 const page = useState('page', () => 0)

@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: "not_found"
+  name: "NotFound"
 }
 </script>
 

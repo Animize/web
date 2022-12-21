@@ -3,7 +3,7 @@
     <NuxtLoadingBar :duration="1000" />
     <navbar class="item w-auto h-auto flex-auto"></navbar>
     <NuxtPage class="item w-auto min-h-screen h-auto flex-grow"></NuxtPage>
-    <animize_footer class="item w-auto h-auto flex-auto"></animize_footer>
+    <AnimizeFooter class="item w-auto h-auto flex-auto"></AnimizeFooter>
   </div>
 
 </template>
@@ -12,8 +12,8 @@
 import {loadTheme} from "./composables/dark-setting";
 loadTheme()
 
-import Navbar from "./components/common/navbar";
-import Animize_footer from "./components/common/animize_footer";
+import Navbar from "./components/common/Navbar";
+import AnimizeFooter from "./components/common/Footer";
 
 useHead({
   title: 'Animize'
