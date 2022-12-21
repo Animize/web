@@ -35,7 +35,7 @@
           </template>
         </Carousel>
       </div>
-      <div class="item w-full items-center flex flex-col md:flex-row relative rounded shadow-lg dark:bg-gray-800
+      <div class="item w-full items-center flex flex-col md:flex-row relative rounded shadow-lg dark:animize-foreground
           dark:text-white text-gray-800 text-justify m-2 gap-2 p-2">
         <nuxt-img :alt="`animize-${pkgID}-cover`"
                   :src="packages ? packages.cover : '/icon/img_notfound.png'"
@@ -49,7 +49,7 @@
           </div>
         </div>
       </div>
-      <div class="item w-full items-center flex-row md:flex-row rounded shadow-lg dark:bg-gray-800
+      <div class="item w-full items-center flex-row md:flex-row rounded shadow-lg dark:animize-foreground
           dark:text-white text-gray-800 text-justify m-2 gap-2 p-2">
         <div class="item flex flex-col text-2xl font-bold flex-wrap w-full">
           Sources

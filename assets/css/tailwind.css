@@ -39,14 +39,31 @@
     }
 
     .chip {
-        @apply px-4 py-2 border-2 rounded-full font-semibold text-sm cursor-pointer active:bg-gray-300 active:text-gray-800 dark:active:bg-gray-800 dark:active:text-white hover:bg-gray-900 hover:text-white dark:hover:bg-gray-300 dark:hover:text-gray-800
+        @apply px-4 py-2 border-2 rounded-full font-semibold text-sm cursor-pointer active:bg-gray-300 active:text-gray-800 dark:active:animize-foreground dark:active:text-white hover:bg-gray-900 hover:text-white dark:hover:bg-gray-300 dark:hover:text-gray-800
     }
 
     .chip-selected {
-        @apply border-2 bg-gray-800 text-white dark:bg-gray-300 dark:text-gray-800
+        @apply border-2 animize-foreground text-white dark:bg-gray-300 dark:text-gray-800
     }
 
     .carousel__icon {
         @apply dark:text-white text-gray-900
     }
+
+    .animize-background {
+        @apply dark:bg-black bg-white
+    }
+
+    .animize-foreground {
+        @apply bg-neutral-900
+    }
+
+    .item-selected {
+        @apply text-white border-b-4 hover:bg-gray-600
+    }
+
+    .item-not-selected {
+        @apply text-gray-300 hover:bg-gray-600
+    }
+
 }

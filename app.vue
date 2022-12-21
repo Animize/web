@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col dark:bg-gray-900">
+  <div class="flex flex-col animize-background">
     <NuxtLoadingBar :duration="1000" />
     <navbar class="item w-auto h-auto flex-auto"></navbar>
     <NuxtPage class="item w-auto min-h-screen h-auto flex-grow"></NuxtPage>

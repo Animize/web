@@ -1,5 +1,5 @@
 <template>
-  <Disclosure v-slot="{ open }" as="nav" class="bg-gray-800">
+  <Disclosure v-slot="{ open }" as="nav" class="animize-foreground">
     <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
       <div class="relative flex items-center justify-between h-16">
         <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -23,7 +23,7 @@
             <div class="flex space-x-4">
               <NuxtLink v-for="item in navigation" :key="item.name"
                         :aria-current="item.href === route.path ? 'page' : undefined"
-                        :class="[item.href === route.path ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'px-3 py-2 rounded-md text-sm font-medium']"
+                        :class="[item.href === route.path ? 'item-selected' : 'item-not-selected', 'px-3 py-2 text-sm font-medium']"
                         :to="item.href">{{ item.name }}
               </NuxtLink>
             </div>
@@ -49,7 +49,7 @@
           </div>
 
           <button
-              class="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+              class="animize-foreground p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
               type="button">
             <span class="sr-only">View notifications</span>
             <BellIcon aria-hidden="true" class="h-6 w-6"/>
@@ -59,7 +59,7 @@
           <Menu as="div" class="ml-3 relative">
             <div>
               <MenuButton
-                  class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                  class="animize-foreground flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                 <span class="sr-only">Open user menu</span>
                 <img alt=""
                      class="h-8 w-8 rounded-full"

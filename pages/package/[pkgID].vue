@@ -47,7 +47,7 @@
               <NuxtLink
                   v-for="item in pkg.genreList"
                   :key="item.id" :to="`/anime?page=1&genre=${item.id}`"
-                  class="px-4 py-2 rounded-full font-semibold text-sm cursor-pointer active:bg-gray-300 active:text-gray-800 dark:active:bg-gray-800 dark:active:text-white hover:bg-gray-900 hover:text-white dark:hover:bg-gray-300 dark:hover:text-gray-800 transition duration-300 ease text-gray-500 bg-gray-200 dark:bg-gray-800 dark:text-white mr-1"
+                  class="px-4 py-2 rounded-full font-semibold text-sm cursor-pointer active:bg-gray-300 active:text-gray-800 dark:active:animize-foreground dark:active:text-white hover:bg-gray-900 hover:text-white dark:hover:bg-gray-300 dark:hover:text-gray-800 transition duration-300 ease text-gray-500 bg-gray-200 dark:animize-foreground dark:text-white mr-1"
               >{{ item.name }}
               </NuxtLink>
             </div>
@@ -65,7 +65,7 @@
               v-for="episode in episodes"
               :key="episode.id"
               :to="`/package/${pkgId}-ep/${episode.id}`"
-              class="flex flex-col items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl h-auto w-72 hover:scale-110 dark:hover:bg-gray-700 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 transition duration-300 ease">
+              class="flex flex-col items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl h-auto w-72 hover:scale-110 dark:hover:bg-gray-700 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:animize-foreground dark:border-gray-700 transition duration-300 ease">
             <span class="object-cover w-16 h-32 rounded-l-lg dark:text-white text-6xl dark:bg-gray-600">
               {{ episode.episode }}
             </span>

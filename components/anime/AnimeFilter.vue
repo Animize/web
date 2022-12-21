@@ -14,7 +14,7 @@
                            leave-from="opacity-100 translate-y-0 sm:scale-100"
                            leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
             <DialogPanel
-                class="relative shadow-lg dark:bg-gray-800 bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all w-5/6 h-auto">
+                class="relative shadow-lg dark:animize-foreground bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all w-5/6 h-auto">
               <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4 dark:text-white text-gray-800">
                 <DialogTitle as="h1" class="text-3xl leading-6 font-bold ">Filter
                 </DialogTitle>

@@ -1,5 +1,5 @@
 <template>
-  <footer class="p-4 bg-white shadow md:px-6 md:py-8 dark:bg-gray-900">
+  <footer class="p-4 bg-white shadow md:px-6 md:py-8 animize-background">
     <div class="sm:flex sm:items-center sm:justify-between">
       <a class="flex items-center mb-4 sm:mb-0" href="/">
         <img alt="Animize Logo" class="mr-3 h-8" src="~/assets/icon/animize.svg"/>
