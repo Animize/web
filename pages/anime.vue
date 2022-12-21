@@ -88,8 +88,8 @@
 </template>
 
 <script setup>
-import Library from "../components/anime/library";
-import Anime_filter from "../components/anime/anime_filter";
+import Library from "../components/anime/Library";
+import Anime_filter from "../components/anime/AnimeFilter";
 import {Listbox, ListboxButton, ListboxOption, ListboxOptions} from '@headlessui/vue'
 import {CheckIcon} from '@heroicons/vue/solid/esm/index.js'
 
