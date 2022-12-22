@@ -1,7 +1,9 @@
 <template>
   <div class="flex flex-col">
     <div class="item w-full items-center flex flex-col md:flex-row text-left">
-      <Carousel :settings="carouselSetting" :breakpoints="carouselBreakpoints" class="w-full h-auto">
+      <Carousel
+          :settings="carouselSetting" :breakpoints="carouselBreakpoints" :autoplay="5000" :wrapAround="true"
+          :pauseAutoplayOnHover="true" :transition="500" class="w-full h-auto">
         <Slide v-for="pkg in bannerPackages.content" :key="pkg.id">
           <div class="flex flex-col md:flex-row relative w-full aspect-[10/5] m-2">
             <nuxt-img :alt="`animize-${pkg.id}-cover-blur`" :src="pkg.cover ? pkg.cover : '/icon/img_notfound.png'"
@@ -18,6 +20,9 @@
           </div>
 
         </Slide>
+        <template #addons>
+          <Pagination />
+        </template>
       </Carousel>
     </div>
     <div class="item relative flex items-center justify-between m-2">
@@ -41,7 +46,7 @@ const carouselBreakpoints = {
     itemsToShow: 2.5
   }
 }
-import {Carousel, Navigation, Slide} from 'vue3-carousel'
+import {Carousel, Pagination, Slide} from 'vue3-carousel'
 import 'vue3-carousel/dist/carousel.css'
 
 

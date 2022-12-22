@@ -81,15 +81,15 @@
         </div>
 
       </div>
-      <anime_filter></anime_filter>
-      <library class="w-auto h-auto"></library>
+      <AnimeFilter></AnimeFilter>
+      <Library class="w-auto h-auto"></Library>
     </div>
   </div>
 </template>
 
 <script setup>
-import Library from "../components/anime/Library";
-import Anime_filter from "../components/anime/AnimeFilter";
+import Library from "@/components/anime/Library";
+import AnimeFilter from "@/components/anime/AnimeFilter";
 import {Listbox, ListboxButton, ListboxOption, ListboxOptions} from '@headlessui/vue'
 import {CheckIcon} from '@heroicons/vue/solid/esm/index.js'
 
