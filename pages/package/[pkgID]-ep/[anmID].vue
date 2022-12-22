@@ -71,8 +71,8 @@
 </template>
 
 <script setup>
-import NotFound from "../../../components/common/NotFound";
-import Loading from "../../../components/common/Loading";
+import NotFound from "@/components/common/NotFound";
+import Loading from "@/components/common/Loading";
 import {VideoPlayer} from "@videojs-player/vue";
 import 'video.js/dist/video-js.css'
 import {Carousel, Navigation, Slide} from 'vue3-carousel'

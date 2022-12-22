@@ -1,21 +1,30 @@
 <template>
   <div class="flex flex-col">
     <div class="item w-full items-center flex flex-col md:flex-row text-left">
-      <Carousel :settings="carouselSetting" :breakpoints="carouselBreakpoints" class="w-full h-auto">
+      <Carousel
+          :settings="carouselSetting" :breakpoints="carouselBreakpoints" :autoplay="0" :wrapAround="true"
+          :pauseAutoplayOnHover="true" :transition="500" class="w-full h-auto">
         <Slide v-for="pkg in bannerPackages.content" :key="pkg.id">
-          <div class="flex flex-col md:flex-row relative w-full aspect-[10/5] m-2">
+          <NuxtLink
+              class="flex flex-col md:flex-row relative w-full aspect-[10/5] m-2 z-0 group transition duration-300 ease"
+              :to="`/package/${pkg.id}`"
+          >
             <nuxt-img :alt="`animize-${pkg.id}-cover-blur`" :src="pkg.cover ? pkg.cover : '/icon/img_notfound.png'"
-                      class="object-cover opacity-30 w-full aspect-[10/5] absolute rounded-lg"/>
-            <div
-                class="flex flex-col md:flex-row relative p-8">
-              <div class="flex flex-col leading-normal h-auto">
-                <p class="mb-2 animize-text-subtitle">
-                  {{ pkg.name }}</p>
-                <p class="font-normal text-2xs text-gray-800 dark:text-white">Current episode: {{ pkg.currentEpisode }} of
-                  {{ pkg.maxEpisode }}</p>
-              </div>
+                      class="object-cover opacity-30 w-full h-full absolute rounded-lg z-0 transition-all duration-300	group-hover:opacity-50 group-hover:blur"/>
+            <div class="h-fit w-full pr-2 pl-2 bottom-0 visible group-hover:invisible">
+              <span class="item animize-text-subtitle line-clamp-3">
+                {{ pkg.name }}</span>
+              <span class="item font-normal text-2xs text-gray-800 dark:text-white">Current episode: {{ pkg.currentEpisode }} of
+                {{ pkg.maxEpisode }}</span>
             </div>
-          </div>
+            <div
+                class="h-full w-full p-6 z-20 invisible group-hover:visible bg-gradient-to-t from-gray-900 rounded absolute">
+              <h5 class="mb-4 text-sm font-semibold  text-white line-clamp-6 sm:line-clamp-7 md:line-clamp-8 lg:line-clamp-12">
+                {{
+                  pkg.synopsis
+                }}</h5>
+            </div>
+          </NuxtLink>
 
         </Slide>
       </Carousel>
@@ -41,7 +50,7 @@ const carouselBreakpoints = {
     itemsToShow: 2.5
   }
 }
-import {Carousel, Navigation, Slide} from 'vue3-carousel'
+import {Carousel, Pagination, Slide} from 'vue3-carousel'
 import 'vue3-carousel/dist/carousel.css'
 
 
