@@ -8,7 +8,7 @@
     "start": "nuxt start"
   },
   "devDependencies": {
-    "@nuxt/image-edge": "^1.0.0-27657146.da85542",
+    "@nuxt/image-edge": "^1.0.0-27840416.dc1ed65",
     "nuxt": "^3.0.0-rc.12",
     "nuxt-headlessui": "^1.0.4"
   },
