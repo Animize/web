@@ -5331,10 +5331,10 @@ vue-router@^4.1.6:
   dependencies:
     "@vue/devtools-api" "^6.4.5"
 
-vue3-carousel@^0.2.4:
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/vue3-carousel/-/vue3-carousel-0.2.8.tgz#6f187695fe176b5c3d2fee396a45e7392f414782"
-  integrity sha512-G3wty+O4iXPXeZksXvVdNR7EsHXLSIh3IYqz5N5GYRUA7PQ6x9nAtfPqZIfLAyadH4AdeLgMVfMXJhRZlsvyVg==
+vue3-carousel@^0.2.9:
+  version "0.2.9"
+  resolved "https://registry.yarnpkg.com/vue3-carousel/-/vue3-carousel-0.2.9.tgz#cecb02c34f987f959dae9c056b1377326236ddcf"
+  integrity sha512-JSU3rjWNfMq6uLjO7mD0/qQL7EsD0qyGUhSw/1F9ir7ObhdcJdRxbiAGIx+iyxR3v0Zoec5JrQdxSmn4ItKVrw==
 
 vue3-lazyload@^0.3.6:
   version "0.3.6"
