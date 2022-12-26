@@ -9,13 +9,20 @@ jobs:
   build:
     environment: live
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        architecture:
+          - x64
+          - arm64
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+          architecture: ${{ matrix.architecture }}
           cache: 'yarn'
       - run: yarn install
+      - run: yarn build
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
