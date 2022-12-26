@@ -12,6 +12,9 @@ ENV NUXT_HOST=0.0.0.0
 ENV NUXT_PORT=3000
 ENV API_BASE_URL=$API_BASE_URL
 
+RUN yarn install
+RUN yarn build
+
 EXPOSE 3000
 
 ENTRYPOINT [ "yarn", "start" ]
