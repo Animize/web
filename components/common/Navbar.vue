@@ -110,7 +110,7 @@
 
 <script setup>
 import {Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
-import {BellIcon, ListBulletIcon, XMarkIcon} from '@heroicons/vue/24/solid'
+import {BellIcon, ListBulletIcon, XMarkIcon} from '@heroicons/vue/24/solid/esm/index.js'
 
 const route = useRoute()
 
