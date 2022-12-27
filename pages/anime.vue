@@ -91,7 +91,7 @@
 import Library from "@/components/anime/Library";
 import AnimeFilter from "@/components/anime/AnimeFilter";
 import {Listbox, ListboxButton, ListboxOption, ListboxOptions} from '@headlessui/vue'
-import {CheckIcon} from '@heroicons/vue/solid/esm/index.js'
+import {CheckIcon} from '@heroicons/vue/24/solid'
 
 
 const route = useRoute();
