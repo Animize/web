@@ -1,4 +1,4 @@
-FROM node:16.16.0-alpine
+FROM node:16.19.0-alpine
 ARG API_BASE_URL
 
 RUN apk update && apk upgrade

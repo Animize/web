@@ -7,8 +7,8 @@
           <DisclosureButton
               class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
             <span class="sr-only">Open main menu</span>
-            <MenuIcon v-if="!open" aria-hidden="true" class="block h-6 w-6"/>
-            <XIcon v-else aria-hidden="true" class="block h-6 w-6"/>
+            <ListBulletIcon v-if="!open" aria-hidden="true" class="block h-6 w-6"/>
+            <XMarkIcon v-else aria-hidden="true" class="block h-6 w-6"/>
           </DisclosureButton>
         </div>
         <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
@@ -56,7 +56,7 @@
           </button>
 
           <!-- Profile dropdown -->
-          <Menu as="div" class="ml-3 relative">
+          <Menu as="div" class="ml-3 relative z-10">
             <div>
               <MenuButton
                   class="animize-foreground flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
@@ -110,7 +110,7 @@
 
 <script setup>
 import {Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
-import {BellIcon, MenuIcon, XIcon} from '@heroicons/vue/outline/esm/index.js'
+import {BellIcon, ListBulletIcon, XMarkIcon} from '@heroicons/vue/24/solid'
 
 const route = useRoute()
 
