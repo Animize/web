@@ -82,31 +82,30 @@ import 'vue3-carousel/dist/carousel.css'
 
 const route = useRoute()
 const config = useRuntimeConfig()
-const anmID = computed(() => route.params.anmID)
-const pkgID = computed(() => route.params.pkgID)
+const {anmID, pkgID} = route.params
 
 const hideEpisodeSelector = useState('hideEpisodeSelector', () => true)
 const animizePlayer = useState('animizePlayer', () => null)
 
 const {data: episode, episodePending, refresh: episodeRefresh} = await useLazyAsyncData(
     'episode',
-    () => $fetch(`${config.API_BASE_URL}/episodes/by-id/${anmID.value}`)
+    () => $fetch(`${config.API_BASE_URL}/episodes/by-id/${anmID}`, {key: anmID})
 )
 
 
 const {data: packages, packagesPending, refresh: packagesRefresh} = await useLazyAsyncData(
     'packages',
-    () => $fetch(`${config.API_BASE_URL}/packages/by-id/${pkgID.value}`)
+    () => $fetch(`${config.API_BASE_URL}/packages/by-id/${pkgID}`, {key: pkgID})
 )
 
 const {data: episodes, episodesPending, refresh: episodesRefresh} = await useLazyAsyncData(
     'episodes',
-    () => $fetch(`${config.API_BASE_URL}/episodes/list?packageID=${pkgID.value}`)
+    () => $fetch(`${config.API_BASE_URL}/episodes/list?packageID=${pkgID}`,{key: pkgID})
 )
 
 const {data: sources, sourcesPending, refresh: sourcesRefresh} = await useLazyAsyncData(
     'sources',
-    () => $fetch(`${config.API_BASE_URL}/episodes/sources/${anmID.value}`)
+    () => $fetch(`${config.API_BASE_URL}/episodes/sources/${anmID}`,{key: anmID})
 )
 
 const videoPlayerSource = computed(() => {
@@ -122,7 +121,7 @@ episodesRefresh()
 
 const videoPlayerOnMounted = () => {
 }
-
+/*
 onMounted(() => {
   nextTick(async () => {
     await packagesRefresh()
@@ -130,6 +129,6 @@ onMounted(() => {
     await episodeRefresh()
     await episodesRefresh()
   })
-})
+}) */
 
 </script>
