@@ -121,14 +121,5 @@ episodesRefresh()
 
 const videoPlayerOnMounted = () => {
 }
-/*
-onMounted(() => {
-  nextTick(async () => {
-    await packagesRefresh()
-    await sourcesRefresh()
-    await episodeRefresh()
-    await episodesRefresh()
-  })
-}) */
 
 </script>
