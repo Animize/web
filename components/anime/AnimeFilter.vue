@@ -56,7 +56,7 @@
                 </div>
                 <div
                     class="item w-auto h-auto flex flex-wrap gap-1.5 p-1.5">
-                  <span v-for="item in genres" :key="item.id"
+                  <span v-for="item in genres ? genres.data : []" :key="item.id"
                         :class="currentGenreFilter.indexOf(item) !== -1 ? 'chip-selected': ''"
                         class="chip transition-colors ease-in duration-200"
                         @click="selectedGenreAction(item)"
@@ -101,7 +101,7 @@ const {data: genres, pending, refresh} = await useLazyAsyncData(
     'genres',
     () => $fetch(`${config.API_BASE_URL}/genre/list`)
         .then((result) => {
-          result.unshift({
+          result.data.unshift({
             id: null,
             name: 'Any'
           })
@@ -151,7 +151,7 @@ onMounted(() => {
     await refresh()
     if (genreQuery.value) {
       let selected = genreQuery.value.split(',').filter(e => e)
-      genres.value.forEach(e => {
+      genres.value.data.forEach(e => {
         if (selected.indexOf(e.id) !== -1) {
           selectedGenreAction(e)
         }
@@ -173,7 +173,3 @@ defineExpose({
   nameSearch
 })
 </script>
-
-<style scoped>
-
-</style>

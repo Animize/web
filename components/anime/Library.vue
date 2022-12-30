@@ -2,7 +2,7 @@
   <div id="library" class="flex-inline flex-wrap">
     <div v-if="totalElements !== 0 && !pending" :class="pending ? 'animate-pulse' : ''"
          class="item w-auto h-auto flex-grow grid p-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4  gap-1.5">
-      <NuxtLink v-for="item in packages.content" :key="item.id"
+      <NuxtLink v-for="item in packages ? packages.content : []" :key="item.id"
                 :to="`/package/${item.id}`"
                 class="group relative z-0 w-5/6 aspect-[7/10] rounded drop-shadow-md hover:drop-shadow-2xl max-w-sm bg-white shadow-md dark:animize-foreground transition duration-300 ease">
         <nuxt-img :src="item.cover ? item.cover : '/icon/img_notfound.png'"
@@ -105,14 +105,14 @@ const {data: libraryPackages, pending, refresh} = await useLazyAsyncData(
     () => $fetch(`${config.API_BASE_URL}/packages/page${queryStringRequest.value}`)
 )
 
-const packages = useState('packages', () => libraryPackages)
+const packages = useState('packages', () => libraryPackages ? libraryPackages.data : [])
 const totalPages = useState('totalPages', () => 0)
 const totalElements = useState('totalElements', () => 0)
 
 watch(libraryPackages, (nPkg) => {
-  totalPages.value = nPkg.totalPages
-  totalElements.value = nPkg.totalElements
-  packages.value = nPkg
+  totalPages.value = nPkg.data.totalPages
+  totalElements.value = nPkg.data.totalElements
+  packages.value = nPkg.data
 })
 
 
@@ -151,7 +151,3 @@ defineExpose({
 })
 
 </script>
-
-<style scoped>
-
-</style>

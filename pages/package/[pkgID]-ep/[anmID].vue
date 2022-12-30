@@ -2,10 +2,10 @@
   <div class="p-4">
     <Head v-if="!episodePending">
       <Title>
-        {{packages ? packages.name : 'Animize'}} | Episode {{episode.episode ? episode.episode : '0'}}
+        {{packages ? packages.data.name : 'Animize'}} | Episode {{episode.data.episode ? episode.data.episode : '0'}}
       </Title>
       <Meta
-          :content="episode ?`Episode ${episode.episode}, ${episode.summary ? episode.summary : 'Nothing to be told'}`  : 'Animize'"
+          :content="episode ?`Episode ${episode.data.episode}, ${episode.data.summary ? episode.data.summary : 'Nothing to be told'}`  : 'Animize'"
           name="description"/>
     </Head>
     <div v-if="episode && !episodePending" class="flex-inline flex-col">
@@ -20,7 +20,7 @@
       </div>
       <div class="item w-full items-center flex flex-col md:flex-row text-left m-2 gap-2">
         <Carousel :items-to-show="1" class="w-full">
-          <Slide v-for="episode in episodes" :key="episode.id">
+          <Slide v-for="episode in episodes.data" :key="episode.id">
             <NuxtLink
                 :to="`/package/${pkgID}-ep/${episode.id}`"
                 class="item flex flex-col items-start dark:text-white p-8 m-2">
@@ -38,14 +38,14 @@
       <div class="item w-full items-center flex flex-col md:flex-row relative rounded shadow-lg dark:animize-foreground
           dark:text-white text-gray-800 text-justify m-2 gap-2 p-2">
         <nuxt-img :alt="`animize-${pkgID}-cover`"
-                  :src="packages ? packages.cover : '/icon/img_notfound.png'"
+                  :src="packages ? packages.data.cover : '/icon/img_notfound.png'"
                   class="object-cover w-48 aspect-[7/10] rounded shadow"/>
         <div class="flex flex-col justify-between gap-2 leading-normal h-auto">
           <div class="item text-3xl font-bold flex-wrap w-full">
-            {{ packages.name }}
+            {{ packages.data.name }}
           </div>
           <div class="item text-2xs-sm flex-wrap w-full">
-            {{ packages.synopsis }}
+            {{ packages.data.synopsis }}
           </div>
         </div>
       </div>
@@ -110,7 +110,7 @@ const {data: sources, sourcesPending, refresh: sourcesRefresh} = await useLazyAs
 )
 
 const videoPlayerSource = computed(() => {
-  return sources.value ? sources.value
+  return sources.value.data ? sources.value.data
       .map(e => ({
         src: e.sourcesURL,
         label: `${e.contentLang} - ${e.contentQuality}`,
@@ -133,7 +133,3 @@ onMounted(() => {
 })
 
 </script>
-
-<style scoped>
-
-</style>
