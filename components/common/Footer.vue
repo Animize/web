@@ -30,7 +30,6 @@ if (process.client) {
 }
 
 watch(isDark, (nextIsDark) => {
-  console.log(`Dark ${isDark.value} Dark2 ${nextIsDark}`)
   if (process.client) {
     if (nextIsDark) {
       localStorage.setItem('theme', 'dark')
@@ -44,7 +43,3 @@ watch(isDark, (nextIsDark) => {
 })
 
 </script>
-
-<style scoped>
-
-</style>

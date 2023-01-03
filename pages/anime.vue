@@ -225,6 +225,3 @@ const openAnimeFilter = async () => {
 }
 
 </script>
-
-<style scoped>
-</style>
