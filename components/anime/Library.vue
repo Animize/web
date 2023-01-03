@@ -100,7 +100,7 @@ const queryStringRequest = computed(() => {
 })
 
 const config = useRuntimeConfig()
-const {data: libraryPackages, pending, refresh} = await useLazyAsyncData(
+const {data: libraryPackages, pending: pending, refresh} = await useLazyAsyncData(
     'libraryPackages',
     () => $fetch(`${config.API_BASE_URL}/packages/page${queryStringRequest.value}`)
 )

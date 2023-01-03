@@ -1,25 +1,27 @@
 <template>
-  <div class="p-4">
-    <Head v-if="!episodePending">
-      <Title>
-        {{packages ? packages.data.name : 'Animize'}} | Episode {{episode.data.episode ? episode.data.episode : '0'}}
-      </Title>
-      <Meta
-          :content="episode ?`Episode ${episode.data.episode}, ${episode.data.summary ? episode.data.summary : 'Nothing to be told'}`  : 'Animize'"
-          name="description"/>
-    </Head>
-    <div v-if="episode && !episodePending" class="flex-inline flex-col">
+  <div v-if="!episodePending" class="p-4">
+        <Head v-if="!packagesPending && !episodesPending">
+          <Title>
+            {{packages ? packages.data.name : 'Animize'}} | Episode {{episode.data.episode ? episode.data.episode : '0'}}
+          </Title>
+          <Meta
+              :content="episode ?`Episode ${episode.data.episode}, ${episode.data.summary ? episode.data.summary : 'Nothing to be told'}`  : 'Animize'"
+              name="description"/>
+        </Head>
+    <div v-if="!episodePending" class="flex-inline flex-col">
       <div class="item w-full items-center flex flex-col md:flex-row text-justify m-2 gap-2">
-        <video-player ref="animizePlayer"
+        <video-player v-show="videoPlayerSource"
+                      ref="animizePlayer"
                       :controls="true"
                       :sources="videoPlayerSource"
                       class="w-full aspect-[10/7]"
                       @mounted="videoPlayerOnMounted"
         />
+        <LazyCommonShimmerVideo v-show="!videoPlayerSource"/>
 
       </div>
       <div class="item w-full items-center flex flex-col md:flex-row text-left m-2 gap-2">
-        <Carousel :items-to-show="1" class="w-full">
+        <Carousel v-if="!episodesPending" :items-to-show="1" class="w-full">
           <Slide v-for="episode in episodes.data" :key="episode.id">
             <NuxtLink
                 :to="`/package/${pkgID}-ep/${episode.id}`"
@@ -34,12 +36,13 @@
             <Navigation/>
           </template>
         </Carousel>
+        <LazyCommonShimmerCarousel v-if="episodesPending" class="w-full"/>
       </div>
-      <div class="item w-full items-center flex flex-col md:flex-row relative rounded shadow-lg dark:animize-foreground
+      <div v-if="!packagesPending" class="item w-full items-center flex flex-col md:flex-row relative rounded shadow-lg dark:animize-foreground
           dark:text-white text-gray-800 text-justify m-2 gap-2 p-2">
         <nuxt-img :alt="`animize-${pkgID}-cover`"
                   :src="packages ? packages.data.cover : '/icon/img_notfound.png'"
-                  class="object-cover w-48 aspect-[7/10] rounded shadow"/>
+                  class="object-cover w-48 aspect-[7/10] min:h-72 rounded shadow"/>
         <div class="flex flex-col justify-between gap-2 leading-normal h-auto">
           <div class="item text-3xl font-bold flex-wrap w-full">
             {{ packages.data.name }}
@@ -49,7 +52,9 @@
           </div>
         </div>
       </div>
-      <div class="item w-full items-center flex-row md:flex-row rounded shadow-lg dark:animize-foreground
+      <LazyCommonShimmerCard v-if="packagesPending" class="item w-full items-center flex flex-col md:flex-row relative rounded shadow-lg dark:animize-foreground
+          dark:text-white text-gray-800 text-justify m-2 gap-2 p-2"/>
+      <div v-if="!sourcesPending" class="item w-full items-center flex-row md:flex-row rounded shadow-lg dark:animize-foreground
           dark:text-white text-gray-800 text-justify m-2 gap-2 p-2">
         <div class="item flex flex-col text-2xl font-bold flex-wrap w-full">
           Sources
@@ -64,15 +69,13 @@
       </div>
 
     </div>
-    <NotFound v-if="!episode && !episodePending" class="flex items-center justify-center h-screen"></NotFound>
-    <Loading v-if="episodePending" class="flex items-center justify-center h-screen"/>
+    <LazyCommonNotFound v-if="!episode && !episodePending" class="flex items-center justify-center h-screen"/>
+    <LazyCommonLoading v-if="episodePending" class="flex items-center justify-center h-screen"/>
   </div>
 
 </template>
 
 <script setup>
-import NotFound from "@/components/common/NotFound";
-import Loading from "@/components/common/Loading";
 import {VideoPlayer} from "@videojs-player/vue";
 import 'video.js/dist/video-js.css'
 import {Carousel, Navigation, Slide} from 'vue3-carousel'
@@ -87,37 +90,39 @@ const {anmID, pkgID} = route.params
 const hideEpisodeSelector = useState('hideEpisodeSelector', () => true)
 const animizePlayer = useState('animizePlayer', () => null)
 
-const {data: episode, episodePending, refresh: episodeRefresh} = await useLazyAsyncData(
+const {data: episode, pending: episodePending, refresh: episodeRefresh} = await useLazyAsyncData(
     'episode',
     () => $fetch(`${config.API_BASE_URL}/episodes/by-id/${anmID}`, {key: anmID})
 )
 
 
-const {data: packages, packagesPending, refresh: packagesRefresh} = await useLazyAsyncData(
+const {data: packages, pending: packagesPending, refresh: packagesRefresh} = await useLazyAsyncData(
     'packages',
     () => $fetch(`${config.API_BASE_URL}/packages/by-id/${pkgID}`, {key: pkgID})
 )
 
-const {data: episodes, episodesPending, refresh: episodesRefresh} = await useLazyAsyncData(
+const {data: episodes, pending: episodesPending, refresh: episodesRefresh} = await useLazyAsyncData(
     'episodes',
-    () => $fetch(`${config.API_BASE_URL}/episodes/list?packageID=${pkgID}`,{key: pkgID})
+    () => $fetch(`${config.API_BASE_URL}/episodes/list`, {key: pkgID, params: {packageID: pkgID}})
 )
-
-const {data: sources, sourcesPending, refresh: sourcesRefresh} = await useLazyAsyncData(
+const videoPlayerSource = useState('videoPlayerSource', () => [])
+const {data: sources, pending: sourcesPending, refresh: sourcesRefresh} = await useLazyAsyncData(
     'sources',
-    () => $fetch(`${config.API_BASE_URL}/episodes/sources/${anmID}`,{key: anmID})
+    () => $fetch(`${config.API_BASE_URL}/episodes/sources/${anmID}`, {key: anmID})
+        .then(sources => {
+          videoPlayerSource.value = []
+          sources.data.forEach(source => {
+            videoPlayerSource.value.push({
+              src: source.sourcesURL,
+              label: `${source.contentLang} - ${source.contentQuality}`,
+              type: 'video/mp4'
+            })
+          })
+
+          return sources
+        })
 )
 
-const videoPlayerSource = computed(() => {
-  return sources.value.data ? sources.value.data
-      .map(e => ({
-        src: e.sourcesURL,
-        label: `${e.contentLang} - ${e.contentQuality}`,
-        type: 'video/mp4'
-      })) : []
-})
-
-episodesRefresh()
 
 const videoPlayerOnMounted = () => {
 }

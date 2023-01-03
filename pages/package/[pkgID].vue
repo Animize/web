@@ -6,7 +6,7 @@
       </Title>
       <Meta :content="pkg ?`Animize - ${pkg.data.synopsis}`  : 'Animize'" name="description"/>
     </Head>
-    <Loading v-if="pending"></Loading>
+    <LazyCommonLoading v-if="pending"/>
     <div v-if="!pending && pkg.errCode === 0" class="flex flex-col">
       <div id="anime-header">
         <nuxt-img :alt="`animize-${pkgID}-cover-blur`" :src="pkg.data.cover ? pkg.data.cover : '/icon/img_notfound.png'"
@@ -85,22 +85,21 @@
 </template>
 
 <script setup>
-import Loading from "@/components/common/Loading"
 
 
 const route = useRoute()
 const config = useRuntimeConfig()
 const {pkgID} = route.params
 
-const {data: pkg, pending, refresh: refresh, error: pkgError} = await useLazyAsyncData(
+const {data: pkg, pending: pending, refresh: refresh, error: pkgError} = await useLazyAsyncData(
     'pkg',
     () => $fetch(`${config.API_BASE_URL}/packages/by-id/${pkgID}`, {key: pkgID})
 )
 
 
-const {data: episodes, episodePending, refresh: episodeRefresh, error: episodeError} = await useLazyAsyncData(
+const {data: episodes, pending: episodePending, refresh: episodeRefresh, error: episodeError} = await useLazyAsyncData(
     'episodes',
-    () => $fetch(`${config.API_BASE_URL}/episodes/list?packageID=${pkgID}`, {key: pkgID})
+    () => $fetch(`${config.API_BASE_URL}/episodes/list`, {key: pkgID, params: { packageID : pkgID}})
 )
 
 
