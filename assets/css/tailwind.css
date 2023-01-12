@@ -79,7 +79,7 @@
     }
 
     .animize-text-navigate {
-        @apply text-xl tracking-tight text-gray-800 dark:text-white
+        @apply text-sm font-medium text-gray-800 dark:text-white
     }
 
 }
