@@ -49,7 +49,7 @@
           </div>
 
           <button
-              class="animize-foreground p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+              class="animize-foreground p-1 m-2 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
               type="button">
             <span class="sr-only">View notifications</span>
             <BellIcon aria-hidden="true" class="h-6 w-6"/>
@@ -72,17 +72,18 @@
                         leave-from-class="transform opacity-100 scale-100"
                         leave-to-class="transform opacity-0 scale-95">
               <MenuItems
-                  class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 ring-1
+                  ring-black ring-opacity-5 focus:outline-none animize-background animize-text-navigate bg-opacity-90 backdrop-blur-xl ">
                 <MenuItem v-slot="{ active }">
-                  <a :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']" href="#">Your
+                  <a :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2']" href="#">Your
                     Profile</a>
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
-                  <a :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']"
+                  <a :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2']"
                      href="#">Settings</a>
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
-                  <a :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']" href="#">Sign
+                  <a :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2']" href="#">Sign
                     out</a>
                 </MenuItem>
               </MenuItems>
