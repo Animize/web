@@ -2409,10 +2409,10 @@ flat@^5.0.2:
   resolved "https://registry.yarnpkg.com/flat/-/flat-5.0.2.tgz#8ca6fe332069ffa9d324c327198c598259ceb241"
   integrity sha512-b6suED+5/3rTpUBdG1gupIl8MPFCAMA0QXwmljLhvCUKcUvdE4gWky9zpuGCcXHOsz4J9wPGNWq6OKpmIzz3hQ==
 
-flowbite@^1.5.5:
-  version "1.5.5"
-  resolved "https://registry.yarnpkg.com/flowbite/-/flowbite-1.5.5.tgz#0adb062e1c5b31dfd1e71bd1acfcda6cbc69e728"
-  integrity sha512-LWJteH6zO+6BrnerH6GEU9OFpjWmkCWi9BD3XnJdBOVevNnt7u8gW+S+4keqD5OGpHu+QU860pLzNKeNlhlf6g==
+flowbite@^1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/flowbite/-/flowbite-1.6.2.tgz#3deb3add4db3525ce35e5c35f5ca4c6eeed7f6c4"
+  integrity sha512-a/hB/fyG6m+EsMWpCaKOtFZGeQef+JLPS854DdFYitct8MNPnW5YKIOBQnIroyMtn60jOeMINg/XU1yh6m4pxw==
   dependencies:
     "@popperjs/core" "^2.9.3"
     mini-svg-data-uri "^1.4.3"
@@ -3742,10 +3742,10 @@ nuxi@3.0.0:
   optionalDependencies:
     fsevents "~2.3.2"
 
-nuxt-headlessui@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/nuxt-headlessui/-/nuxt-headlessui-1.0.4.tgz#f37d61db6c033f0c64be9e8983af916d068f2319"
-  integrity sha512-DvmfZqDInDyvBnldf54XIShZVOmKA7SFtIxWQNOORwghDijQxqxkDLw+2BCw/otXf/xE815/7su895edeVsSeA==
+nuxt-headlessui@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/nuxt-headlessui/-/nuxt-headlessui-1.1.1.tgz#ae0207fc4a2d8463596368bc10562937ca4fe451"
+  integrity sha512-sf8qZQvGDaI+uNnKuynFGY+VXScDNEj3W0LMjv2XH4jO4ksQzbliCB9Hl5cdd/VIFPVmnZm+dnneURSI4/1fXw==
   dependencies:
     "@headlessui/vue" "^1.0.0"
     "@nuxt/kit" "^3.0.0"
@@ -4363,6 +4363,15 @@ postcss@^8.1.10, postcss@^8.2.15, postcss@^8.4.18, postcss@^8.4.19, postcss@^8.4
   version "8.4.20"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.20.tgz#64c52f509644cecad8567e949f4081d98349dc56"
   integrity sha512-6Q04AXR1212bXr5fh03u8aAwbLxAQNGQ/Q1LNa0VfOI06ZAlhPHtQvE4OIdpj4kLThXilalPnmDSOD65DcHt+g==
+  dependencies:
+    nanoid "^3.3.4"
+    picocolors "^1.0.0"
+    source-map-js "^1.0.2"
+
+postcss@^8.4.21:
+  version "8.4.21"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.21.tgz#c639b719a57efc3187b13a1d765675485f4134f4"
+  integrity sha512-tP7u/Sn/dVxK2NnruI4H9BG+x+Wxz6oeZ1cJ8P6G/PZY0IKk4k/63TDsQf2kQq3+qoJeLm2kIBUNlZe3zgb4Zg==
   dependencies:
     nanoid "^3.3.4"
     picocolors "^1.0.0"
@@ -5618,10 +5627,10 @@ yargs@^17.2.1, yargs@^17.5.1:
     y18n "^5.0.5"
     yargs-parser "^21.1.1"
 
-yarn-upgrade-all@^0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/yarn-upgrade-all/-/yarn-upgrade-all-0.7.1.tgz#167a5a78127c7051c4ed15396bd5f68e3b5cc744"
-  integrity sha512-KoYfSs8jGH5fp4+12ezF3uMMIxx70X8l9efmUvsI0KQmmF4nVssEmXw4Q2aZVrRZHF30b3+cyzMIp8iU6sb9aw==
+yarn-upgrade-all@^0.7.2:
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/yarn-upgrade-all/-/yarn-upgrade-all-0.7.2.tgz#5d2afa9230661c55f22d3f848f22258db732ae20"
+  integrity sha512-iVxmoBuNdpxeahAIehJ039Pp6S8zQ/qTENQRMV5hp7x/2tLGUzytCODIKZFjfUwcRRKT3boGgHheUEWC7+VlQw==
 
 ylru@^1.2.0:
   version "1.3.2"
