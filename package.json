@@ -28,6 +28,6 @@
     "vue": "^3.2.45",
     "vue3-carousel": "^0.2.9",
     "vue3-lazyload": "^0.3.6",
-    "yarn-upgrade-all": "^0.7.1"
+    "yarn-upgrade-all": "^0.7.2"
   }
 }
