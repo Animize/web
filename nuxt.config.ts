@@ -18,8 +18,14 @@ export default defineNuxtConfig({
     },
     modules: [
         '@nuxtjs/tailwindcss',
-        '@nuxt/image-edge'
+        '@nuxt/image-edge',
+        '@nuxtjs/color-mode'
     ],
+    colorMode: {
+        classSuffix: '',
+        preference: 'system',
+        storageKey: 'animize-theme'
+    },
     app: {
         head: {
             meta: [
