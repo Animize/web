@@ -63,7 +63,7 @@
                 <span class="sr-only">Open user menu</span>
                 <img alt=""
                      class="h-8 w-8 rounded-full"
-                     src="../../assets/icon/user.png"/>
+                     src="~@/assets/icon/user.png"/>
               </MenuButton>
             </div>
             <transition enter-active-class="transition ease-out duration-100"
