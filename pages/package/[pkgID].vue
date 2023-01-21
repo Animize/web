@@ -40,7 +40,7 @@
             <a :href="`https://myanimelist.net/anime/${pkg.data.malId}`"
                class="py-2 px-3 w-40 button button-primary"
                target="_blank">
-              <img alt="mal" class="mr-2 -ml-1 w-10 h-10" src="~/assets/icon/mal.svg"/>
+              <img alt="mal" class="mr-2 -ml-1 w-10 h-10" src="~/assets/icon/mal.svg?url"/>
               MyAnimeList
             </a>
             <div
