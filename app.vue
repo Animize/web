@@ -9,9 +9,6 @@
 </template>
 
 <script setup>
-import {loadTheme} from "@/composables/dark-setting";
-
-loadTheme()
 useHead({
   title: 'Animize'
 })
