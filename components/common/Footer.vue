@@ -2,7 +2,6 @@
   <footer class="p-4 bg-white shadow md:px-6 md:py-8 animize-background">
     <div class="sm:flex sm:items-center sm:justify-between">
       <a class="flex items-center mb-4 sm:mb-0" href="/">
-        <img alt="Animize Logo" class="mr-3 h-8" src="~/assets/icon/animize.svg"/>
         <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
               style="font-family: Slackey, cursive;">Animize</span>
       </a>
@@ -12,8 +11,8 @@
             :key="color"
             class="item"
         >
-          <img :alt="color" :src="`/icon/${color}.svg`" width="40" height="40" class="dark:text-white p-2 item-selected"
-               @click="colorMode.preference = color"/>
+          <LazyCommonIcon :title="color" :name="color" class="p-2 w-10 h-10 dark:fill-white dark:text-white"
+                          @click="colorMode.preference = color"/>
         </li>
       </ul>
     </div>
