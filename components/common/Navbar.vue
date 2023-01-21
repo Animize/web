@@ -13,10 +13,6 @@
         </div>
         <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
           <NuxtLink class="flex-shrink-0 flex items-center" to="/">
-            <img alt="Animize" class="block lg:hidden h-8 w-auto"
-                 src="~/assets/icon/animize.svg"/>
-            <img alt="Animize"
-                 class="hidden lg:block h-8 w-auto" src="~/assets/icon/animize.svg"/>
             <div class="text-white" style="font-family: Slackey, cursive;">Animize</div>
           </NuxtLink>
           <div class="hidden sm:block sm:ml-6">
@@ -63,7 +59,7 @@
                 <span class="sr-only">Open user menu</span>
                 <img alt=""
                      class="h-8 w-8 rounded-full"
-                     src="../../assets/icon/user.png"/>
+                     src="~@/assets/icon/user.png"/>
               </MenuButton>
             </div>
             <transition enter-active-class="transition ease-out duration-100"

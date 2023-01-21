@@ -1,4 +1,6 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
+import svgLoader from "vite-svg-loader";
+
 export default defineNuxtConfig({
     css: ["~/assets/css/tailwind.css"],
     postcss: {
@@ -6,6 +8,11 @@ export default defineNuxtConfig({
             tailwindcss: {},
             autoprefixer: {},
         },
+    },
+    vite:{
+        plugins:[
+            svgLoader()
+        ]
     },
     build: {
         transpile: ['@headlessui/vue']
@@ -18,8 +25,14 @@ export default defineNuxtConfig({
     },
     modules: [
         '@nuxtjs/tailwindcss',
-        '@nuxt/image-edge'
+        '@nuxt/image-edge',
+        '@nuxtjs/color-mode'
     ],
+    colorMode: {
+        classSuffix: '',
+        preference: 'system',
+        storageKey: 'animize-theme'
+    },
     app: {
         head: {
             meta: [
