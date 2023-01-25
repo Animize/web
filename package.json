@@ -12,7 +12,7 @@
     "@nuxtjs/color-mode": "^3.2.0",
     "nuxt": "^3.0.0",
     "nuxt-headlessui": "^1.1.1",
-    "postcss-custom-properties": "^12.1.11",
+    "postcss-custom-properties": "^13.1.0",
     "vite-svg-loader": "^4.0.0"
   },
   "dependencies": {
