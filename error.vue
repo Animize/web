@@ -25,11 +25,8 @@
 </template>
 
 <script setup>
-import {loadTheme} from "@/composables/dark-setting";
 import Navbar from "@/components/common/Navbar";
 import AnimizeFooter from "@/components/common/Footer";
-
-loadTheme()
 
 defineProps(['error'])
 
