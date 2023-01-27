@@ -20,3 +20,10 @@ export const registerWithIDPassword = async (identifier, password) => {
 export const signOutAccount = async () => {
     console.log('TO BE IMPLEMENTED')
 }
+
+export const getCredential = () => {
+    if (process.client) {
+        return localStorage.credential
+    }
+    return null
+}

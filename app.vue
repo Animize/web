@@ -9,7 +9,10 @@
 </template>
 
 <script setup>
+import {getCredential} from "~/composables/useFirebaseAuth";
+
 useHead({
   title: 'Animize'
 })
+const isLoggedIn = useState('isLoggedIn', () => getCredential() !== null)
 </script>
