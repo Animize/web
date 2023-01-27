@@ -9,8 +9,8 @@ export default defineNuxtConfig({
             autoprefixer: {},
         },
     },
-    vite:{
-        plugins:[
+    vite: {
+        plugins: [
             svgLoader()
         ]
     },
@@ -43,16 +43,16 @@ export default defineNuxtConfig({
                     name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=3.0'
                 },
                 {
-                    hid: 'og:type', name: 'og:type', content: 'website'
+                    name: 'og:type', content: 'website'
                 },
                 {
-                    hid: 'og:site_name', name: 'og:site_name', content: 'Animize'
+                    name: 'og:site_name', content: 'Animize'
                 },
                 {
-                    hid: 'og:title', name: 'og:title', content: 'Animize - Streaming community'
+                    name: 'og:title', content: 'Animize - Streaming community'
                 },
                 {
-                    hid: 'og:description', name: 'og:description',
+                    name: 'og:description',
                     content: 'Animize is a website to share your fans subbed and stream anime from the web.'
                 }
             ]
