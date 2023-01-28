@@ -58,21 +58,19 @@
           <button
               class="button button-neutral transition-colors ease-out duration-200 dark:fill-white dark:hover:fill-gray-900 fill-gray-900 hover:fill-white"
               @click="openAnimeFilter">
-            <LazyCommonIcon name="filter" class="w-10 h-10"/>
+            <LazyCommonIcon class="w-10 h-10" name="filter"/>
             Filter
           </button>
         </div>
 
       </div>
-      <AnimeFilter></AnimeFilter>
-      <Library class="w-auto h-auto"></Library>
+      <LazyAnimeFilter></LazyAnimeFilter>
+      <LazyAnimeLibrary class="w-auto h-auto"></LazyAnimeLibrary>
     </div>
   </div>
 </template>
 
 <script setup>
-import Library from "@/components/anime/Library";
-import AnimeFilter from "@/components/anime/AnimeFilter";
 import {Listbox, ListboxButton, ListboxOption, ListboxOptions} from '@headlessui/vue'
 import {CheckIcon} from '@heroicons/vue/24/solid/esm/index.js'
 
