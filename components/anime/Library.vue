@@ -25,9 +25,10 @@
         </div>
       </NuxtLink>
     </div>
-    <Loading v-if="pending"></Loading>
+    <LazyCommonLoading v-if="pending"></LazyCommonLoading>
 
-    <NotFound v-if="totalElements === 0 && !pending" class="flex items-center justify-center h-screen"></NotFound>
+    <LazyCommonNotFound v-if="totalElements === 0 && !pending"
+                        class="flex items-center justify-center h-screen"></LazyCommonNotFound>
 
     <nav v-if="totalElements !== 0 && !pending" class="item flex justify-center">
       <ul class="inline-flex items-center -space-x-px">
@@ -70,8 +71,6 @@
 
 </template>
 <script setup>
-import NotFound from "@/components/common/NotFound";
-import Loading from "@/components/common/Loading"
 
 const route = useRoute()
 const page = useState('page', () => 0)
@@ -81,29 +80,46 @@ const genres = useState('genres', () => [])
 const search = useState('search', () => null)
 const targetPath = route.path
 
+const config = useRuntimeConfig()
+const {data: libraryPackages, pending: pending, refresh: libraryRefresh} = await useLazyAsyncData(
+    'libraryPackages',
+    () => $fetch(`${config.API_BASE_URL}/packages/page`, {
+      /* query: {
+        page: page.value,
+        size: size.value,
+        sort: `${sort.value.field},${sort.value.direction}`,
 
-const queryStringRequest = computed(() => {
-  let query = `?page=${page.value}&size=${size.value}`
-  if (sort.value) {
-    query += `&sort=${sort.value.field},${sort.value.direction}`
-  }
 
-  if (search.value) {
-    query += `&name=${search.value}`
-  }
+      }, */
+      onRequest({options}) {
+        let query = {}
+        if (page.value) {
+          query.page = page.value
+        }
 
-  for (const genre of genres.value) {
-    query += `&genreIds=${genre}`
-  }
+        if (size.value) {
+          query.size = 4
+        }
+        if (sort.value) {
+          query.sort = `${sort.value.field},${sort.value.direction}`
+        }
+        if (search.value) {
+          query.name = search.value
+        }
+        if (genres) {
+          query.genreIds = genres.value.join(',')
+        }
 
-  return query
+        options.query = query
+        console.log(options.query)
+      }
+    })
+)
+const computedQuery = computed(() => route.query)
+watch(computedQuery, () => {
+  libraryRefresh()
 })
 
-const config = useRuntimeConfig()
-const {data: libraryPackages, pending: pending, refresh} = await useLazyAsyncData(
-    'libraryPackages',
-    () => $fetch(`${config.API_BASE_URL}/packages/page${queryStringRequest.value}`)
-)
 
 const packages = useState('packages', () => libraryPackages ? libraryPackages.data : [])
 const totalPages = useState('totalPages', () => 0)
@@ -114,10 +130,6 @@ watch(libraryPackages, (nPkg) => {
   totalElements.value = nPkg.data.totalElements
   packages.value = nPkg.data
 })
-
-
-watch(() => queryStringRequest.value, () => refresh())
-
 
 const changePage = async (pageNumber, totPage) => {
   if (pageNumber < 1) {
