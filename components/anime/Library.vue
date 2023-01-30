@@ -1,7 +1,7 @@
 <template>
   <div id="library" class="flex-inline flex-wrap">
     <div v-if="totalElements !== 0 && !pending" :class="pending ? 'animate-pulse' : ''"
-         class="item w-auto h-auto flex-grow grid p-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4  gap-1.5">
+         class="item w-auto h-auto flex-grow grid p-2 grid-cols-2 sm:grid-cols-2  lg:grid-cols-4  gap-1.5">
       <NuxtLink v-for="item in packages ? packages.content : []" :key="item.id"
                 :to="`/package/${item.id}`"
                 class="group relative z-0 w-5/6 aspect-[7/10] rounded drop-shadow-md hover:drop-shadow-2xl max-w-sm bg-white shadow-md dark:animize-foreground transition duration-300 ease">
@@ -98,7 +98,7 @@ const {data: libraryPackages, pending: pending, refresh: libraryRefresh} = await
         }
 
         if (size.value) {
-          query.size = 4
+          query.size = size.value
         }
         if (sort.value) {
           query.sort = `${sort.value.field},${sort.value.direction}`
@@ -111,7 +111,6 @@ const {data: libraryPackages, pending: pending, refresh: libraryRefresh} = await
         }
 
         options.query = query
-        console.log(options.query)
       }
     })
 )

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Disclosure v-slot="{ open }" as="nav" class="animize-foreground">
+    <Disclosure v-slot="{ open }" as="nav">
       <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div class="relative flex items-center justify-between h-16">
           <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -59,16 +59,20 @@
                     v-if="isLoggedIn"
                     class="animize-foreground flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                   <span class="sr-only">Open user menu</span>
-                  <img alt=""
-                       class="h-8 w-8 rounded-full"
-                       src="~@/assets/icon/user.png"/>
+                  <LazyNuxtImg
+                           class="h-8 w-8 rounded-full"
+                           referrerpolicy="no-referrer"
+                           :src="credential ? credential.photoURL : `~/assets/icon/user.png`"
+                           placeholder
+                  />
                 </MenuButton>
                 <button v-else class="button button-primary" @click="openSignIn">
                   Sign In
                 </button>
               </div>
               <transition enter-active-class="transition ease-out duration-100"
-                          enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
+                          enter-from-class="transform opacity-0 scale-95"
+                          enter-to-class="transform opacity-100 scale-100"
                           leave-active-class="transition ease-in duration-75"
                           leave-from-class="transform opacity-100 scale-100"
                           leave-to-class="transform opacity-0 scale-95">
@@ -76,15 +80,17 @@
                     class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 ring-1
                   ring-black ring-opacity-5 focus:outline-none animize-background animize-text-navigate bg-opacity-90 backdrop-blur-xl ">
                   <MenuItem v-slot="{ active }">
-                    <a :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2']" href="#">Your
-                      Profile</a>
+                    <LazyNuxtLink :class="[active ? 'menu-item-selected' : '', 'block px-4 py-2']" href="/">
+                      {{ credential.displayName }}
+                    </LazyNuxtLink>
+                  </MenuItem>
+                  <hr class="border-gray-200 sm:mx-auto dark:border-gray-700"/>
+                  <MenuItem v-slot="{ active }">
+                    <LazyNuxtLink :class="[active ? 'menu-item-selected' : '', 'block px-4 py-2']"
+                       href="/">Settings</LazyNuxtLink>
                   </MenuItem>
                   <MenuItem v-slot="{ active }">
-                    <a :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2']"
-                       href="#">Settings</a>
-                  </MenuItem>
-                  <MenuItem v-slot="{ active }">
-                    <a :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2']" href="#">Sign
+                    <a :class="[active ? 'menu-item-selected' : '', 'block px-4 py-2']" href="/" @click="signOutAccount()">Sign
                       out</a>
                   </MenuItem>
                 </MenuItems>
@@ -116,11 +122,12 @@
 <script setup>
 import {Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
 import {BellIcon, ListBulletIcon, XMarkIcon} from '@heroicons/vue/24/solid/esm/index.js'
+import {signOutAccount} from "~/composables/useFirebaseAuth";
 
 const signInDialogOpen = useState('signInDialogOpen', () => false)
 const route = useRoute()
 const isLoggedIn = useState('isLoggedIn')
-
+const credential = useState('credential')
 
 let navigation = [
   {name: 'Home', href: '/'},

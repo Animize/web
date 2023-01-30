@@ -1,29 +1,44 @@
-import {getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth"
+import {
+    browserLocalPersistence,
+    createUserWithEmailAndPassword,
+    getAuth,
+    GoogleAuthProvider,
+    setPersistence,
+    signInWithEmailAndPassword,
+    signInWithPopup
+} from "firebase/auth"
 
 export const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     const auth = getAuth()
-    await signInWithPopup(auth, provider)
-        .then((result) => {
+    setPersistence(auth, browserLocalPersistence)
+        .then(async () => {
+            return await signInWithPopup(auth, provider)
+                .catch((error) => {
+                    console.log(error.message)
+                })
+        })
 
+}
+
+export const signInWithIDPassword = async (email, password) => {
+    const auth = getAuth()
+    await signInWithEmailAndPassword(auth, email, password)
+        .catch((error) => {
+            console.log(error.message)
         })
 }
 
-export const signInWithIDPassword = async (identifier, password) => {
-    console.log('TO BE IMPLEMENTED')
-}
-
-export const registerWithIDPassword = async (identifier, password) => {
-    console.log('TO BE IMPLEMENTED')
+export const registerWithEmailPassword = async (email, password) => {
+    const auth = getAuth()
+    await createUserWithEmailAndPassword(auth, email, password)
+        .catch((error) => {
+            console.log(error.message)
+        })
 }
 
 export const signOutAccount = async () => {
-    console.log('TO BE IMPLEMENTED')
-}
-
-export const getCredential = () => {
-    if (process.client) {
-        return localStorage.credential
-    }
-    return null
+    const auth = getAuth()
+    console.log('Will be logged out,please wait')
+    await auth.signOut()
 }
