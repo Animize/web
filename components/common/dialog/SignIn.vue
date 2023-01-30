@@ -23,6 +23,9 @@
                   Sign in with email
                 </div>
                 <hr class="border-1 my-4 dark:bg-gray-400"/>
+                <span class="dark:text-gray-300 text-gray-800 italic">
+                  Have a Google account?
+                </span>
                 <button class="button button-neutral" @click="signInWithGoogleAction">
                   Sign In With Google
                 </button>
