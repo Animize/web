@@ -5,10 +5,17 @@ export default defineNuxtPlugin(() => {
     const auth = getAuth()
     const credential = useState('credential')
     const isLoggedIn = useState('isLoggedIn')
-    auth.onAuthStateChanged((user) => {
+    const signInDialogOpen = useState('signInDialogOpen')
+    auth.onAuthStateChanged(async (user) => {
         if (user) {
             isLoggedIn.value = true
             credential.value = user
+            await useLazyAsyncData('populateUser', () => useAPI('/auth/populate',
+                {
+                    method: 'POST'
+                }
+            ))
+            signInDialogOpen.value = false
         } else {
             isLoggedIn.value = false
             credential.value = null
