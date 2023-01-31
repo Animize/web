@@ -1,7 +1,7 @@
 <template>
   <div id="library" class="flex-inline flex-wrap">
     <div v-if="totalElements !== 0 && !pending" :class="pending ? 'animate-pulse' : ''"
-         class="item w-auto h-auto flex-grow grid p-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4  gap-1.5">
+         class="item w-auto h-auto flex-grow grid p-2 grid-cols-2 sm:grid-cols-2  lg:grid-cols-4  gap-1.5">
       <NuxtLink v-for="item in packages ? packages.content : []" :key="item.id"
                 :to="`/package/${item.id}`"
                 class="group relative z-0 w-5/6 aspect-[7/10] rounded drop-shadow-md hover:drop-shadow-2xl max-w-sm bg-white shadow-md dark:animize-foreground transition duration-300 ease">
@@ -25,9 +25,10 @@
         </div>
       </NuxtLink>
     </div>
-    <Loading v-if="pending"></Loading>
+    <LazyCommonLoading v-if="pending"></LazyCommonLoading>
 
-    <NotFound v-if="totalElements === 0 && !pending" class="flex items-center justify-center h-screen"></NotFound>
+    <LazyCommonNotFound v-if="totalElements === 0 && !pending"
+                        class="flex items-center justify-center h-screen"></LazyCommonNotFound>
 
     <nav v-if="totalElements !== 0 && !pending" class="item flex justify-center">
       <ul class="inline-flex items-center -space-x-px">
@@ -70,8 +71,8 @@
 
 </template>
 <script setup>
-import NotFound from "@/components/common/NotFound";
-import Loading from "@/components/common/Loading"
+
+import {useAPI} from "~/composables/useNetworkCaller";
 
 const route = useRoute()
 const page = useState('page', () => 0)
@@ -80,30 +81,42 @@ const sort = useState('sort', () => null)
 const genres = useState('genres', () => [])
 const search = useState('search', () => null)
 const targetPath = route.path
+const computedQuery = computed(() => route.query)
 
-
-const queryStringRequest = computed(() => {
-  let query = `?page=${page.value}&size=${size.value}`
-  if (sort.value) {
-    query += `&sort=${sort.value.field},${sort.value.direction}`
-  }
-
-  if (search.value) {
-    query += `&name=${search.value}`
-  }
-
-  for (const genre of genres.value) {
-    query += `&genreIds=${genre}`
-  }
-
-  return query
-})
 
 const config = useRuntimeConfig()
-const {data: libraryPackages, pending: pending, refresh} = await useLazyAsyncData(
+const {data: libraryPackages, pending: pending, refresh: libraryRefresh} = await useLazyAsyncData(
     'libraryPackages',
-    () => $fetch(`${config.API_BASE_URL}/packages/page${queryStringRequest.value}`)
+    () => useAPI(`/packages/page`, {
+      onRequest({options}) {
+        let query = {}
+        if (page.value) {
+          query.page = page.value
+        }
+
+        if (size.value) {
+          query.size = size.value
+        }
+        if (sort.value) {
+          query.sort = `${sort.value.field},${sort.value.direction}`
+        }
+        if (search.value) {
+          query.name = search.value
+        }
+        if (genres) {
+          query.genreIds = genres.value.join(',')
+        }
+
+        options.query = query
+      }
+    }),
+    {
+      watch: [
+        computedQuery
+      ]
+    }
 )
+
 
 const packages = useState('packages', () => libraryPackages ? libraryPackages.data : [])
 const totalPages = useState('totalPages', () => 0)
@@ -114,10 +127,6 @@ watch(libraryPackages, (nPkg) => {
   totalElements.value = nPkg.data.totalElements
   packages.value = nPkg.data
 })
-
-
-watch(() => queryStringRequest.value, () => refresh())
-
 
 const changePage = async (pageNumber, totPage) => {
   if (pageNumber < 1) {
@@ -140,6 +149,12 @@ const changePage = async (pageNumber, totPage) => {
       }
   )
 }
+
+onMounted(() => {
+  nextTick(() => {
+    libraryRefresh()
+  })
+})
 
 
 defineExpose({

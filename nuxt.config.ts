@@ -9,8 +9,8 @@ export default defineNuxtConfig({
             autoprefixer: {},
         },
     },
-    vite:{
-        plugins:[
+    vite: {
+        plugins: [
             svgLoader()
         ]
     },
@@ -20,7 +20,15 @@ export default defineNuxtConfig({
     ssr: true,
     runtimeConfig: {
         public: {
-            API_BASE_URL: process.env.API_BASE_URL
+            API_BASE_URL: process.env.API_BASE_URL,
+            FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
+            FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN,
+            FIREBASE_DATABASE_URL: process.env.FIREBASE_DATABASE_URL,
+            FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
+            FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET,
+            FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID,
+            FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
+            FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID
         }
     },
     modules: [
@@ -43,16 +51,16 @@ export default defineNuxtConfig({
                     name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=3.0'
                 },
                 {
-                    hid: 'og:type', name: 'og:type', content: 'website'
+                    name: 'og:type', content: 'website'
                 },
                 {
-                    hid: 'og:site_name', name: 'og:site_name', content: 'Animize'
+                    name: 'og:site_name', content: 'Animize'
                 },
                 {
-                    hid: 'og:title', name: 'og:title', content: 'Animize - Streaming community'
+                    name: 'og:title', content: 'Animize - Streaming community'
                 },
                 {
-                    hid: 'og:description', name: 'og:description',
+                    name: 'og:description',
                     content: 'Animize is a website to share your fans subbed and stream anime from the web.'
                 }
             ]
