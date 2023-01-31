@@ -72,7 +72,7 @@
 
 <script setup>
 import {Listbox, ListboxButton, ListboxOption, ListboxOptions} from '@headlessui/vue'
-import {CheckIcon} from '@heroicons/vue/24/solid/esm/index.js'
+import {CheckIcon} from '@heroicons/vue/24/solid'
 
 
 const route = useRoute();

@@ -121,7 +121,7 @@
 
 <script setup>
 import {Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
-import {BellIcon, ListBulletIcon, XMarkIcon} from '@heroicons/vue/24/solid/esm/index.js'
+import {BellIcon, ListBulletIcon, XMarkIcon} from '@heroicons/vue/24/solid'
 import {signOutAccount} from "~/composables/useFirebaseAuth";
 
 const signInDialogOpen = useState('signInDialogOpen', () => false)
