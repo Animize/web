@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col animize-background">
-    <NuxtLoadingBar :duration="1000"/>
-    <Navbar class="item w-auto h-auto flex-auto"></Navbar>
+    <LazyNuxtLoadingIndicator :duration="1000"/>
+    <LazyCommonNavbar class="item w-auto h-auto flex-auto"></LazyCommonNavbar>
     <div
         class="item w-auto min-h-screen h-auto flex-grow text-white text-2xl flex items-center justify-center h-screen">
       <div class="flex justify-center flex-col">
@@ -19,17 +19,12 @@
 
       </div>
     </div>
-    <AnimizeFooter class="item w-auto h-auto flex-auto"></AnimizeFooter>
+    <LazyCommonFooter class="item w-auto h-auto flex-auto"></LazyCommonFooter>
   </div>
 
 </template>
 
 <script setup>
-import {loadTheme} from "@/composables/dark-setting";
-import Navbar from "@/components/common/Navbar";
-import AnimizeFooter from "@/components/common/Footer";
-
-loadTheme()
 
 defineProps(['error'])
 

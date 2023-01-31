@@ -70,6 +70,14 @@
         @apply text-gray-300 hover:bg-gray-600
     }
 
+    .menu-item-selected {
+        @apply text-white hover:bg-gray-600
+    }
+
+    .menu-item-not-selected {
+        @apply text-gray-300 hover:bg-gray-600
+    }
+
     .animize-text-title {
         @apply text-5xl font-bold tracking-tight text-gray-800 dark:text-white
     }
