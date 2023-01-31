@@ -81,6 +81,8 @@ const sort = useState('sort', () => null)
 const genres = useState('genres', () => [])
 const search = useState('search', () => null)
 const targetPath = route.path
+const computedQuery = computed(() => route.query)
+
 
 const config = useRuntimeConfig()
 const {data: libraryPackages, pending: pending, refresh: libraryRefresh} = await useLazyAsyncData(
@@ -107,12 +109,13 @@ const {data: libraryPackages, pending: pending, refresh: libraryRefresh} = await
 
         options.query = query
       }
-    })
+    }),
+    {
+      watch: [
+        computedQuery
+      ]
+    }
 )
-const computedQuery = computed(() => route.query)
-watch(computedQuery, () => {
-  libraryRefresh()
-})
 
 
 const packages = useState('packages', () => libraryPackages ? libraryPackages.data : [])
@@ -146,6 +149,12 @@ const changePage = async (pageNumber, totPage) => {
       }
   )
 }
+
+onMounted(() => {
+  nextTick(() => {
+    libraryRefresh()
+  })
+})
 
 
 defineExpose({
