@@ -34,7 +34,6 @@ jobs:
       - name: Build Image
         run: |
           DOCKER_BUILD_KIT=1 DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --push \
-          --build-arg=API_BASE_URL=${{ secrets.API_BASE_URL }} \
           -t docker.io/rootdavinalfa/animize-web:latest \
           -t docker.io/rootdavinalfa/animize-web:$(git rev-parse --short HEAD) \
           --platform=linux/amd64,linux/arm64 .
