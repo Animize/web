@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center flex-col">
+  <div id="animize-not-found" class="flex justify-center flex-col">
     <img alt="Data Not Found" class="item flex-wrap max-w-[300px] max-h-[300px]" src="~/assets/icon/astronaut.png">
     <div class="item w-64">
       <p class="item dark:text-white text-gray-800 font-extrabold text-5xl text-left w-full">404</p>
@@ -15,7 +15,3 @@ export default {
   name: "NotFound"
 }
 </script>
-
-<style scoped>
-
-</style>

@@ -59,15 +59,17 @@
         <p class="text-2xs font-normal dark:text-white text-gray-800 text-justify" style="white-space: pre-line;">
           {{ pkg.data.synopsis }}</p>
       </div>
-      <div id="anime-episode" class="item flex-inline flex-wrap mt-10 p-8">
+      <div id="anime-episode" class="item flex-inline flex-wrap mt-4 p-8">
         <div v-if="!episodePending"
-             class="item w-auto h-auto flex-grow grid md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-5  gap-2.5">
+             class="item w-full h-auto flex-grow grid md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-5  gap-2.5">
           <NuxtLink
               v-for="episode in episodes ? episodes.data : []"
               :key="episode.id"
               :to="`/package/${pkgID}-ep/${episode.id}`"
-              class="flex flex-col items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl h-auto w-72 hover:scale-110 dark:hover:bg-gray-700 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:animize-foreground dark:border-gray-700 transition duration-300 ease">
-            <span class="object-cover w-16 h-32 rounded-l-lg dark:text-white text-6xl dark:bg-gray-600">
+              class="flex flex-col items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl h-auto
+              w-full hover:scale-110 dark:hover:bg-gray-700 bg-white border border-gray-200
+              shadow-md dark:animize-foreground dark:border-gray-700 transition duration-300 ease">
+            <span class="object-cover md:w-16 md:h-32 w-full h-auto xl:rounded-l-lg md:rounded-l-lg rounded-t-lg dark:text-white text-6xl dark:bg-gray-600">
               {{ episode.episode }}
             </span>
             <span class="text-2xl line-clamp-3 dark:text-white">

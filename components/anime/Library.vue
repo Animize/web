@@ -1,6 +1,6 @@
 <template>
   <div id="library" class="flex-inline flex-wrap">
-    <div v-if="totalElements !== 0 && !pending" :class="pending ? 'animate-pulse' : ''"
+    <div v-if="totalElements !== 0 && !libraryPending" :class="libraryPending ? 'animate-pulse' : ''"
          class="item w-auto h-auto flex-grow grid p-2 grid-cols-2 sm:grid-cols-2  lg:grid-cols-4  gap-1.5">
       <NuxtLink v-for="item in packages ? packages.content : []" :key="item.id"
                 :to="`/package/${item.id}`"
@@ -25,15 +25,14 @@
         </div>
       </NuxtLink>
     </div>
-    <LazyCommonLoading v-if="pending"></LazyCommonLoading>
-
-    <LazyCommonNotFound v-if="totalElements === 0 && !pending"
+    <LazyCommonLoading v-if="libraryPending"></LazyCommonLoading>
+    <LazyCommonNotFound id="animize-not-found" v-if="!libraryPending && totalElements === 0"
                         class="flex items-center justify-center h-screen"></LazyCommonNotFound>
 
-    <nav v-if="totalElements !== 0 && !pending" class="item flex justify-center">
+    <nav v-if="totalElements !== 0 && !libraryPending" class="item flex justify-center">
       <ul class="inline-flex items-center -space-x-px">
         <li>
-          <a class="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:animize-foreground dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          <div class="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:animize-foreground dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
              @click="changePage(page - 2,totalPages)">
             <span class="sr-only">Previous</span>
             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
@@ -42,18 +41,18 @@
                     d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
                     fill-rule="evenodd"></path>
             </svg>
-          </a>
+          </div>
         </li>
         <li v-for="numPage in totalPages" :key="numPage">
-          <a
+          <div
               :aria-current="numPage === page + 1 ? 'page' : 'false'"
               :class="numPage === page + 1 ? 'z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white' : 'py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:animize-foreground dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'"
               @click="changePage(numPage,totalPages)"
 
-          >{{ numPage }}</a>
+          >{{ numPage }}</div>
         </li>
         <li>
-          <a class="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:animize-foreground dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          <div class="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:animize-foreground dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
              @click="changePage(page + 2,totalPages)">
             <span class="sr-only">Next</span>
             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
@@ -62,7 +61,7 @@
                     d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                     fill-rule="evenodd"></path>
             </svg>
-          </a>
+          </div>
         </li>
       </ul>
     </nav>
@@ -85,7 +84,7 @@ const computedQuery = computed(() => route.query)
 
 
 const config = useRuntimeConfig()
-const {data: libraryPackages, pending: pending, refresh: libraryRefresh} = await useLazyAsyncData(
+const {data: libraryPackages, pending: libraryPending, refresh: libraryRefresh} = await useLazyAsyncData(
     'libraryPackages',
     () => useAPI(`/packages/page`, {
       onRequest({options}) {
