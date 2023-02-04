@@ -16,8 +16,8 @@
           <nuxt-img :alt="`animize-${pkgID}-cover`"
                     :src="pkg.data.cover ? pkg.data.cover : '/icon/img_notfound.png'"
                     class="object-cover w-48 h-72 rounded md:h-auto md:w-48 shadow m-8 hover:scale-110"/>
-          <div class="flex flex-col justify-between p-4 gap-2 leading-normal h-auto">
-            <p class="mb-2 animize-text-title lg:max-w-[1024px]">
+          <div class="flex flex-col justify-between p-4 gap-2 leading-normal w-full">
+            <p class="mb-2 animize-text-title text-ellipsis overflow-hidden">
               {{ pkg.data.name }}</p>
             <p class="font-normal text-2xs text-gray-800 dark:text-white">Current episode: {{ pkg.data.currentEpisode }}
               of
