@@ -17,18 +17,14 @@
                     :src="pkg.data.cover ? pkg.data.cover : '/icon/img_notfound.png'"
                     class="object-cover w-48 h-72 rounded md:h-auto md:w-48 shadow m-8 hover:scale-110"/>
           <div class="flex flex-col justify-between p-4 gap-2 leading-normal w-full">
-            <p class="mb-2 animize-text-title text-ellipsis overflow-hidden">
+            <p class="mb-2 p-2 animize-text-title text-ellipsis overflow-hidden">
               {{ pkg.data.name }}</p>
             <p class="font-normal text-2xs text-gray-800 dark:text-white">Current episode: {{ pkg.data.currentEpisode }}
               of
               {{ pkg.data.maxEpisode }}</p>
             <div class="font-normal flex inline-flex gap-2.5">
               <div class="flex flex-inline text-sm font-medium text-center items-center dark:text-white">
-                <svg aria-hidden="true" class="item w-10 h-10 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"
-                     xmlns="http://www.w3.org/2000/svg"><title>Rating</title>
-                  <path
-                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                </svg>
+                Rating:
                 {{ pkg.data.rating }}
               </div>
               <div
@@ -37,12 +33,31 @@
                 {{ pkg.data.safeContent }}
               </div>
             </div>
-            <a :href="`https://myanimelist.net/anime/${pkg.data.malId}`"
-               class="py-2 px-3 w-40 button button-primary"
-               target="_blank">
-              <img alt="mal" class="mr-2 -ml-1 w-10 h-10" src="~/assets/icon/mal.svg?url"/>
-              MyAnimeList
-            </a>
+            <div class="font-normal flex inline-flex gap-2.5">
+              <button
+                  v-if="!pkg.data.favorites"
+                  class="py-2 px-3 w-40 button button-neutral"
+                  @click="actionFavorites"
+              >
+                <StarUnFilled class="w-10 h-10"/>
+                Add to library
+              </button>
+              <button
+                  v-else
+                  class="py-2 px-3 w-40 button button-neutral"
+                  @click="actionFavorites"
+              >
+                <StarFilled class="w-10 h-10" name="star-filled"/>
+                Added on library
+              </button>
+              <a :href="`https://myanimelist.net/anime/${pkg.data.malId}`"
+                 class="py-2 px-3 w-40 button button-primary"
+                 target="_blank">
+                <img alt="mal" class="w-10 h-10" src="~/assets/icon/mal.svg?url"/>
+                MyAnimeList
+              </a>
+            </div>
+
             <div
                 class="item w-auto h-auto flex-auto gap-2.5 pt-5 pb-5 overflow-hidden overflow-x-auto">
               <NuxtLink
@@ -69,7 +84,8 @@
               class="flex flex-col items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl h-auto
               w-full hover:scale-110 dark:hover:bg-gray-700 bg-white border border-gray-200
               shadow-md dark:animize-foreground dark:border-gray-700 transition duration-300 ease">
-            <span class="object-cover md:w-16 md:h-32 w-full h-auto xl:rounded-l-lg md:rounded-l-lg rounded-t-lg dark:text-white text-6xl dark:bg-gray-600">
+            <span
+                class="object-cover md:w-16 md:h-32 w-full h-auto xl:rounded-l-lg md:rounded-l-lg rounded-t-lg dark:text-white text-6xl dark:bg-gray-600">
               {{ episode.episode }}
             </span>
             <span class="text-2xl line-clamp-3 dark:text-white">
@@ -87,7 +103,8 @@
 </template>
 
 <script setup>
-
+import StarFilled from '@/assets/icon/star-filled.svg?component'
+import StarUnFilled from '@/assets/icon/star-unfilled.svg?component'
 
 const route = useRoute()
 const config = useRuntimeConfig()
@@ -95,31 +112,41 @@ const {pkgID} = route.params
 
 const {data: pkg, pending: pending, refresh: refresh, error: pkgError} = await useLazyAsyncData(
     'pkg',
-    () => $fetch(`${config.API_BASE_URL}/packages/by-id/${pkgID}`, {key: pkgID})
+    () => useAPI(`${config.API_BASE_URL}/packages/by-id/${pkgID}`, {key: pkgID})
 )
 
 
 const {data: episodes, pending: episodePending, refresh: episodeRefresh, error: episodeError} = await useLazyAsyncData(
     'episodes',
-    () => $fetch(`${config.API_BASE_URL}/episodes/list`, {key: pkgID, params: { packageID : pkgID}})
+    () => $fetch(`${config.API_BASE_URL}/episodes/list`, {key: pkgID, params: {packageID: pkgID}})
 )
 
 
 watch(pkgError, (err) => {
   pkgError.value = err
   if (pkgError.value) {
-    throw createError({statusCode: 404, statusMessage: 'Test',fatal:true})
+    throw createError({statusCode: 404, statusMessage: 'Test', fatal: true})
   }
 
 })
 
 
 watch(episodeError, (err) => {
-  console.log(err)
   episodeError.value = err
   if (episodeError) {
     throw createError({statusCode: 500, statusMessage: 'Test'})
   }
 
 })
+
+const actionFavorites = async () => {
+  if (process.client){
+    await useLazyAsyncData('actionFavorites', () => useAPI(`/myself/favorite/${pkgID}`,
+        {
+          method: 'PATCH',
+        }
+    ))
+  }
+}
+
 </script>
