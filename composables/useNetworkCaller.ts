@@ -5,13 +5,14 @@ import {POSITION, useToast} from "vue-toastification";
 
 export const useAPI = async <T = unknown, R extends NitroFetchRequest = NitroFetchRequest>(request: R, opts?: FetchOptions | undefined): Promise<TypedInternalResponse<R, T>> => {
     const config = useRuntimeConfig()
-    const auth = getAuth()
-    const token = await auth?.currentUser?.getIdToken()
-    const headers = {}
+    const headers: Record<string, any> = {}
 
-    if (token && process.client) {
-        // @ts-ignore
-        headers['Authorization'] = `Bearer ${token}`
+    if (process.client) {
+        const auth = getAuth()
+        const token = await auth?.currentUser?.getIdToken()
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`
+        }
     }
 
     const customFetch = $fetch.create({
@@ -21,11 +22,13 @@ export const useAPI = async <T = unknown, R extends NitroFetchRequest = NitroFet
             console.log("Intercepted API", request);
         },
         onResponseError({response}): Promise<void> | void {
-            const toast = useToast()
-            // @ts-ignore
-            toast.error(response._data.message, {
-                position: POSITION.BOTTOM_RIGHT
-            })
+            if (process.client) {
+                const toast = useToast()
+                toast.error(response._data.message, {
+                    position: POSITION.BOTTOM_RIGHT
+                })
+            }
+            console.log(response._data.message)
         }
     })
 
