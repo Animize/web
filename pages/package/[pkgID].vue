@@ -74,8 +74,8 @@
         <p class="text-2xs font-normal dark:text-white text-gray-800 text-justify" style="white-space: pre-line;">
           {{ pkg.data.synopsis }}</p>
       </div>
-      <div id="anime-episode" class="item flex-inline flex-wrap mt-4 p-8">
-        <div v-if="!episodePending"
+      <div v-if="!episodePending" id="anime-episode" class="item flex-inline flex-wrap mt-4 p-8">
+        <div v-if="episodes ? episodes.data.length !== 0 : false"
              class="item w-full h-auto flex-grow grid md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-5  gap-2.5">
           <NuxtLink
               v-for="episode in episodes ? episodes.data : []"
@@ -92,6 +92,9 @@
               {{ episode.summary ? episode.summary : 'Nothing to be told' }}
             </span>
           </NuxtLink>
+        </div>
+        <div v-else class="text-xl italic font-medium text-center items-center dark:text-white">
+          Currently no episode listed here.
         </div>
 
       </div>
@@ -140,7 +143,7 @@ watch(episodeError, (err) => {
 })
 
 const actionFavorites = async () => {
-  if (process.client){
+  if (process.client) {
     await useLazyAsyncData('actionFavorites', () => useAPI(`/myself/favorite/${pkgID}`,
         {
           method: 'PATCH',
