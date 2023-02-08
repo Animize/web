@@ -35,7 +35,7 @@
             </div>
             <div class="font-normal flex inline-flex gap-2.5">
               <button
-                  v-if="!pkg.data.favorites"
+                  v-if="!favorite"
                   class="py-2 px-3 w-40 button button-neutral"
                   @click="actionFavorites"
               >
@@ -122,6 +122,19 @@ const {data: pkg, pending: pending, refresh: refresh, error: pkgError} = await u
 const {data: episodes, pending: episodePending, refresh: episodeRefresh, error: episodeError} = await useLazyAsyncData(
     'episodes',
     () => $fetch(`${config.API_BASE_URL}/episodes/list`, {key: pkgID, params: {packageID: pkgID}})
+)
+
+const {
+  data: favorite,
+  pending: favoritePending,
+  refresh: favoriteRefresh,
+  error: favoriteError
+} = await useLazyAsyncData(
+    'favorite',
+    () => useAPI(`${config.API_BASE_URL}/myself/favorite/${pkgID}`, {key: pkgID}),
+    {
+      server : false
+    }
 )
 
 
