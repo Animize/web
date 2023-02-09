@@ -112,6 +112,7 @@ import StarUnFilled from '@/assets/icon/star-unfilled.svg?component'
 const route = useRoute()
 const config = useRuntimeConfig()
 const {pkgID} = route.params
+const credential = useState('credential')
 
 const {data: pkg, pending: pending, refresh: refresh, error: pkgError} = await useLazyAsyncData(
     'pkg',
@@ -133,7 +134,11 @@ const {
     'favorite',
     () => useAPI(`${config.API_BASE_URL}/myself/favorite/${pkgID}`, {key: pkgID}),
     {
-      server : false
+      server: false,
+      immediate: false,
+      watch: [
+        credential
+      ]
     }
 )
 
