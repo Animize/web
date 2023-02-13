@@ -4,8 +4,8 @@ import {FetchOptions} from "ofetch";
 import {POSITION, useToast} from "vue-toastification";
 
 interface UseAPIOptions {
-    showToast: boolean,
-    logging: boolean
+    showToast?: boolean,
+    logging?: boolean
 }
 
 export const useAPI = async <T = unknown, R extends NitroFetchRequest = NitroFetchRequest>(

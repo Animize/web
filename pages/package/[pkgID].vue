@@ -111,7 +111,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import StarFilled from '@/assets/icon/star-filled.svg?component'
 import StarUnFilled from '@/assets/icon/star-unfilled.svg?component'
 import {POSITION, useToast} from "vue-toastification";
@@ -140,9 +140,13 @@ const {
   error: favoriteError
 } = await useLazyAsyncData(
     'favorite',
-    () => useAPI(`${config.API_BASE_URL}/myself/favorite/${pkgID}`, {
-      showToast: false
-    }),
+    () => useAPI<any>(
+        `${config.API_BASE_URL}/myself/favorite/${pkgID}`,
+        {},
+        {
+          showToast: false
+        })
+    ,
     {
       server: false,
       immediate: false,
@@ -151,7 +155,6 @@ const {
       ]
     }
 )
-
 
 watch(pkgError, (err) => {
   pkgError.value = err
