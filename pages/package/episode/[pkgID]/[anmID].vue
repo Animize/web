@@ -1,13 +1,13 @@
 <template>
   <div v-if="!episodePending" class="p-4">
-        <Head v-if="!packagesPending && !episodesPending">
-          <Title>
-            {{packages ? packages.data.name : 'Animize'}} | Episode {{episode.data.episode ? episode.data.episode : '0'}}
-          </Title>
-          <Meta
-              :content="episode ?`Episode ${episode.data.episode}, ${episode.data.summary ? episode.data.summary : 'Nothing to be told'}`  : 'Animize'"
-              name="description"/>
-        </Head>
+    <Head v-if="!packagesPending && !episodesPending">
+      <Title>
+        {{packages ? packages.data.name : 'Animize'}} | Episode {{episode.data.episode ? episode.data.episode : '0'}}
+      </Title>
+      <Meta
+          :content="episode ?`Episode ${episode.data.episode}, ${episode.data.summary ? episode.data.summary : 'Nothing to be told'}`  : 'Animize'"
+          name="description"/>
+    </Head>
     <div v-if="!episodePending" class="flex-inline flex-col">
       <div class="item w-full items-center flex flex-col md:flex-row text-justify m-2 gap-2">
         <video-player v-show="videoPlayerSource"
@@ -15,7 +15,7 @@
                       :controls="true"
                       :sources="videoPlayerSource"
                       class="w-full aspect-[10/7]"
-                      @mounted="videoPlayerOnMounted"
+                      @mounted="videoPlayerLoad"
         />
         <LazyCommonShimmerVideo v-show="!videoPlayerSource"/>
 
@@ -75,7 +75,7 @@
 
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {VideoPlayer} from "@videojs-player/vue";
 import 'video.js/dist/video-js.css'
 import {Carousel, Navigation, Slide} from 'vue3-carousel'
@@ -85,6 +85,7 @@ import 'vue3-carousel/dist/carousel.css'
 
 const route = useRoute()
 const config = useRuntimeConfig()
+const animizePlayerState = useState('animizePlayerState')
 const {anmID, pkgID} = route.params
 
 const hideEpisodeSelector = useState('hideEpisodeSelector', () => true)
@@ -92,26 +93,27 @@ const animizePlayer = useState('animizePlayer', () => null)
 
 const {data: episode, pending: episodePending, refresh: episodeRefresh} = await useLazyAsyncData(
     'episode',
-    () => $fetch(`${config.API_BASE_URL}/episodes/by-id/${anmID}`, {key: anmID})
+    () => $fetch(`${config.API_BASE_URL}/episodes/by-id/${anmID}`, {})
 )
 
 
 const {data: packages, pending: packagesPending, refresh: packagesRefresh} = await useLazyAsyncData(
     'packages',
-    () => $fetch(`${config.API_BASE_URL}/packages/by-id/${pkgID}`, {key: pkgID})
+    () => $fetch(`${config.API_BASE_URL}/packages/by-id/${pkgID}`, {})
 )
 
 const {data: episodes, pending: episodesPending, refresh: episodesRefresh} = await useLazyAsyncData(
     'episodes',
     () => $fetch(`${config.API_BASE_URL}/episodes/list`, {key: pkgID, params: {packageID: pkgID}})
 )
-const videoPlayerSource = useState('videoPlayerSource', () => [])
+const videoPlayerSource = useState<SourceDTO[]>('videoPlayerSource', () => [])
+
 const {data: sources, pending: sourcesPending, refresh: sourcesRefresh} = await useLazyAsyncData(
     'sources',
-    () => $fetch(`${config.API_BASE_URL}/episodes/sources/${anmID}`, {key: anmID})
+    () => $fetch<ResponseDTO>(`${config.API_BASE_URL}/episodes/sources/${anmID}`, {})
         .then(sources => {
           videoPlayerSource.value = []
-          sources.data.forEach(source => {
+          sources.data.forEach((source: { sourcesURL: any; contentLang: any; contentQuality: any; }) => {
             videoPlayerSource.value.push({
               src: source.sourcesURL,
               label: `${source.contentLang} - ${source.contentQuality}`,
@@ -123,8 +125,14 @@ const {data: sources, pending: sourcesPending, refresh: sourcesRefresh} = await 
         })
 )
 
+watch(animizePlayerState, () => {
+  console.log('Playing....')
+  console.log(animizePlayerState.value)
+})
 
-const videoPlayerOnMounted = () => {
+const videoPlayerLoad = (payload: any) => {
+  const state = payload.state
+  console.log(payload)
 }
 
 </script>
