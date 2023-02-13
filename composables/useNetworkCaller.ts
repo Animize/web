@@ -1,6 +1,5 @@
 import {getAuth} from "firebase/auth";
 import {NitroFetchOptions, NitroFetchRequest, TypedInternalResponse} from "nitropack";
-import {FetchOptions} from "ofetch";
 import {POSITION, useToast} from "vue-toastification";
 
 interface UseAPIOptions {
