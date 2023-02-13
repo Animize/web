@@ -3,7 +3,16 @@ import {NitroFetchRequest, TypedInternalResponse} from "nitropack";
 import {FetchOptions} from "ofetch";
 import {POSITION, useToast} from "vue-toastification";
 
-export const useAPI = async <T = unknown, R extends NitroFetchRequest = NitroFetchRequest>(request: R, opts?: FetchOptions | undefined): Promise<TypedInternalResponse<R, T>> => {
+interface UseAPIOptions {
+    showToast: boolean,
+    logging: boolean
+}
+
+export const useAPI = async <T = unknown, R extends NitroFetchRequest = NitroFetchRequest>(
+    request: R,
+    opts?: FetchOptions | undefined,
+    apiOpts?: UseAPIOptions | undefined
+): Promise<TypedInternalResponse<R, T>> => {
     const config = useRuntimeConfig()
     const headers: Record<string, any> = {}
 
@@ -23,12 +32,16 @@ export const useAPI = async <T = unknown, R extends NitroFetchRequest = NitroFet
         },
         onResponseError({response}): Promise<void> | void {
             if (process.client) {
-                const toast = useToast()
-                toast.error(response._data.message, {
-                    position: POSITION.BOTTOM_RIGHT
-                })
+                if (apiOpts?.showToast ?? false) {
+                    const toast = useToast()
+                    toast.error(response._data.message, {
+                        position: POSITION.BOTTOM_RIGHT
+                    })
+                }
             }
-            console.log(response._data.message)
+            if (apiOpts?.logging ?? false) {
+                console.log(response._data.message)
+            }
         }
     })
 
