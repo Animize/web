@@ -24,7 +24,7 @@
         <Carousel v-if="!episodesPending" :items-to-show="1" class="w-full">
           <Slide v-for="episode in episodes.data" :key="episode.id">
             <NuxtLink
-                :to="`/package/${pkgID}-ep/${episode.id}`"
+                :to="`/package/episode/${pkgID}/${episode.id}`"
                 class="item flex flex-col items-start dark:text-white p-8 m-2">
               <span class="item text-xl">Episode {{ episode.episode }}</span>
               <span class="item line-clamp-2 dark:text-white italic">{{

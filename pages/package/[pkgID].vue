@@ -84,7 +84,7 @@
             <NuxtLink
                 v-for="episode in episodes ? episodes.data : []"
                 :key="episode.id"
-                :to="`/package/${pkgID}-ep/${episode.id}`"
+                :to="`/package/episode/${pkgID}/${episode.id}`"
                 class="flex flex-col items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl h-auto
               w-full hover:scale-110 dark:hover:bg-gray-700 bg-white border border-gray-200
               shadow-md dark:animize-foreground dark:border-gray-700 transition duration-300 ease">
@@ -133,6 +133,7 @@ const {data: episodes, pending: episodePending, error: episodeError} = await use
     () => $fetch(`${config.API_BASE_URL}/episodes/list`, {params: {packageID: pkgID}})
 )
 
+
 const {
   data: favorite,
   pending: favoritePending,
@@ -176,7 +177,8 @@ watch(episodeError, (err) => {
 const actionFavorites = async () => {
   if (process.client) {
     if (credential.value) {
-      await useLazyAsyncData('actionFavorites', () => useAPI(`/myself/favorite/${pkgID}`,
+      await useLazyAsyncData('actionFavorites', () => useAPI<any>(
+          `/myself/favorite/${pkgID}`,
           {
             method: 'PATCH',
           }
