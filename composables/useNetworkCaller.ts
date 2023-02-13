@@ -1,5 +1,5 @@
 import {getAuth} from "firebase/auth";
-import {NitroFetchRequest, TypedInternalResponse} from "nitropack";
+import {NitroFetchOptions, NitroFetchRequest, TypedInternalResponse} from "nitropack";
 import {FetchOptions} from "ofetch";
 import {POSITION, useToast} from "vue-toastification";
 
@@ -10,7 +10,7 @@ interface UseAPIOptions {
 
 export const useAPI = async <T = unknown, R extends NitroFetchRequest = NitroFetchRequest>(
     request: R,
-    opts?: FetchOptions | undefined,
+    opts?: NitroFetchOptions<R> | undefined,
     apiOpts?: UseAPIOptions | undefined
 ): Promise<TypedInternalResponse<R, T>> => {
     const config = useRuntimeConfig()
