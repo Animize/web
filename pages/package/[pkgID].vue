@@ -118,19 +118,19 @@ import {POSITION, useToast} from "vue-toastification";
 
 const route = useRoute()
 const config = useRuntimeConfig()
-const {pkgID} = route.params
+const pkgID = computed(() => route.params.pkgID)
 const credential = useState('credential')
 const signInDialogOpen = useState('signInDialogOpen')
 
 const {data: pkg, pending: pending, error: pkgError} = await useLazyAsyncData(
     'pkg',
-    () => useAPI(`${config.API_BASE_URL}/packages/by-id/${pkgID}`)
+    () => useAPI(`${config.API_BASE_URL}/packages/by-id/${pkgID.value}`)
 )
 
 
 const {data: episodes, pending: episodePending, error: episodeError} = await useLazyAsyncData(
     'episodes',
-    () => $fetch(`${config.API_BASE_URL}/episodes/list`, {params: {packageID: pkgID}})
+    () => $fetch(`${config.API_BASE_URL}/episodes/list`, {params: {packageID: pkgID.value}})
 )
 
 
@@ -142,7 +142,7 @@ const {
 } = await useLazyAsyncData(
     'favorite',
     () => useAPI<any>(
-        `${config.API_BASE_URL}/myself/favorite/${pkgID}`,
+        `${config.API_BASE_URL}/myself/favorite/${pkgID.value}`,
         {},
         {
           showToast: false
@@ -150,9 +150,10 @@ const {
     ,
     {
       server: false,
-      immediate: false,
+      immediate: true,
       watch: [
-        credential
+        credential,
+        pkgID
       ]
     }
 )
@@ -178,7 +179,7 @@ const actionFavorites = async () => {
   if (process.client) {
     if (credential.value) {
       await useLazyAsyncData('actionFavorites', () => useAPI<any>(
-          `/myself/favorite/${pkgID}`,
+          `/myself/favorite/${pkgID.value}`,
           {
             method: 'PATCH',
           }
