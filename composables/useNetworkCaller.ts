@@ -1,16 +1,26 @@
 import {getAuth} from "firebase/auth";
-import {NitroFetchRequest, TypedInternalResponse} from "nitropack";
-import {FetchOptions} from "ofetch";
+import {NitroFetchOptions, NitroFetchRequest, TypedInternalResponse} from "nitropack";
+import {POSITION, useToast} from "vue-toastification";
 
-export const useAPI = async <T = unknown, R extends NitroFetchRequest = NitroFetchRequest>(request: R, opts?: FetchOptions | undefined): Promise<TypedInternalResponse<R, T>> => {
+interface UseAPIOptions {
+    showToast?: boolean,
+    logging?: boolean
+}
+
+export const useAPI = async <T = unknown, R extends NitroFetchRequest = NitroFetchRequest>(
+    request: R,
+    opts?: NitroFetchOptions<R> | undefined,
+    apiOpts?: UseAPIOptions | undefined
+): Promise<TypedInternalResponse<R, T>> => {
     const config = useRuntimeConfig()
-    const auth = getAuth()
-    const token = await auth?.currentUser?.getIdToken()
-    const headers = {}
+    const headers: Record<string, any> = {}
 
-    if (token) {
-        // @ts-ignore
-        headers['Authorization'] = `Bearer ${token}`
+    if (process.client) {
+        const auth = getAuth()
+        const token = await auth?.currentUser?.getIdToken()
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`
+        }
     }
 
     const customFetch = $fetch.create({
@@ -18,6 +28,19 @@ export const useAPI = async <T = unknown, R extends NitroFetchRequest = NitroFet
         headers: headers,
         onRequest({request, options}) {
             console.log("Intercepted API", request);
+        },
+        onResponseError({response}): Promise<void> | void {
+            if (process.client) {
+                if (apiOpts?.showToast ?? false) {
+                    const toast = useToast()
+                    toast.error(response._data.message, {
+                        position: POSITION.BOTTOM_RIGHT
+                    })
+                }
+            }
+            if (apiOpts?.logging ?? false) {
+                console.log(response._data.message)
+            }
         }
     })
 

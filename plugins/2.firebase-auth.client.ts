@@ -10,7 +10,7 @@ export default defineNuxtPlugin(() => {
         if (user) {
             isLoggedIn.value = true
             credential.value = user
-            await useLazyAsyncData('populateUser', () => useAPI('/auth/populate',
+            await useLazyAsyncData('populateUser', () => useAPI<any>('/auth/populate',
                 {
                     method: 'POST'
                 }

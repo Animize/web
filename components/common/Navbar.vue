@@ -1,7 +1,7 @@
 <template>
   <div>
     <Disclosure v-slot="{ open }" as="nav">
-      <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 gap-2">
         <div class="relative flex items-center justify-between h-16">
           <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
             <!-- Mobile menu button-->
@@ -26,7 +26,7 @@
               </div>
             </div>
           </div>
-          <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+          <div class="absolute inset-y-0 right-0 flex items-center">
             <div class="ml-6 relative">
               <label class="sr-only" for="simple-search">Search</label>
               <div class="relative w-full">
@@ -41,19 +41,21 @@
                 <input id="simple-search"
                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                        placeholder="Search"
+                       v-model="search"
+                       @keyup.enter="searchAnime(search)"
                        type="text">
               </div>
             </div>
 
             <button
-                class="animize-foreground p-1 m-2 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                class="animize-foreground p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                 type="button">
               <span class="sr-only">View notifications</span>
               <BellIcon aria-hidden="true" class="h-6 w-6"/>
             </button>
 
             <!-- Profile dropdown -->
-            <Menu as="div" class="ml-3 relative z-10">
+            <Menu as="div" class="relative z-10">
               <div id="button-profile-layout">
                 <MenuButton
                     v-if="isLoggedIn"
@@ -128,6 +130,7 @@ const signInDialogOpen = useState('signInDialogOpen', () => false)
 const route = useRoute()
 const isLoggedIn = useState('isLoggedIn')
 const credential = useState('credential')
+const search = useState('search',() => route.query.search)
 
 let navigation = [
   {name: 'Home', href: '/'},
@@ -137,6 +140,15 @@ let navigation = [
 const openSignIn = async () => {
   nextTick(() => {
     signInDialogOpen.value = true
+  })
+}
+
+const searchAnime = async (srch) =>{
+  navigateTo({
+    path: '/anime',
+    query : {
+      search : srch
+    }
   })
 }
 
