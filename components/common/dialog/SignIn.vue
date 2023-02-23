@@ -48,7 +48,3 @@ const signInWithGoogleAction = async () =>{
   await signInWithGoogle()
 }
 </script>
-
-<style scoped>
-
-</style>
