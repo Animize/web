@@ -72,7 +72,7 @@
                     @click="applyAction">Apply
                 </button>
                 <button ref="cancelButtonRef"
-                        class="button button-neutral transition-colors ease-in duration-200"
+                        class="button button-neutral transition-colors ease-in duration-200 text-white"
                         type="button" @click="resetFilterAction">Reset
                 </button>
               </div>

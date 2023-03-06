@@ -14,13 +14,13 @@
           </div>
           <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
             <NuxtLink class="flex-shrink-0 flex items-center" to="/">
-              <div class="text-white" style="font-family: Slackey, cursive;">Animize</div>
+              <div class="text-gray-800 dark:text-white" style="font-family: Slackey, cursive;">Animize</div>
             </NuxtLink>
             <div class="hidden sm:block sm:ml-6">
               <div class="flex space-x-4">
                 <NuxtLink v-for="item in navigation" :key="item.name"
                           :aria-current="item.href === route.path ? 'page' : undefined"
-                          :class="[item.href === route.path ? 'item-selected' : 'item-not-selected', 'px-3 py-2 text-sm font-medium']"
+                          :class="[item.href === route.path ? 'item-selected' : 'item-not-selected', 'px-3 py-2 text-sm font-medium ']"
                           :to="item.href">{{ item.name }}
                 </NuxtLink>
               </div>
