@@ -24,6 +24,7 @@
     "@tailwindcss/line-clamp": "^0.4.2",
     "@videojs-player/vue": "^1.0.0",
     "autoprefixer": "^10.4.13",
+    "dayjs": "^1.11.7",
     "firebase": "^9.16.0",
     "flowbite": "^1.6.3",
     "postcss": "^8.4.21",

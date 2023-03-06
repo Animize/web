@@ -63,11 +63,11 @@
     }
 
     .item-selected {
-        @apply text-white border-b-4 hover:bg-gray-600
+        @apply text-gray-900 dark:text-white border-b-4 hover:bg-gray-600
     }
 
     .item-not-selected {
-        @apply text-gray-300 hover:bg-gray-600
+        @apply text-gray-900 dark:text-gray-300 hover:bg-gray-600
     }
 
     .menu-item-selected {
