@@ -169,8 +169,6 @@ watch(() => {
 
 const videoPlayerReady = async (payload: any) => {
 
-  console.log(animizePlayer.value)
-
   if (process.client) {
 
 
