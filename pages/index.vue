@@ -35,7 +35,7 @@
     <div class="item flex flex-col md:flex-row">
       <div class="basis-1/2 h-96 card p-2 m-2 flex flex-col">
         <LazyCommonShimmerCard v-if="historyPending"/>
-        <div v-if="credential && history?.data?.totalElements > 0"
+        <div v-if="!historyPending &&credential && history?.data?.totalElements > 0"
              class="item relative flex items-center justify-between m-2">
           <div class="left-0 animize-text-subtitle">
             Resume what you left
@@ -44,7 +44,8 @@
             See more
           </div>
         </div>
-        <div v-if="credential && history?.data?.totalElements > 0" class="item w-full h-full overflow-y-auto">
+        <div v-if="!historyPending &&credential && history?.data?.totalElements > 0"
+             class="item w-full h-full overflow-y-auto">
           <div v-for="hst in history?.data?.content" :key="hst?.id" class="flex flex-row p-4">
             <LazyNuxtImg class="basis-1/4 aspect-[7/10] w-4" :src="hst?.packages?.cover ?? '/icon/img_notfound.png'"/>
             <div class="basis-3/4">
@@ -66,7 +67,7 @@
       </div>
       <div class="basis-1/2 h-96 card p-2 m-2 flex flex-col">
         <LazyCommonShimmerCard v-if="favoritesPending"/>
-        <div v-if="credential && favorites?.data?.totalElements > 0"
+        <div v-if="!favoritesPending && credential && favorites?.data?.totalElements > 0"
              class="item relative flex items-center justify-between m-2">
           <div class="left-0 animize-text-subtitle">
             Your favorited anime
@@ -75,7 +76,8 @@
             See more
           </div>
         </div>
-        <div v-if="credential && favorites?.data?.totalElements > 0" class="item w-full h-full overflow-y-auto">
+        <div v-if="!favoritesPending && credential && favorites?.data?.totalElements > 0"
+             class="item w-full h-full overflow-y-auto">
           <div v-for="fvr in favorites?.data?.content" :key="fvr?.id" class="flex flex-row p-4">
             <LazyNuxtImg class="basis-1/4 aspect-[7/10] w-4" :src="fvr?.packages?.cover ?? '/icon/img_notfound.png'"/>
             <div class="basis-3/4">
@@ -151,6 +153,10 @@ const {data: favorites, pending: favoritesPending, refresh: favoritesRefresh} = 
 onMounted(() => {
   nextTick(() => {
     refresh()
+    if (credential) {
+      historyRefresh()
+      favoritesRefresh()
+    }
   })
 })
 
