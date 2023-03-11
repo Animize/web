@@ -8,30 +8,37 @@
           :content="episode ?`Episode ${episode?.data?.episode ?? 0}, ${episode?.data?.summary ?? 'Nothing to be told'}`  : 'Animize'"
           name="description"/>
     </Head>
-    <div v-if="!episodePending" class="flex-inline flex-col">
-      <div class="item w-full items-center flex flex-col md:flex-row text-justify m-2 gap-2">
+    <div v-if="!episodePending" class="flex-inline flex-col w-full">
+      <div
+          class="item w-full md:max-w-1/2 aspect-[10/7] items-center flex flex-col md:flex-row justify-center relative z-0 p-4 md:p-8 lg:p-12">
+        <canvas
+            id="ambient-canvas"
+            ref="ambientCanvas"
+            class="object-cover absolute rounded-lg z-0 opacity-60 blur-xl"
+        />
         <video-player v-show="videoPlayerSource"
                       id="animize-player"
                       ref="animizePlayer"
-                      :options="playerOptions"
                       :controls="true"
+                      :options="playerOptions"
                       :sources="videoPlayerSource"
-                      class="w-full aspect-[10/7]"
+                      class="justify-center z-10 w-fit h-fit object-center absolute shadow-lg"
                       @mounted="videoPlayerLoad"
                       @ready="videoPlayerReady"
         />
         <LazyCommonShimmerVideo v-show="!videoPlayerSource"/>
 
       </div>
-      <div class="item w-full items-center flex flex-col md:flex-row text-left m-2 gap-2">
+      <div class="item w-full flex flex-col md:flex-row">
         <Carousel v-if="!episodesPending" :items-to-show="1" class="w-full">
-          <Slide v-for="episode in episodes.data" :key="episode.id">
+          <Slide v-for="episode in episodes.data" :key="episode.id" class="w-1/2">
             <NuxtLink
                 :to="`/package/episode/${pkgID}/${episode.id}`"
-                class="item flex flex-col items-start dark:text-white">
+                class="item flex flex-col dark:text-white w-4/6">
               <div class="item text-xl">Episode {{ episode.episode }}</div>
-              <div class="item dark:text-white italic w-full">{{
-                  episode?.summary ?? 'Nothing to be told'
+              <div class="item dark:text-white italic text-sm line-clamp-3">
+                {{
+                  episode?.summary ?? 'Nothin to be told'
                 }}
               </div>
             </NuxtLink>
@@ -83,7 +90,7 @@
 
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import {VideoPlayer, VideoPlayerState} from "@videojs-player/vue";
 import 'video.js/dist/video-js.css'
 import {Carousel, Navigation, Slide} from 'vue3-carousel'
@@ -102,11 +109,15 @@ const config = useRuntimeConfig()
 const {anmID, pkgID} = route.params
 const credential = useState('credential')
 
-const hideEpisodeSelector = useState('hideEpisodeSelector', () => true)
-const animizePlayer = useState('animizePlayer')
+const animizePlayer = useState<any>('animizePlayer')
+const ambientCanvas = useState<any>('ambientCanvas')
+const ambientContext = useState<any>('ambientContext')
+
 const playerState = useState<VideoPlayerState>('playerState')
 const playerOptions = {
   playbackRates: [0.5, 1, 1.5, 2],
+  fluid: true,
+  aspectRatio: '16:9',
 }
 let player = null
 
@@ -164,6 +175,16 @@ watch(() => {
       body: watchSyncDTO
     }))
   }
+
+
+  // Update our ambient
+  if (ambientContext.value) {
+    let videoElement = document.querySelector("#animize-player_html5_api")
+    ambientCanvas.value.width = (videoElement?.clientWidth ?? 0)  + 35
+    ambientCanvas.value.height = (videoElement?.clientHeight ?? 0) + 35
+    ambientContext.value.drawImage(videoElement, 0, 0, videoElement?.clientWidth, videoElement?.clientHeight)
+  }
+
 })
 
 
@@ -201,4 +222,21 @@ const videoPlayerLoad = (payload: any) => {
   playerState.value = payload.state
 }
 
+watch(ambientCanvas,() =>{
+  if (ambientCanvas.value){
+    ambientContext.value = ambientCanvas.value.getContext('2d')
+  }
+})
+
 </script>
+<style>
+/*#ambient-canvas {
+  border-radius: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(30px);
+  opacity: 0.5;
+}*/
+</style>
