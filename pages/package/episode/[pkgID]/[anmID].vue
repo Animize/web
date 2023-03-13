@@ -10,7 +10,7 @@
     </Head>
     <div v-if="!episodePending" class="flex-inline flex-col w-full">
       <div
-          class="item w-full md:max-w-1/2 aspect-[10/7] items-center flex flex-col md:flex-row justify-center relative z-0 p-4 md:p-8 lg:p-12">
+          class="item w-full md:max-w-1/2 aspect-[16/9] items-center flex flex-col md:flex-row justify-center relative z-0 p-4 md:p-8">
         <canvas
             id="ambient-canvas"
             ref="ambientCanvas"
@@ -229,14 +229,3 @@ watch(ambientCanvas,() =>{
 })
 
 </script>
-<style>
-/*#ambient-canvas {
-  border-radius: 10px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  filter: blur(30px);
-  opacity: 0.5;
-}*/
-</style>
