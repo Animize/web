@@ -134,7 +134,13 @@ const {data: packages, pending: packagesPending, refresh: packagesRefresh} = awa
 
 const {data: episodes, pending: episodesPending, refresh: episodesRefresh} = await useLazyAsyncData(
     'episodes',
-    () => $fetch(`${config.public.API_BASE_URL}/episodes/list`, {key: pkgID, params: {packageID: pkgID}})
+    () => $fetch(`${config.public.API_BASE_URL}/episodes/list`,
+        {
+          key: pkgID,
+          params: {
+            packageID: pkgID
+          },
+        })
 )
 const videoPlayerSource = useState<SourceDTO[]>('videoPlayerSource', () => [])
 
