@@ -147,7 +147,8 @@ const searchAnime = async (srch) =>{
   navigateTo({
     path: '/anime',
     query : {
-      search : srch
+      search : srch,
+      page: 1
     }
   })
 }
