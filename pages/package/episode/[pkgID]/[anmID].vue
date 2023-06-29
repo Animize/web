@@ -10,7 +10,7 @@
     </Head>
     <div v-if="!episodePending" class="flex-inline flex-col w-full">
       <div
-          class="item w-full md:max-w-1/2 aspect-[10/7] items-center flex flex-col md:flex-row justify-center relative z-0 p-4 md:p-8 lg:p-12">
+          class="item w-3/4 items-center justify-center relative z-0">
         <canvas
             id="ambient-canvas"
             ref="ambientCanvas"
@@ -22,7 +22,7 @@
                       :controls="true"
                       :options="playerOptions"
                       :sources="videoPlayerSource"
-                      class="justify-center z-10 w-fit h-fit object-center absolute shadow-lg"
+                      class="justify-center z-10 object-contain absolute shadow-lg"
                       @mounted="videoPlayerLoad"
                       @ready="videoPlayerReady"
         />
@@ -116,7 +116,6 @@ const ambientContext = useState<any>('ambientContext')
 const playerState = useState<VideoPlayerState>('playerState')
 const playerOptions = {
   playbackRates: [0.5, 1, 1.5, 2],
-  fluid: true,
   aspectRatio: '16:9',
 }
 let player = null
@@ -124,24 +123,24 @@ let player = null
 
 const {data: episode, pending: episodePending, refresh: episodeRefresh} = await useLazyAsyncData(
     'episode',
-    () => $fetch(`${config.API_BASE_URL}/episodes/by-id/${anmID}`, {})
+    () => $fetch(`${config.public.API_BASE_URL}/episodes/by-id/${anmID}`, {})
 )
 
 
 const {data: packages, pending: packagesPending, refresh: packagesRefresh} = await useLazyAsyncData(
     'packages',
-    () => $fetch(`${config.API_BASE_URL}/packages/by-id/${pkgID}`, {})
+    () => $fetch(`${config.public.API_BASE_URL}/packages/by-id/${pkgID}`, {})
 )
 
 const {data: episodes, pending: episodesPending, refresh: episodesRefresh} = await useLazyAsyncData(
     'episodes',
-    () => $fetch(`${config.API_BASE_URL}/episodes/list`, {key: pkgID, params: {packageID: pkgID}})
+    () => $fetch(`${config.public.API_BASE_URL}/episodes/list`, {key: pkgID, params: {packageID: pkgID}})
 )
 const videoPlayerSource = useState<SourceDTO[]>('videoPlayerSource', () => [])
 
 const {data: sources, pending: sourcesPending, refresh: sourcesRefresh} = await useLazyAsyncData(
     'sources',
-    () => $fetch<ResponseDTO>(`${config.API_BASE_URL}/episodes/sources/${anmID}`, {})
+    () => $fetch<ResponseDTO>(`${config.public.API_BASE_URL}/episodes/sources/${anmID}`, {})
         .then(sources => {
           videoPlayerSource.value = []
           sources.data.forEach((source: { sourcesURL: any; contentLang: any; contentQuality: any; }) => {

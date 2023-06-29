@@ -124,13 +124,13 @@ const signInDialogOpen = useState('signInDialogOpen')
 
 const {data: pkg, pending: pending, error: pkgError} = await useLazyAsyncData(
     'pkg',
-    () => useAPI(`${config.API_BASE_URL}/packages/by-id/${pkgID.value}`)
+    () => useAPI(`${config.public.API_BASE_URL}/packages/by-id/${pkgID.value}`)
 )
 
 
 const {data: episodes, pending: episodePending, error: episodeError} = await useLazyAsyncData(
     'episodes',
-    () => $fetch(`${config.API_BASE_URL}/episodes/list`, {params: {packageID: pkgID.value}})
+    () => $fetch(`${config.public.API_BASE_URL}/episodes/list`, {params: {packageID: pkgID.value}})
 )
 
 
@@ -142,7 +142,7 @@ const {
 } = await useLazyAsyncData(
     'favorite',
     () => useAPI<any>(
-        `${config.API_BASE_URL}/myself/favorite/${pkgID.value}`,
+        `${config.public.API_BASE_URL}/myself/favorite/${pkgID.value}`,
         {},
         {
           showToast: false
@@ -182,9 +182,9 @@ const actionFavorites = async () => {
           `/myself/favorite/${pkgID.value}`,
           {
             method: 'PATCH',
-          }
+          },
       ))
-      favoriteRefresh()
+      await favoriteRefresh()
     } else {
       const toast = useToast()
       toast.info('You must sign in before adding to favorites!', {
