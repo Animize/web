@@ -10,7 +10,7 @@
     </Head>
     <div v-if="!episodePending" class="flex-inline flex-col w-full">
       <div
-          class="item w-3/4 items-center justify-center relative z-0">
+          class="item w-full md:max-w-1/2 aspect-[16/9] items-center flex flex-col md:flex-row justify-center relative z-0 p-4 md:p-8">
         <canvas
             id="ambient-canvas"
             ref="ambientCanvas"
@@ -22,7 +22,7 @@
                       :controls="true"
                       :options="playerOptions"
                       :sources="videoPlayerSource"
-                      class="justify-center z-10 object-contain absolute shadow-lg"
+                      class="justify-center z-10 w-fit h-fit object-center absolute shadow-lg"
                       @mounted="videoPlayerLoad"
                       @ready="videoPlayerReady"
         />
