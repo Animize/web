@@ -71,8 +71,6 @@
 </template>
 <script setup>
 
-import {useAPI} from "~/composables/useNetworkCaller";
-
 const route = useRoute()
 const page = useState('page', () => 0)
 const size = useState('size', () => 16)
@@ -86,7 +84,7 @@ const computedQuery = computed(() => route.query)
 const config = useRuntimeConfig()
 const {data: libraryPackages, pending: libraryPending, refresh: libraryRefresh} = await useLazyAsyncData(
     'libraryPackages',
-    () => useAPI(`/packages/page`, {
+    () => useAPI(`${config.public.API_BASE_URL}/packages/page`, {
       onRequest({options}) {
         let query = {}
         if (page.value) {
@@ -102,7 +100,7 @@ const {data: libraryPackages, pending: libraryPending, refresh: libraryRefresh} 
         if (search.value) {
           query.name = search.value
         }
-        if (genres) {
+        if (genres.value) {
           query.genreIds = genres.value.join(',')
         }
 
@@ -110,6 +108,7 @@ const {data: libraryPackages, pending: libraryPending, refresh: libraryRefresh} 
       }
     }),
     {
+      immediate: false,
       watch: [
         computedQuery
       ]

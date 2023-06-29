@@ -24,7 +24,7 @@ export const useAPI = async <T = unknown, R extends NitroFetchRequest = NitroFet
     }
 
     const customFetch = $fetch.create({
-        baseURL: config.API_BASE_URL,
+        baseURL: config.public.API_BASE_URL,
         headers: headers,
         onRequest({request, options}) {
             console.log("Intercepted API", request);

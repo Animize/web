@@ -123,13 +123,13 @@ const carouselBreakpoints = {
 
 const {data: bannerPackages, pending, refresh} = await useLazyAsyncData(
     'bannerPackages',
-    () => $fetch<any>(`${config.API_BASE_URL}/packages/page?page=0&size=10&sort=name,desc`)
+    () => $fetch<any>(`${config.public.API_BASE_URL}/packages/page?page=0&size=10&sort=name,desc`)
 )
 
 
 const {data: history, pending: historyPending, refresh: historyRefresh} = await useLazyAsyncData(
     'homeHistory',
-    () => useAPI<any>(`${config.API_BASE_URL}/myself/watch?page=0&size=5&sort=lastModifiedDate,desc`),
+    () => useAPI<any>(`${config.public.API_BASE_URL}/myself/watch?page=0&size=5&sort=lastModifiedDate,desc`),
     {
       immediate: false,
       watch: [
@@ -140,7 +140,7 @@ const {data: history, pending: historyPending, refresh: historyRefresh} = await 
 
 const {data: favorites, pending: favoritesPending, refresh: favoritesRefresh} = await useLazyAsyncData(
     'homeFavorites',
-    () => useAPI<any>(`${config.API_BASE_URL}/myself/favorites?page=0&size=5&sort=createdDate,desc`),
+    () => useAPI<any>(`${config.public.API_BASE_URL}/myself/favorites?page=0&size=5&sort=createdDate,desc`),
     {
       immediate: false,
       watch: [

@@ -99,7 +99,7 @@ const searchQuery = computed(() => route.query.search)
 
 const {data: genres, pending, refresh} = await useLazyAsyncData(
     'genres',
-    () => $fetch(`${config.API_BASE_URL}/genre/list`)
+    () => $fetch(`${config.public.API_BASE_URL}/genre/list`)
         .then((result) => {
           result.data.unshift({
             id: null,
