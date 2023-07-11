@@ -1,5 +1,7 @@
 import {defineNuxtPlugin, useRuntimeConfig} from "#app";
 import {FirebaseOptions, initializeApp} from "firebase/app";
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
+
 
 export default defineNuxtPlugin((app) => {
     const config = useRuntimeConfig()
@@ -14,6 +16,11 @@ export default defineNuxtPlugin((app) => {
         appId: String(config.public.FIREBASE_APP_ID),
         measurementId: String(config.public.FIREBASE_MEASUREMENT_ID)
     };
+
     // Initialize Firebase
-    initializeApp(firebaseConfig);
+    const firebaseApp = initializeApp(firebaseConfig);
+    initializeAppCheck(firebaseApp,{
+        provider: new ReCaptchaV3Provider(config.public.RECAPTCHA_SITE_KEY),
+        isTokenAutoRefreshEnabled: true
+    })
 })

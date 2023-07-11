@@ -21,6 +21,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             API_BASE_URL: '',
+            RECAPTCHA_SITE_KEY: '',
             FIREBASE_API_KEY: '',
             FIREBASE_AUTH_DOMAIN: '',
             FIREBASE_DATABASE_URL: '',

@@ -2,6 +2,7 @@ declare module 'nuxt/schema' {
     interface RuntimeConfig {
         public: {
             API_BASE_URL: String,
+            RECAPTCHA_SITE_KEY: String,
             FIREBASE_API_KEY: String,
             FIREBASE_AUTH_DOMAIN: String,
             FIREBASE_DATABASE_URL: String,
