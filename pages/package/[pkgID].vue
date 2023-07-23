@@ -17,7 +17,7 @@
               class="flex flex-col items-center md:flex-row relative">
             <nuxt-img :alt="`animize-${pkgID}-cover`"
                       :src="pkg.data.cover ? pkg.data.cover : '/icon/img_notfound.png'"
-                      class="object-cover w-48 h-72 rounded md:h-auto md:w-48 shadow m-8 hover:scale-110"/>
+                      class="object-cover w-48 h-72 rounded md:h-auto md:w-48 shadow m-8"/>
             <div class="flex flex-col justify-between p-4 gap-2 leading-normal w-full">
               <p class="mb-2 p-2 animize-text-title text-ellipsis overflow-hidden">
                 {{ pkg.data.name }}</p>
@@ -37,7 +37,7 @@
                   {{ pkg.data.safeContent }}
                 </div>
               </div>
-              <div class="font-normal flex inline-flex gap-2.5">
+              <div class="font-normal flex gap-2.5">
                 <button
                     v-if="!favorite"
                     class="py-2 px-3 w-40 button button-neutral"
@@ -67,7 +67,10 @@
                 <NuxtLink
                     v-for="item in pkg.data.genreList"
                     :key="item.id" :to="`/anime?page=1&genre=${item.id}`"
-                    class="px-4 py-2 rounded-full font-semibold text-sm cursor-pointer active:bg-gray-300 active:text-gray-800 dark:active:animize-foreground dark:active:text-white hover:bg-gray-900 hover:text-white dark:hover:bg-gray-300 dark:hover:text-gray-800 transition duration-300 ease text-gray-500 bg-gray-200 dark:animize-foreground dark:text-white mr-1"
+                    class="px-4 py-2 rounded-full font-semibold text-sm cursor-pointer active:bg-gray-300
+                    active:text-gray-800 dark:active:animize-foreground dark:active:text-white
+                    hover:bg-gray-900 hover:text-white dark:hover:bg-gray-300 dark:hover:text-gray-800
+                    transition duration-300 ease text-gray-500 bg-gray-200 dark:animize-foreground dark:text-white mr-1"
                 >{{ item.name }}
                 </NuxtLink>
               </div>

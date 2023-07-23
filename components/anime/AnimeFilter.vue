@@ -14,7 +14,8 @@
                            leave-from="opacity-100 translate-y-0 sm:scale-100"
                            leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
             <DialogPanel
-                class="relative shadow-lg bg-opacity-90 backdrop-blur-xl animize-foreground rounded-lg text-left overflow-hidden shadow-xl transform transition-all w-5/6 h-auto">
+                class="relative shadow-lg bg-opacity-90 backdrop-blur-xl animize-foreground rounded-lg text-left
+                overflow-y-auto shadow-xl transform transition-all w-5/6 h-5/6">
               <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4 text-white">
                 <DialogTitle as="h1" class="text-3xl leading-6 font-bold ">Filter
                 </DialogTitle>
@@ -131,7 +132,7 @@ const applyAction = async () => {
   let parsedId = currentGenreFilter.value.map(gnr => gnr.id).join(',')
 
   const query = {
-    page: route.query.page ? route.query.page : 1,
+    page: 1,
     genre: parsedId,
     sort: route.query.sort,
     search: nameSearch.value

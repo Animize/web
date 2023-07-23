@@ -1,10 +1,11 @@
 <template>
   <div id="library" class="flex-inline flex-wrap">
     <div v-if="numberOfElements !== 0 && !libraryPending" :class="libraryPending ? 'animate-pulse' : ''"
-         class="item w-auto h-auto flex-grow grid p-2 grid-cols-2 sm:grid-cols-2  lg:grid-cols-4  gap-1.5">
+         class="item w-auto h-auto grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6  gap-2 place-items-center	">
       <NuxtLink v-for="item in packages ? packages.content : []" :key="item.id"
                 :to="`/package/${item.id}`"
-                class="group relative z-0 w-5/6 aspect-[7/10] rounded drop-shadow-md hover:drop-shadow-2xl max-w-sm bg-white shadow-md dark:animize-foreground transition duration-300 ease">
+                class="group relative z-0 w-40 sm:w-44 lg:w-48 aspect-[7/10] rounded drop-shadow-md hover:drop-shadow-2xl
+                max-w-sm bg-white shadow-md dark:animize-foreground transition duration-300 ease">
         <nuxt-img :src="item.cover ? item.cover : '/icon/img_notfound.png'"
                   alt=""
                   class="rounded object-center transition-all duration-300	group-hover:opacity-50 group-hover:blur w-full h-full absolute z-0"
@@ -29,6 +30,7 @@
     <LazyCommonNotFound v-if="!libraryPending && numberOfElements === 0" id="animize-not-found"
                         class="flex items-center justify-center h-screen"></LazyCommonNotFound>
     <LazyCommonPagination v-if="numberOfElements !== 0 && !libraryPending"
+                          class="item"
                           :total-pages="totalPages"
                           @change-page="(n) => changePage(n.page,n.totalPage)"></LazyCommonPagination>
 
@@ -39,7 +41,7 @@
 
 const route = useRoute()
 const page = useState('page', () => 0)
-const size = useState('size', () => 16)
+const size = useState('size', () => 24)
 const sort = useState('sort', () => null)
 const genres = useState('genres', () => [])
 const search = useState('search', () => null)
