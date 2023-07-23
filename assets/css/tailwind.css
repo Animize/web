@@ -31,11 +31,14 @@
     }
 
     .button-primary {
-        @apply text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
+        @apply text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none
+        focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
+        transition duration-300
     }
 
     .button-neutral {
-        @apply dark:text-white text-gray-900 dark:hover:text-gray-900 hover:text-white dark:hover:bg-gray-300 hover:bg-gray-900 rounded-lg
+        @apply dark:text-white text-gray-900 dark:hover:text-gray-900 hover:text-white dark:hover:bg-gray-300
+        hover:bg-gray-900 rounded-lg transition duration-300
     }
 
     .card {
@@ -63,19 +66,19 @@
     }
 
     .item-selected {
-        @apply text-gray-900 dark:text-white border-b-4 hover:bg-gray-600
+        @apply text-gray-900 dark:text-white border-b-4 hover:bg-gray-600 transition duration-300
     }
 
     .item-not-selected {
-        @apply text-gray-900 dark:text-gray-300 hover:bg-gray-600
+        @apply text-gray-900 dark:text-gray-300 hover:bg-gray-600 transition duration-300
     }
 
     .menu-item-selected {
-        @apply text-white hover:bg-gray-600
+        @apply text-white hover:bg-gray-600 transition duration-300
     }
 
     .menu-item-not-selected {
-        @apply text-gray-300 hover:bg-gray-600
+        @apply text-gray-300 hover:bg-gray-600 transition duration-300
     }
 
     .animize-text-title {

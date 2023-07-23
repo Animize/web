@@ -7,7 +7,7 @@
     </Head>
     <div class="justify-center p-2">
       <div class="flex flex-row justify-between gap-6 p-2 w-full h-auto">
-        <div class="item w-1/3 h-auto">
+        <div class="item w-2/3 md:w-1/3 h-auto">
           <Listbox v-model="selectedSort">
             <div class="relative">
               <ListboxButton

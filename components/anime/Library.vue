@@ -1,10 +1,11 @@
 <template>
   <div id="library" class="flex-inline flex-wrap">
-    <div v-if="totalElements !== 0 && !libraryPending" :class="libraryPending ? 'animate-pulse' : ''"
-         class="item w-auto h-auto flex-grow grid p-2 grid-cols-2 sm:grid-cols-2  lg:grid-cols-4  gap-1.5">
+    <div v-if="numberOfElements !== 0 && !libraryPending" :class="libraryPending ? 'animate-pulse' : ''"
+         class="item w-auto h-auto grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6  gap-2 place-items-center	">
       <NuxtLink v-for="item in packages ? packages.content : []" :key="item.id"
                 :to="`/package/${item.id}`"
-                class="group relative z-0 w-5/6 aspect-[7/10] rounded drop-shadow-md hover:drop-shadow-2xl max-w-sm bg-white shadow-md dark:animize-foreground transition duration-300 ease">
+                class="group relative z-0 w-40 sm:w-44 lg:w-48 aspect-[7/10] rounded drop-shadow-md hover:drop-shadow-2xl
+                max-w-sm bg-white shadow-md dark:animize-foreground transition duration-300 ease">
         <nuxt-img :src="item.cover ? item.cover : '/icon/img_notfound.png'"
                   alt=""
                   class="rounded object-center transition-all duration-300	group-hover:opacity-50 group-hover:blur w-full h-full absolute z-0"
@@ -26,45 +27,12 @@
       </NuxtLink>
     </div>
     <LazyCommonLoading v-if="libraryPending"></LazyCommonLoading>
-    <LazyCommonNotFound id="animize-not-found" v-if="!libraryPending && totalElements === 0"
+    <LazyCommonNotFound v-if="!libraryPending && numberOfElements === 0" id="animize-not-found"
                         class="flex items-center justify-center h-screen"></LazyCommonNotFound>
-
-    <nav v-if="totalElements !== 0 && !libraryPending" class="item flex justify-center mt-4">
-      <ul class="inline-flex items-center -space-x-px">
-        <li>
-          <div class="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:animize-foreground dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-             @click="changePage(page - 2,totalPages)">
-            <span class="sr-only">Previous</span>
-            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                 xmlns="http://www.w3.org/2000/svg">
-              <path clip-rule="evenodd"
-                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                    fill-rule="evenodd"></path>
-            </svg>
-          </div>
-        </li>
-        <li v-for="numPage in totalPages" :key="numPage">
-          <div
-              :aria-current="numPage === page + 1 ? 'page' : 'false'"
-              :class="numPage === page + 1 ? 'z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white' : 'py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:animize-foreground dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'"
-              @click="changePage(numPage,totalPages)"
-
-          >{{ numPage }}</div>
-        </li>
-        <li>
-          <div class="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:animize-foreground dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-             @click="changePage(page + 2,totalPages)">
-            <span class="sr-only">Next</span>
-            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                 xmlns="http://www.w3.org/2000/svg">
-              <path clip-rule="evenodd"
-                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    fill-rule="evenodd"></path>
-            </svg>
-          </div>
-        </li>
-      </ul>
-    </nav>
+    <LazyCommonPagination v-if="numberOfElements !== 0 && !libraryPending"
+                          class="item"
+                          :total-pages="totalPages"
+                          @change-page="changePage"></LazyCommonPagination>
 
   </div>
 
@@ -73,7 +41,7 @@
 
 const route = useRoute()
 const page = useState('page', () => 0)
-const size = useState('size', () => 16)
+const size = useState('size', () => 24)
 const sort = useState('sort', () => null)
 const genres = useState('genres', () => [])
 const search = useState('search', () => null)
@@ -118,11 +86,11 @@ const {data: libraryPackages, pending: libraryPending, refresh: libraryRefresh} 
 
 const packages = useState('packages', () => libraryPackages ? libraryPackages.data : [])
 const totalPages = useState('totalPages', () => 0)
-const totalElements = useState('totalElements', () => 0)
+const numberOfElements = useState('numberOfElements', () => 0)
 
 watch(libraryPackages, (nPkg) => {
   totalPages.value = nPkg.data.totalPages
-  totalElements.value = nPkg.data.totalElements
+  numberOfElements.value = nPkg.data.numberOfElements
   packages.value = nPkg.data
 })
 
