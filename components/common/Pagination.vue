@@ -4,10 +4,7 @@
       <li>
         <div
             class="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:animize-foreground dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            @click="emit('changePage',{
-              page: page,
-              totalPage: totalPages
-            })">
+            @click="validateChangePage(page,totalPages)">
           <span class="sr-only">Previous</span>
           <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                xmlns="http://www.w3.org/2000/svg">
@@ -21,10 +18,7 @@
         <div
             :aria-current="numPage === page + 1 ? 'page' : 'false'"
             :class="numPage === page + 1 ? 'z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white' : 'py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:animize-foreground dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'"
-            @click="emit('changePage',{
-              page: numPage,
-              totalPage: totalPages
-            })"
+            @click="validateChangePage(numPage,totalPages)"
 
         >{{ numPage }}
         </div>
@@ -32,7 +26,7 @@
       <li>
         <div
             class="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:animize-foreground dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            @click="emit('changePage',{page: page + 2,totalPage:totalPages})">
+            @click="validateChangePage(page + 2,totalPages)">
           <span class="sr-only">Next</span>
           <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                xmlns="http://www.w3.org/2000/svg">
@@ -57,14 +51,17 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits({
-  changePage: ({page, totalPage}) => {
-    if (typeof page !== 'number'){
-      throw new Error('Must number')
-    }
-    return true
+const validateChangePage = (page: any, totalPage: number) => {
+  if (typeof page !== 'number'){
+    return
   }
-})
+  emit('changePage', page, totalPage)
+}
+
+const emit = defineEmits<{
+  changePage: [page: any, totalPage: number]
+}
+>()
 
 const pageList = useState('pageList')
 
@@ -92,9 +89,9 @@ const composePageSelector = () => {
 
   if (page.value + 1 > 5) {
     composedPage[1] = '...'
-    if (page.value + 1 >= totalPage - 4){
+    if (page.value + 1 >= totalPage - 4) {
       contentCount = 8
-      for (contentCount;contentCount>1;contentCount--){
+      for (contentCount; contentCount > 1; contentCount--) {
         composedPage[contentCount] = totalPage - (8 - contentCount)
       }
     } else {
@@ -103,7 +100,7 @@ const composePageSelector = () => {
       }
     }
   } else {
-    if (totalPage < contentCount){
+    if (totalPage < contentCount) {
       contentCount = totalPage
     }
     for (idx = 1; idx < contentCount; idx++) {
@@ -115,7 +112,7 @@ const composePageSelector = () => {
     composedPage[composedPage.length - 2] = '...'
   }
 
-  if (page.value + 1 < totalPage - 4){
+  if (page.value + 1 < totalPage - 4) {
     composedPage[composedPage.length - 1] = totalPage
   }
 

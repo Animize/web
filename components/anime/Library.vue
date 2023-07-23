@@ -32,7 +32,7 @@
     <LazyCommonPagination v-if="numberOfElements !== 0 && !libraryPending"
                           class="item"
                           :total-pages="totalPages"
-                          @change-page="(n) => changePage(n.page,n.totalPage)"></LazyCommonPagination>
+                          @change-page="changePage"></LazyCommonPagination>
 
   </div>
 
