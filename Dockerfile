@@ -10,7 +10,7 @@ COPY . /app/animize
 ENV NUXT_HOST=0.0.0.0
 ENV NUXT_PORT=3000
 
-RUN yarn install
+RUN yarn install --ignore-scripts
 RUN yarn build
 
 EXPOSE 3000
