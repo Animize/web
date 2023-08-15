@@ -4,7 +4,7 @@
          class="item w-auto h-auto grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-1.5 place-items-center	">
       <NuxtLink v-for="item in packages ? packages.content : []" :key="item.id"
                 :to="`/package/${item.id}`"
-                class="group relative z-0 w-40 md:w-44 xl:w-64 aspect-[7/10] rounded drop-shadow-md hover:drop-shadow-2xl
+                class="group relative z-0 w-40 md:w-44 xl:w-56 aspect-[7/10] rounded drop-shadow-md hover:drop-shadow-2xl
                 max-w-sm bg-white shadow-md dark:animize-foreground transition duration-300 ease">
         <nuxt-img :src="item.cover ? item.cover : '/icon/img_notfound.png'"
                   alt=""

@@ -11,17 +11,25 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    border-radius: 8px;
+    background-color: #e7e7e7;
+    border: 1px solid #cacaca;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #888;
+    border-radius: 8px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+    background-color: #3e3e3e;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background: #151515;
+    border-radius: 8px;
+    border: 3px solid transparent;
+    background-clip: content-box;
 }
 
 @layer components {
