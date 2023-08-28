@@ -18,10 +18,10 @@
             </NuxtLink>
             <div class="hidden sm:block sm:ml-6">
               <div class="flex space-x-4">
-                <NuxtLink v-for="item in navigation" :key="item.name"
-                          :aria-current="item.href === route.path ? 'page' : undefined"
-                          :class="[item.href === route.path ? 'item-selected' : 'item-not-selected', 'px-3 py-2 text-sm font-medium ']"
-                          :to="item.href">{{ item.name }}
+                <NuxtLink v-for="item in navbarMenu" :key="item.id"
+                          :aria-current="item.route === route.path ? 'page' : undefined"
+                          :class="[item.route === route.path ? 'item-selected' : 'item-not-selected', 'px-3 py-2 text-sm font-medium ']"
+                          :to="item.route">{{ item.menuName }}
                 </NuxtLink>
               </div>
             </div>
@@ -62,10 +62,10 @@
                     class="animize-foreground flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                   <span class="sr-only">Open user menu</span>
                   <LazyNuxtImg
-                           class="h-8 w-8 rounded-full"
-                           referrerpolicy="no-referrer"
-                           :src="credential ? credential.photoURL : `~/assets/icon/user.png`"
-                           placeholder
+                      class="h-8 w-8 rounded-full"
+                      referrerpolicy="no-referrer"
+                      :src="credential ? credential.photoURL : `~/assets/icon/user.png`"
+                      placeholder
                   />
                 </MenuButton>
                 <button v-else class="button button-primary" @click="openSignIn">
@@ -89,10 +89,12 @@
                   <hr class="border-gray-200 sm:mx-auto dark:border-gray-700"/>
                   <MenuItem v-slot="{ active }">
                     <LazyNuxtLink :class="[active ? 'menu-item-selected' : '', 'block px-4 py-2']"
-                       href="/">Settings</LazyNuxtLink>
+                                  href="/">Settings
+                    </LazyNuxtLink>
                   </MenuItem>
                   <MenuItem v-slot="{ active }">
-                    <a :class="[active ? 'menu-item-selected' : '', 'block px-4 py-2']" href="/" @click="signOutAccount()">Sign
+                    <a :class="[active ? 'menu-item-selected' : '', 'block px-4 py-2']" href="/"
+                       @click="signOutAccount()">Sign
                       out</a>
                   </MenuItem>
                 </MenuItems>
@@ -104,13 +106,13 @@
 
       <DisclosurePanel class="sm:hidden">
         <div class="px-2 pt-2 pb-3 space-y-1">
-          <NuxtLink v-for="item in navigation" :key="item.name"
-                    :aria-current="item.href === route.path ? 'page' : undefined"
-                    :class="[item.href === route.path ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block px-3 py-2 rounded-md text-base font-medium']"
-                    :to="item.href"
+          <NuxtLink v-for="item in navbarMenu" :key="item.id"
+                    :aria-current="item.route === route.path ? 'page' : undefined"
+                    :class="[item.route === route.path ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block px-3 py-2 rounded-md text-base font-medium']"
+                    :to="item.route"
           >
             <DisclosureButton>
-              {{ item.name }}
+              {{ item.menuName }}
             </DisclosureButton>
           </NuxtLink>
         </div>
@@ -121,21 +123,29 @@
 
 </template>
 
-<script setup>
+<script setup lang="ts">
+import {signOutAccount} from "~/composables/useFirebaseAuth";
 import {Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
 import {BellIcon, ListBulletIcon, XMarkIcon} from '@heroicons/vue/24/solid'
-import {signOutAccount} from "~/composables/useFirebaseAuth";
 
+
+const config = useRuntimeConfig()
 const signInDialogOpen = useState('signInDialogOpen', () => false)
 const route = useRoute()
 const isLoggedIn = useState('isLoggedIn')
 const credential = useState('credential')
-const search = useState('search',() => route.query.search)
+const search = useState('search', () => route.query.search)
 
-let navigation = [
-  {name: 'Home', href: '/'},
-  {name: 'Anime', href: '/anime'},
-]
+const {data: navbarMenu} = await useLazyAsyncData(
+    'navbarMenu',
+    () => useAPI<Array<MenuNavbarDTO>>(`${config.public.API_BASE_URL}/auth/menu/navbar`),
+    {
+      immediate: false,
+      watch: [
+        credential
+      ]
+    }
+)
 
 const openSignIn = async () => {
   nextTick(() => {
@@ -143,17 +153,15 @@ const openSignIn = async () => {
   })
 }
 
-const searchAnime = async (srch) =>{
+const searchAnime = async (srch) => {
   navigateTo({
     path: '/anime',
-    query : {
-      search : srch,
+    query: {
+      search: srch,
       page: 1
     }
   })
 }
 
-</script>
-<style scoped>
 
-</style>
+</script>
