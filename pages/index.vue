@@ -132,9 +132,7 @@ const {data: history, pending: historyPending, refresh: historyRefresh} = await 
     () => useAPI<any>(`${config.public.API_BASE_URL}/myself/watch?page=0&size=5&sort=lastModifiedDate,desc`),
     {
       immediate: false,
-      watch: [
-        credential
-      ]
+
     }
 )
 
@@ -143,9 +141,7 @@ const {data: favorites, pending: favoritesPending, refresh: favoritesRefresh} = 
     () => useAPI<any>(`${config.public.API_BASE_URL}/myself/favorites?page=0&size=5&sort=createdDate,desc`),
     {
       immediate: false,
-      watch: [
-        credential
-      ]
+
     }
 )
 

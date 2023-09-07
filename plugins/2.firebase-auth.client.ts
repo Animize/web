@@ -16,9 +16,11 @@ export default defineNuxtPlugin(() => {
                 }
             ))
             signInDialogOpen.value = false
+            await refreshNuxtData()
         } else {
             isLoggedIn.value = false
             credential.value = null
+            await refreshNuxtData()
         }
     })
 })
