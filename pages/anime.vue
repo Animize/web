@@ -6,7 +6,7 @@
       </Title>
     </Head>
     <div class="justify-center p-2">
-      <div class="flex flex-row justify-between gap-6 p-2 w-full h-auto">
+      <div class="flex flex-row justify-between p-2 w-full h-auto">
         <div class="item w-2/3 md:w-1/3 h-auto">
           <Listbox v-model="selectedSort">
             <div class="relative">
@@ -15,9 +15,9 @@
                   class="flex flex-col relative cursor-default h-auto w-full bg-gray-200 dark:animize-foreground focus:ring-2 focus:ring-black focus:dark:ring-white"
                   @click="dropdownOpen ? dropdownOpen = false : dropdownOpen = true"
               >
-                <span class="item text-gray-900 dark:text-white font-semibold text-xl p-2">Sort By</span>
+                <span class="item text-gray-900 dark:text-white font-semibold text-base m-2">Sort By</span>
                 <span
-                    class="item w-fit text-gray-900 dark:text-white font-normal text-xl mt-1 text-center  p-2"
+                    class="item w-fit text-gray-900 dark:text-white font-normal text-base text-center m-2"
                 >{{ selectedSort.title }}
               </span>
               </ListboxButton>
@@ -82,32 +82,32 @@ const dropdownOpen = useState('dropdownOpen', () => false)
 
 const sortBy = [
   {
-    id: 1,
+    id: 'titleAsc',
     title: 'Title Ascending',
     field: 'name',
     direction: 'asc'
   }, {
-    id: 2,
+    id: 'titleDesc',
     title: 'Title Descending',
     field: 'name',
     direction: 'desc'
   }, {
-    id: 3,
+    id: 'highest',
     title: 'Highest Rating',
     field: 'rating',
     direction: 'desc'
   }, {
-    id: 4,
+    id: 'lowest',
     title: 'Lowest Rating',
     field: 'rating',
     direction: 'asc'
   }, {
-    id: 5,
+    id: 'recently',
     title: 'Recently Added',
     field: 'createdDate',
     direction: 'desc'
   }, {
-    id: 6,
+    id: 'oldest',
     title: 'Oldest Added',
     field: 'createdDate',
     direction: 'asc'
@@ -129,7 +129,7 @@ onMounted(() => {
 
     if (animeQuery.value.sort) {
       let srt = animeQuery.value.sort
-      sort.value = sortBy.filter(value => value.id === Number(srt))[0]
+      sort.value = sortBy.filter(value => value.id === srt)[0]
     } else {
       sort.value = sortBy[0]
     }
@@ -158,7 +158,7 @@ watch(animeQuery, (anmQuery) => {
 
   if (anmQuery.sort) {
     let srt = anmQuery.sort
-    sort.value = sortBy.filter(value => value.id === Number(srt))[0]
+    sort.value = sortBy.filter(value => value.id === srt)[0]
   } else {
     sort.value = sortBy[0]
   }
