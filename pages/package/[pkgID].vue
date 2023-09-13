@@ -1,14 +1,14 @@
 <template>
   <div>
     <div v-if="!pkgError" :id="`animize-${pkgID}`">
-      <Head v-if="!pending && pkg.errCode === 0">
+      <Head v-if="!pkgPending && pkg.errCode === 0">
         <Title>
           {{ pkg ? pkg.data.name : 'Animize' }}
         </Title>
         <Meta :content="pkg ?`Animize - ${pkg.data.synopsis}`  : 'Animize'" name="description"/>
       </Head>
-      <LazyCommonLoading v-if="pending"/>
-      <div v-if="!pending && pkg.errCode === 0" class="flex flex-col">
+      <LazyCommonLoading v-if="pkgPending"/>
+      <div v-if="!pkgPending && pkg.errCode === 0" class="flex flex-col">
         <div id="anime-header">
           <nuxt-img :alt="`animize-${pkgID}-cover-blur`"
                     :src="pkg.data.cover ? pkg.data.cover : '/icon/img_notfound.png'"
@@ -125,15 +125,28 @@ const pkgID = computed(() => route.params.pkgID)
 const credential = useState('credential')
 const signInDialogOpen = useState('signInDialogOpen')
 
-const {data: pkg, pending: pending, error: pkgError} = await useLazyAsyncData(
+const {data: pkg, pending: pkgPending, error: pkgError} = await useLazyAsyncData(
     'pkg',
-    () => useAPI(`${config.public.API_BASE_URL}/packages/by-id/${pkgID.value}`)
+    () => useAPI<any>(`${config.public.API_BASE_URL}/packages/by-id/${pkgID.value}`)
 )
 
 
 const {data: episodes, pending: episodePending, error: episodeError} = await useLazyAsyncData(
     'episodes',
-    () => $fetch(`${config.public.API_BASE_URL}/episodes/list`, {params: {packageID: pkgID.value}})
+    () => useAPI<any>(`${config.public.API_BASE_URL}/episodes/list`, {
+          params: {
+            packageID: pkgID.value
+          }
+        }
+    ),
+    {
+      transform: (episodes) => {
+        episodes.data.sort((a: { episode: number; }, b: { episode: number; }) => {
+          return a.episode - b.episode
+        })
+        return episodes
+      }
+    }
 )
 
 
