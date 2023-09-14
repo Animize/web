@@ -1,4 +1,4 @@
-import {defineNuxtPlugin, useState} from "#app";
+import {defineNuxtPlugin, useCookie, useState} from "#app";
 import {getAuth} from "firebase/auth";
 
 export default defineNuxtPlugin(() => {
@@ -6,10 +6,13 @@ export default defineNuxtPlugin(() => {
     const credential = useState('credential')
     const isLoggedIn = useState('isLoggedIn')
     const signInDialogOpen = useState('signInDialogOpen')
+    const animizeSessionCookie = useCookie('animize_session')
+
     auth.onAuthStateChanged(async (user) => {
         if (user) {
             isLoggedIn.value = true
             credential.value = user
+            animizeSessionCookie.value = await user.getIdToken()
             await useLazyAsyncData('populateUser', () => useAPI<any>('/auth/populate',
                 {
                     method: 'POST'
@@ -20,6 +23,7 @@ export default defineNuxtPlugin(() => {
         } else {
             isLoggedIn.value = false
             credential.value = null
+            animizeSessionCookie.value = null
             await refreshNuxtData()
         }
     })

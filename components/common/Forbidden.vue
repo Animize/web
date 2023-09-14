@@ -5,6 +5,9 @@
       <p class="item dark:text-white text-gray-800 font-extrabold text-5xl text-left w-full">403</p>
       <p class="item dark:text-white text-gray-800 font-bold text-2xl text-left w-full">Restricted Area!</p>
       <p class="item dark:text-white text-gray-800 font-extralight text-2xs text-left w-full">Beep! Beep!, identify yourself! you're about to enter restricted area!</p>
+      <LazyNuxtLink to="/">
+        <button class="item button button-primary ml-0">Back to home base</button>
+      </LazyNuxtLink>
     </div>
 
   </div>

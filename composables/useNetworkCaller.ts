@@ -1,6 +1,7 @@
 import {getAuth} from "firebase/auth";
 import {NitroFetchOptions, NitroFetchRequest, TypedInternalResponse} from "nitropack";
 import {POSITION, useToast} from "vue-toastification";
+import {useCookie} from "#app";
 
 interface UseAPIOptions {
     showToast?: boolean,
@@ -20,6 +21,12 @@ export const useAPI = async <T = unknown, R extends NitroFetchRequest = NitroFet
         const token = await auth?.currentUser?.getIdToken()
         if (token) {
             headers['Authorization'] = `Bearer ${token}`
+        }
+    } else if (process.server) {
+        const animizeSessionCookie = useCookie('animize_session')
+        if (animizeSessionCookie.value) {
+            headers['Authorization'] = `Bearer ${animizeSessionCookie.value}`
+            console.log(`Header ${headers['Authorization']}`)
         }
     }
 
