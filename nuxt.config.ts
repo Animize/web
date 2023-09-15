@@ -34,9 +34,12 @@ export default defineNuxtConfig({
     },
     modules: [
         '@nuxtjs/tailwindcss',
-        '@nuxt/image-edge',
+        '@nuxt/image',
         '@nuxtjs/color-mode'
     ],
+    image: {
+        domains: ['cdn.dvnlabs.xyz']
+    },
     colorMode: {
         classSuffix: '',
         preference: 'system',

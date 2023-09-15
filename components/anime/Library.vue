@@ -6,10 +6,12 @@
                 :to="`/package/${item.id}`"
                 class="group relative z-0 w-40 md:w-44 xl:w-56 aspect-[7/10] rounded drop-shadow-md hover:drop-shadow-2xl
                 max-w-sm bg-white shadow-md dark:animize-foreground transition duration-300 ease">
-        <nuxt-img :src="item.cover ? item.cover : '/icon/img_notfound.png'"
-                  alt=""
-                  class="rounded object-center transition-all duration-300	group-hover:opacity-50 group-hover:blur w-full h-full absolute z-0"
-                  loading="lazy"/>
+        <NuxtImg :src="item.cover ? item.cover : '/icon/img_notfound.png'"
+                 alt=""
+                 class="rounded object-center transition-all duration-300	group-hover:opacity-50 group-hover:blur w-full h-full absolute z-0"
+                 loading="lazy"
+                 placeholder
+        />
         <div
             class="h-auto w-full pr-2 pl-2 z-10 bg-gradient-to-t from-gray-900 rounded-b absolute bottom-0 visible group-hover:invisible">
           <h5 class="mb-4 text-sm font-semibold tracking-tight text-white line-clamp-3 ">

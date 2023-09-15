@@ -8,7 +8,6 @@
     "start": "nuxt start"
   },
   "devDependencies": {
-    "@nuxt/image-edge": "^1.0.0-27913696.5d122a3",
     "@nuxtjs/color-mode": "^3.2.0",
     "nuxt": "^3.6.1",
     "nuxt-headlessui": "^1.1.1",
@@ -18,6 +17,7 @@
   "dependencies": {
     "@headlessui/vue": "^1.7.14",
     "@heroicons/vue": "^2.0.14",
+    "@nuxt/image": "^1.0.0-rc.2",
     "@nuxtjs/tailwindcss": "^6.8.0",
     "@silvermine/videojs-quality-selector": "^1.2.5",
     "@videojs-player/vue": "^1.0.0",

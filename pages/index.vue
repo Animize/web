@@ -9,9 +9,8 @@
               class="flex flex-col md:flex-row relative w-full aspect-[10/5] m-2 z-0 group transition duration-300 ease"
               :to="`/package/${pkg.id}`"
           >
-            <NuxtImg :alt="`animize-${pkg.id}-cover-blur`" :src="pkg.cover ? pkg.cover : '/icon/img_notfound.png'"
-                     class="object-cover opacity-30 w-full aspect-[10/5] absolute rounded-lg z-0 transition-all duration-300	group-hover:opacity-50 group-hover:blur"
-                     :placeholder="[100, 50, 10]"/>
+            <LazyNuxtImg :alt="`animize-${pkg.id}-cover-blur`" :src="pkg.cover ? pkg.cover : '/icon/img_notfound.png'"
+                     class="object-cover opacity-30 w-full aspect-[10/5] absolute rounded-lg z-0 transition-all duration-300	group-hover:opacity-50 group-hover:blur"/>
             <div class="h-fit w-full pr-2 pl-2 bottom-0 visible group-hover:invisible">
               <span class="item animize-text-subtitle line-clamp-3">
                 {{ pkg.name }}</span>
@@ -47,7 +46,8 @@
         <div v-if="!historyPending &&credential && history?.data?.totalElements > 0"
              class="item w-full h-full overflow-y-auto">
           <div v-for="hst in history?.data?.content" :key="hst?.id" class="flex flex-row p-4">
-            <LazyNuxtImg class="basis-1/4 aspect-[7/10] w-4" :src="hst?.packages?.cover ?? '/icon/img_notfound.png'"/>
+            <LazyNuxtImg class="basis-1/4 aspect-[7/10] w-4" :src="hst?.packages?.cover ?? '/icon/img_notfound.png'"
+                         placeholder/>
             <div class="basis-3/4">
               <div class="animize-text-subtitle p-2 line-clamp-2">
                 {{ hst?.packages?.name }}
@@ -79,7 +79,8 @@
         <div v-if="!favoritesPending && credential && favorites?.data?.totalElements > 0"
              class="item w-full h-full overflow-y-auto">
           <div v-for="fvr in favorites?.data?.content" :key="fvr?.id" class="flex flex-row p-4">
-            <LazyNuxtImg class="basis-1/4 aspect-[7/10] w-4" :src="fvr?.packages?.cover ?? '/icon/img_notfound.png'"/>
+            <LazyNuxtImg class="basis-1/4 aspect-[7/10] w-4" :src="fvr?.packages?.cover ?? '/icon/img_notfound.png'"
+            placeholder/>
             <div class="basis-3/4">
               <div class="animize-text-subtitle p-2 line-clamp-2">
                 {{ fvr?.packages?.name }}
@@ -145,16 +146,6 @@ const {data: favorites, pending: favoritesPending, refresh: favoritesRefresh} = 
     }
 )
 
-
-onMounted(() => {
-  nextTick(() => {
-    refresh()
-    if (credential) {
-      historyRefresh()
-      favoritesRefresh()
-    }
-  })
-})
 
 defineExpose({})
 </script>
