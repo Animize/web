@@ -26,7 +26,6 @@ export const useAPI = async <T = unknown, R extends NitroFetchRequest = NitroFet
         const animizeSessionCookie = useCookie('animize_session')
         if (animizeSessionCookie.value) {
             headers['Authorization'] = `Bearer ${animizeSessionCookie.value}`
-            console.log(`Header ${headers['Authorization']}`)
         }
     }
 
