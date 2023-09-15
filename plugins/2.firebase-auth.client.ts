@@ -6,7 +6,10 @@ export default defineNuxtPlugin(() => {
     const credential = useState('credential')
     const isLoggedIn = useState('isLoggedIn')
     const signInDialogOpen = useState('signInDialogOpen')
-    const animizeSessionCookie = useCookie('animize_session')
+    const animizeSessionCookie = useCookie('animize_session',{
+        secure: true,
+        sameSite :'strict'
+    })
 
     auth.onAuthStateChanged(async (user) => {
         if (user) {
