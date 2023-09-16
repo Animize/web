@@ -10,12 +10,12 @@
       <LazyCommonLoading v-if="pkgPending"/>
       <div v-if="!pkgPending && pkg.errCode === 0" class="flex flex-col">
         <div id="anime-header">
-          <nuxt-img :alt="`animize-${pkgID}-cover-blur`"
+          <LazyNuxtImg :alt="`animize-${pkgID}-cover-blur`"
                     :src="pkg.data.cover ? pkg.data.cover : '/icon/img_notfound.png'"
                     class="object-cover w-full h-96 blur min-h-0 absolute opacity-30"/>
           <div
               class="flex flex-col items-center md:flex-row relative">
-            <nuxt-img :alt="`animize-${pkgID}-cover`"
+            <LazyNuxtImg :alt="`animize-${pkgID}-cover`"
                       :src="pkg.data.cover ? pkg.data.cover : '/icon/img_notfound.png'"
                       class="object-cover w-48 h-72 rounded md:h-auto md:w-48 shadow m-8"/>
             <div class="flex flex-col justify-between p-4 gap-2 leading-normal w-full">
@@ -165,10 +165,8 @@ const {
         })
     ,
     {
-      server: false,
       immediate: true,
       watch: [
-        credential,
         pkgID
       ]
     }
