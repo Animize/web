@@ -51,7 +51,7 @@
       </div>
       <div v-if="!packagesPending" class="item w-full items-center flex flex-col md:flex-row relative rounded shadow-lg dark:animize-foreground
           dark:text-white text-gray-800 text-justify m-2 gap-2 p-2">
-        <nuxt-img :alt="`animize-${pkgID}-cover`"
+        <LazyNuxtImg :alt="`animize-${pkgID}-cover`"
                   :src="packages?.data?.cover ?? '/icon/img_notfound.png'"
                   class="object-cover w-48 aspect-[7/10] min:h-72 rounded shadow"/>
         <div class="flex flex-col justify-between gap-2 leading-normal h-auto">
