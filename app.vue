@@ -3,7 +3,7 @@
     <LazyNuxtLoadingIndicator/>
     <LazyCommonNavbar
         class="item w-full top-0 sticky z-10 backdrop-blur-xl dark:bg-opacity-70 bg-opacity-95 dark:bg-black"></LazyCommonNavbar>
-    <LazyNuxtPage class="item w-auto min-h-screen h-auto flex-grow relative"></LazyNuxtPage>
+    <LazyNuxtPage class="item page-container flex"></LazyNuxtPage>
     <LazyCommonFooter class="item w-auto h-auto flex-auto"></LazyCommonFooter>
   </div>
 
