@@ -1,6 +1,6 @@
 <template>
   <div id="contributor">
-    <div class="flex flex-col p-8">
+    <div class="flex flex-col p-8 page-container">
       <div class="item card select-none">
         <div class="animize-text-title text-2xl">
           Welcome {{ credential?.displayName }},

@@ -115,4 +115,8 @@
         @apply ml-auto mr-auto max-w-[900px] min-h-screen
     }
 
+    .wide {
+        @apply max-w-full
+    }
+
 }

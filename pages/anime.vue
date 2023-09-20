@@ -5,7 +5,7 @@
         Animize | Page {{ page + 1 }}
       </Title>
     </Head>
-    <div class="justify-center p-2">
+    <div class="justify-center p-2 page-container wide">
       <div class="flex flex-row justify-between p-2 w-full h-auto">
         <div class="item w-2/3 md:w-1/3 h-auto">
           <Listbox v-model="selectedSort">
