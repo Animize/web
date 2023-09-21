@@ -2,6 +2,8 @@ import {getAuth} from "firebase/auth";
 import {NitroFetchOptions, NitroFetchRequest, TypedInternalResponse} from "nitropack";
 import {POSITION, useToast} from "vue-toastification";
 import {useCookie} from "#app";
+import {ResponseType} from "undici";
+import {FetchContext, FetchResponse} from "ofetch";
 
 interface UseAPIOptions {
     showToast?: boolean,
@@ -47,10 +49,26 @@ export const useAPI = async <T = unknown, R extends NitroFetchRequest = NitroFet
             if (apiOpts?.logging ?? false) {
                 console.log(response._data.message)
             }
+        },
+        onResponse(context: FetchContext & { response: FetchResponse<ResponseType> }): Promise<void> | void {
+            if (isStatusCodeOK(context.response.status) && (apiOpts?.showToast ?? false)) {
+                const toast = useToast()
+                toast.success(context.response._data.message ?? 'Success', {
+                    position: POSITION.BOTTOM_RIGHT
+                })
+            }
         }
     })
 
     // @ts-ignore
     return customFetch(request, opts)
+}
+
+export const isStatusCodeOK = (statusCode: number): boolean => {
+
+    const okCodes = Array.from(Array(8).keys()).map(x => 200 + x)
+    return okCodes.includes(statusCode);
+
+
 }
 
