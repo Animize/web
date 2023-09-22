@@ -4,9 +4,10 @@
       <div class="animize-text-title text-3xl">
         Create anime
       </div>
-      <div class="grid grid-cols-6 gap-3 dark:text-white text-gray-900 mt-4">
+      <form id="form-create-anime" @submit="onSubmit" class="grid grid-cols-6 gap-3 dark:text-white text-gray-900 mt-4">
         <div class="col-span-6">
           <LazyCommonTextInput
+              v-bind="name"
               v-model="animeCreate.name"
               label="Name"
               id="name"
@@ -14,13 +15,18 @@
         </div>
         <div class="col-span-6 sm:col-span-2">
           <LazyCommonTextInput
+              type="number"
+              v-bind="rating"
               v-model="animeCreate.rating"
               label="Rating"
               id="rating"
+              step="0.01"
           />
         </div>
         <div class="col-span-6 sm:col-span-2 ">
           <LazyCommonTextInput
+              type="number"
+              v-bind="maxEpisode"
               v-model="animeCreate.maxEpisode"
               label="Episode"
               id="maxEpisode"
@@ -28,6 +34,8 @@
         </div>
         <div class="col-span-6 sm:col-span-2 ">
           <LazyCommonTextInput
+              type="number"
+              v-bind="malID"
               v-model="animeCreate.malId"
               label="MAL ID"
               id="malID"
@@ -55,6 +63,7 @@
 
         <div class="col-span-6">
           <LazyCommonTextArea
+              v-bind="synopsis"
               v-model="animeCreate.synopsis"
               label="Synopsis"
               id="synopsis"
@@ -71,17 +80,20 @@
         <div class="col-end-7 col-span-2">
           <button
               class="button button-primary w-full h-16 justify-center select-none"
-              @click="createAction"
           >
             Create
           </button>
         </div>
-      </div>
+      </form>
     </div>
 
   </div>
 </template>
 <script setup lang="ts">
+import {useForm} from 'vee-validate';
+import * as yup from 'yup';
+
+
 const config = useRuntimeConfig()
 const animeCreate = useState<PackagesDTO>('animeCreate', () => <PackagesDTO>{})
 const selectedGenre = useState<Array<GenreDTO>>('selectedGenre', () => [])
@@ -100,16 +112,44 @@ const selectedGenreChipAction = async (genre: GenreDTO) => {
   animeCreate.value.genreList = selectedGenre.value
 }
 
-const createAction = async () => {
-  await useLazyAsyncData('createAnime', () => useAPI<any>('/packages',
+const {handleSubmit, errors, defineInputBinds} = useForm({
+  validationSchema: yup.object({
+    name: yup.string().required(),
+    synopsis: yup.string().required(),
+    rating: yup.number()
+        .transform((value) => Number.isNaN(value) ? null : value)
+        .max(10.00).required(),
+    maxEpisode: yup.number()
+        .transform((value) => Number.isNaN(value) ? null : value)
+        .max(99999).required(),
+    malID: yup.number()
+        .transform((value) => Number.isNaN(value) ? null : value)
+        .max(99999).required()
+  }),
+});
+
+const onSubmit = handleSubmit(async _ => {
+  const {status} = await useLazyAsyncData('createAnime', () => useAPI<any>('/packages',
       {
         method: 'POST',
         body: animeCreate.value
       }, {
         logging: true,
-        showToast:true
+        showToast: true
       }
   ))
-}
+
+  if (status.value == 'success') {
+    animeCreate.value = <PackagesDTO>{}
+    await navigateTo("/contributor")
+  }
+});
+
+const name = defineInputBinds('name');
+const rating = defineInputBinds('rating');
+const maxEpisode = defineInputBinds('maxEpisode');
+const malID = defineInputBinds('malID');
+const synopsis = defineInputBinds('synopsis');
+
 
 </script>

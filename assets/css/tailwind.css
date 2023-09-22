@@ -32,6 +32,16 @@
     background-clip: content-box;
 }
 
+/* Hide arrow number when using input number*/
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
 @layer components {
 
     .button {
