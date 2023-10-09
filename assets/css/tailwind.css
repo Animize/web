@@ -64,6 +64,11 @@ input[type="number"] {
         hover:bg-red-600 rounded-lg transition duration-300
     }
 
+    .button-green {
+        @apply text-white bg-green-800 dark:hover:text-gray-900 hover:text-white dark:hover:bg-green-600
+        hover:bg-green-600 rounded-lg transition duration-300
+    }
+
 
     .card {
         @apply rounded-l shadow-2xl dark:animize-foreground p-8

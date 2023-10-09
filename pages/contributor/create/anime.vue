@@ -43,10 +43,14 @@
         </div>
 
 
-        <div class="col-span-6 sm:col-span-2 select-none">
-          <div class="button button-red">
-            SAFE
-          </div>
+        <div class="col-span-6 select-none">
+          <button class="button" @click.prevent="safeUnsafeAction"
+          :class="animeCreate.safeContent == 'SAFE' ? 'button-green':'button-red'">
+            {{animeCreate.safeContent}}
+          </button>
+          <label class="italic" v-if="animeCreate.safeContent == 'SAFE'">This mean anime you create is safe for under 18+</label>
+          <label class="italic" v-else-if="animeCreate.safeContent == 'UNSAFE'">This mean anime you create is not safe for under 18+
+            due contain sexuality,criminality encouragement, etc</label>
         </div>
         <div class="col-span-6">
           <div
@@ -95,7 +99,9 @@ import * as yup from 'yup';
 
 
 const config = useRuntimeConfig()
-const animeCreate = useState<PackagesDTO>('animeCreate', () => <PackagesDTO>{})
+const animeCreate = useState<PackagesDTO>('animeCreate', () => <PackagesDTO>{
+  safeContent: 'SAFE'
+})
 const selectedGenre = useState<Array<GenreDTO>>('selectedGenre', () => [])
 const {data: genres, pending, refresh} = await useLazyAsyncData(
     'genres',
@@ -144,6 +150,14 @@ const onSubmit = handleSubmit(async _ => {
     await navigateTo("/contributor")
   }
 });
+
+const safeUnsafeAction =  () => {
+  if (animeCreate.value.safeContent == 'SAFE'){
+    animeCreate.value.safeContent = 'UNSAFE'
+  } else {
+    animeCreate.value.safeContent = 'SAFE'
+  }
+}
 
 const name = defineInputBinds('name');
 const rating = defineInputBinds('rating');
