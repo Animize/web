@@ -9,12 +9,18 @@
           <LazyCommonTextInput
               label="Anime Name"
               id="animeName"
+              @focusin="lookupAnimeOpen = true"
+          />
+          <LazyCommonDialogLookup
+              :dialog-open="lookupAnimeOpen"
+              title="Select Anime"
           />
         </div>
         <div class="col-span-3">
           <LazyCommonTextInput
               label="Episode"
               id="episode"
+              type="number"
           />
         </div>
         <div class="col-span-6">
@@ -48,5 +54,6 @@
 <script setup lang="ts">
 
 const episodeCreate = useState('episodeCreate', () => <EpisodesDTO>{})
+const lookupAnimeOpen = useState(() => false)
 
 </script>
