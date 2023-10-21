@@ -1,4 +1,4 @@
-FROM node:16.19.0-alpine
+FROM node:16.20.2-alpine
 
 RUN apk update && apk upgrade
 RUN apk add git htop curl
