@@ -45,11 +45,13 @@
 
         <div class="col-span-6 select-none">
           <button class="button" @click.prevent="safeUnsafeAction"
-          :class="animeCreate.safeContent == 'SAFE' ? 'button-green':'button-red'">
-            {{animeCreate.safeContent}}
+                  :class="animeCreate.safeContent == 'SAFE' ? 'button-green':'button-red'">
+            {{ animeCreate.safeContent }}
           </button>
-          <label class="italic" v-if="animeCreate.safeContent == 'SAFE'">This mean anime you create is safe for under 18+</label>
-          <label class="italic" v-else-if="animeCreate.safeContent == 'UNSAFE'">This mean anime you create is not safe for under 18+
+          <label class="italic" v-if="animeCreate.safeContent == 'SAFE'">This mean anime you create is safe for under
+            18+</label>
+          <label class="italic" v-else-if="animeCreate.safeContent == 'UNSAFE'">This mean anime you create is not safe
+            for under 18+
             due contain sexuality,criminality encouragement, etc</label>
         </div>
         <div class="col-span-6">
@@ -97,11 +99,11 @@
 import {useForm} from 'vee-validate';
 import * as yup from 'yup';
 
-
-const config = useRuntimeConfig()
-const animeCreate = useState<PackagesDTO>('animeCreate', () => <PackagesDTO>{
+const defaultAnimeCreate = <PackagesDTO>{
   safeContent: 'SAFE'
-})
+}
+const config = useRuntimeConfig()
+const animeCreate = useState<PackagesDTO>('animeCreate', () => defaultAnimeCreate)
 const selectedGenre = useState<Array<GenreDTO>>('selectedGenre', () => [])
 const {data: genres, pending, refresh} = await useLazyAsyncData(
     'genres',
@@ -146,13 +148,13 @@ const onSubmit = handleSubmit(async _ => {
   ))
 
   if (status.value == 'success') {
-    animeCreate.value = <PackagesDTO>{}
+    animeCreate.value = defaultAnimeCreate
     await navigateTo("/contributor")
   }
 });
 
-const safeUnsafeAction =  () => {
-  if (animeCreate.value.safeContent == 'SAFE'){
+const safeUnsafeAction = () => {
+  if (animeCreate.value.safeContent == 'SAFE') {
     animeCreate.value.safeContent = 'UNSAFE'
   } else {
     animeCreate.value.safeContent = 'SAFE'
