@@ -9,11 +9,14 @@
           <LazyCommonTextInput
               label="Anime Name"
               id="animeName"
-              @focusin="lookupAnimeOpen = true"
+              @click.prevent="lookupAnimeOpen = true"
           />
           <LazyCommonDialogLookup
-              :dialog-open="lookupAnimeOpen"
+              id="lookupAnime"
+              v-model:dialog-open="lookupAnimeOpen"
+              @dialog-open="console.log('asd')"
               title="Select Anime"
+              :is-page="true"
           />
         </div>
         <div class="col-span-3">
