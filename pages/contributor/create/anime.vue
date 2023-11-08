@@ -41,6 +41,14 @@
               id="malID"
           />
         </div>
+        <div class="col-span-6">
+          <LazyCommonTextInput
+              v-bind="cover"
+              v-model="animeCreate.cover"
+              label="Cover (URL)"
+              id="cover"
+          />
+        </div>
 
 
         <div class="col-span-6 select-none">
@@ -166,6 +174,7 @@ const rating = defineInputBinds('rating');
 const maxEpisode = defineInputBinds('maxEpisode');
 const malID = defineInputBinds('malID');
 const synopsis = defineInputBinds('synopsis');
+const cover = defineInputBinds('cover');
 
 
 </script>

@@ -6,5 +6,6 @@ type PackagesDTO = {
     rating: number,
     synopsis: string,
     safeContent: string,
+    cover: string,
     genreList: Array<GenreDTO>
 }
