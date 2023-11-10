@@ -9,3 +9,7 @@ type PackagesDTO = {
     cover: string,
     genreList: Array<GenreDTO>
 }
+
+interface ResponsePackagesPage extends ResponseDTO {
+    data: PageDTO<PackagesDTO>
+}

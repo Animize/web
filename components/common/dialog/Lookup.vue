@@ -26,6 +26,10 @@
                   label="Search"
               />
 
+              <LazyCommonStackedList
+                  :model-data="modelData"
+              />
+
               <LazyCommonPagination
                   v-show="props.isPage"
               />
@@ -54,22 +58,62 @@ const props = defineProps({
     type: String,
     default: ''
   },
-  urlAPI: {
+  urlApi: {
     type: String,
     default: ''
   },
   isPage: {
     type: Boolean,
     default: false
+  },
+  mapping: {
+    type: Array<any>,
+    default: <any>[]
   }
 })
 
+const modelData = useState(() => [])
 
-const {data: lookupData, pending: lookupPending, error: lookupError} = await useLazyAsyncData(
+const composeMapping = () => {
+  if (props.mapping) {
+    for (const map in props.mapping) {
+      if (map?.cover) {
+
+      }
+    }
+  }
+}
+
+
+const {data: lookupDataPage, pending: lookupPendingPage, refresh: lookupRefreshPage} = await useLazyAsyncData(
     `${props.id}`,
-    () => useAPI<ResponseDTO>(`${props.urlAPI}`, {}
-    )
+    () => useAPI<ResponsePageDTO>(`${props.urlApi}`, {}
+    ),
+    {
+      immediate: false
+    }
 )
+
+const {data: lookupDataList, pending: lookupPendingList, refresh: lookupRefreshList} = await useLazyAsyncData(
+    `${props.id}`,
+    () => useAPI<ResponseDTO>(`${props.urlApi}`, {}
+    ),
+    {
+      immediate: false
+    }
+)
+
+watch([lookupDataPage, lookupDataList], ([dataPage, dataList]) => {
+
+})
+
+onMounted(async () => {
+  if (props.isPage) {
+    await lookupRefreshPage()
+  } else {
+    await lookupRefreshList()
+  }
+})
 
 
 </script>

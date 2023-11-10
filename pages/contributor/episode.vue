@@ -14,7 +14,7 @@
           <LazyCommonDialogLookup
               id="lookupAnime"
               v-model:dialog-open="lookupAnimeOpen"
-              @dialog-open="console.log('asd')"
+              :url-api="urlAPI"
               title="Select Anime"
               :is-page="true"
           />
@@ -57,6 +57,13 @@
 <script setup lang="ts">
 
 const episodeCreate = useState('episodeCreate', () => <EpisodesDTO>{})
+const config = useRuntimeConfig()
+const urlAPI = `${config.public.API_BASE_URL}/packages/page`
 const lookupAnimeOpen = useState(() => false)
+
+const renderLookup = {
+  "cover": "cover",
+  "text": "name"
+}
 
 </script>
