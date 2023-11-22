@@ -25,13 +25,20 @@
                   class="mt-4"
                   label="Search"
               />
-
-              <LazyCommonStackedList
-                  :model-data="modelData"
+              <LazyCommonLoading
+                  class="h-72 z-10"
+                  v-if="lookupPendingList || lookupPendingPage"
               />
 
+
+              <LazyCommonStackedList
+                  v-if="!lookupPendingList && !lookupPendingPage"
+                  :model-data="modelData"
+              />
               <LazyCommonPagination
+                  :total-pages="lookupDataPage?.data?.totalPages"
                   v-show="props.isPage"
+                  @change-page="changePage"
               />
 
             </DialogPanel>
@@ -67,27 +74,33 @@ const props = defineProps({
     default: false
   },
   mapping: {
-    type: Array<any>,
-    default: <any>[]
+    default: {
+      cover: null,
+      text: null
+    }
   }
 })
 
 const modelData = useState(() => [])
+const page = useState('page', () => 0)
 
-const composeMapping = () => {
-  if (props.mapping) {
-    for (const map in props.mapping) {
-      if (map?.cover) {
-
-      }
-    }
+const changePage = async (pageNumber: number, totPage: number) => {
+  if (pageNumber < 1 || pageNumber > totPage) {
+    return
   }
+  page.value = pageNumber - 1
+  await lookupRefreshPage()
 }
 
 
 const {data: lookupDataPage, pending: lookupPendingPage, refresh: lookupRefreshPage} = await useLazyAsyncData(
-    `${props.id}`,
-    () => useAPI<ResponsePageDTO>(`${props.urlApi}`, {}
+    `${props.id}Page`,
+    () => useAPI<ResponsePageDTO>(`${props.urlApi}`, {
+          query: {
+            page: page.value,
+            size: 10
+          }
+        }
     ),
     {
       immediate: false
@@ -95,15 +108,41 @@ const {data: lookupDataPage, pending: lookupPendingPage, refresh: lookupRefreshP
 )
 
 const {data: lookupDataList, pending: lookupPendingList, refresh: lookupRefreshList} = await useLazyAsyncData(
-    `${props.id}`,
-    () => useAPI<ResponseDTO>(`${props.urlApi}`, {}
-    ),
+    `${props.id}List`,
+    () => useAPI<ResponseDTO>(`${props.urlApi}`, {}),
     {
       immediate: false
     }
 )
 
 watch([lookupDataPage, lookupDataList], ([dataPage, dataList]) => {
+  console.log(dataPage?.data)
+  console.log(dataList?.data)
+  if (!props.mapping.text) {
+    return
+  }
+
+  modelData.value = []
+
+  if (dataPage && dataPage?.data?.totalElements != 0) {
+    let data = dataPage?.data?.content.map((e: any) => {
+      return {
+        cover: e[props.mapping.cover ?? ''],
+        text: e[props.mapping.text ?? '']
+      }
+    })
+    modelData.value = modelData.value.concat(data)
+  }
+
+  if (dataList && dataList?.data.length != 0) {
+    let data = dataList?.data.map((e: any) => {
+      return {
+        cover: e[props.mapping.cover ?? ''],
+        text: e[props.mapping.text ?? '']
+      }
+    })
+    modelData.value = modelData.value.concat(data)
+  }
 
 })
 

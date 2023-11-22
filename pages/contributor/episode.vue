@@ -17,6 +17,7 @@
               :url-api="urlAPI"
               title="Select Anime"
               :is-page="true"
+              :mapping="renderLookup"
           />
         </div>
         <div class="col-span-3">
@@ -62,8 +63,8 @@ const urlAPI = `${config.public.API_BASE_URL}/packages/page`
 const lookupAnimeOpen = useState(() => false)
 
 const renderLookup = {
-  "cover": "cover",
-  "text": "name"
+  cover: "cover",
+  text: "name"
 }
 
 </script>
