@@ -22,8 +22,11 @@
                 {{ title }}
               </DialogTitle>
               <LazyCommonTextInput
+                  v-model="searchLookup"
+                  id="searchLookup"
                   class="mt-4"
                   label="Search"
+                  @keyup.enter="refreshData"
               />
               <LazyCommonLoading
                   class="h-72 z-10"
@@ -75,14 +78,17 @@ const props = defineProps({
   },
   mapping: {
     default: {
+      key: null,
       cover: null,
-      text: null
+      text: null,
+      search: ''
     }
   }
 })
 
 const modelData = useState(() => [])
 const page = useState('page', () => 0)
+const searchLookup = useState('searchLookup', () => '')
 
 const changePage = async (pageNumber: number, totPage: number) => {
   if (pageNumber < 1 || pageNumber > totPage) {
@@ -98,7 +104,8 @@ const {data: lookupDataPage, pending: lookupPendingPage, refresh: lookupRefreshP
     () => useAPI<ResponsePageDTO>(`${props.urlApi}`, {
           query: {
             page: page.value,
-            size: 10
+            size: 10,
+            [props.mapping.search]: searchLookup.value
           }
         }
     ),
@@ -127,6 +134,7 @@ watch([lookupDataPage, lookupDataList], ([dataPage, dataList]) => {
   if (dataPage && dataPage?.data?.totalElements != 0) {
     let data = dataPage?.data?.content.map((e: any) => {
       return {
+        key: e[props.mapping.key ?? ''],
         cover: e[props.mapping.cover ?? ''],
         text: e[props.mapping.text ?? '']
       }
@@ -137,6 +145,7 @@ watch([lookupDataPage, lookupDataList], ([dataPage, dataList]) => {
   if (dataList && dataList?.data.length != 0) {
     let data = dataList?.data.map((e: any) => {
       return {
+        key: e[props.mapping.key ?? ''],
         cover: e[props.mapping.cover ?? ''],
         text: e[props.mapping.text ?? '']
       }
@@ -146,12 +155,17 @@ watch([lookupDataPage, lookupDataList], ([dataPage, dataList]) => {
 
 })
 
-onMounted(async () => {
+const refreshData = async () => {
   if (props.isPage) {
+    page.value = 0
     await lookupRefreshPage()
   } else {
     await lookupRefreshList()
   }
+}
+
+onMounted(async () => {
+  await refreshData()
 })
 
 

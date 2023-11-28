@@ -52,7 +52,7 @@ const props = defineProps({
 })
 
 const validateChangePage = (page: any, totalPage: number) => {
-  if (typeof page !== 'number'){
+  if (typeof page !== 'number') {
     return
   }
   emit('changePage', page, totalPage)
@@ -118,6 +118,11 @@ const composePageSelector = () => {
 
   return composedPage
 }
+
+watch(() => props.totalPages, () => {
+  pageList.value = composePageSelector()
+
+})
 
 onMounted(() => {
   pageList.value = composePageSelector()

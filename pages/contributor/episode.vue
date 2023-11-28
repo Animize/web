@@ -63,8 +63,10 @@ const urlAPI = `${config.public.API_BASE_URL}/packages/page`
 const lookupAnimeOpen = useState(() => false)
 
 const renderLookup = {
+  key: "id",
   cover: "cover",
-  text: "name"
+  text: "name",
+  search: "name",
 }
 
 </script>
