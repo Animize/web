@@ -30,13 +30,14 @@
               />
               <LazyCommonLoading
                   class="h-72 z-10"
-                  v-if="lookupPendingList || lookupPendingPage"
+                  v-if="lookupStatusList === 'pending' || lookupStatusPage === 'pending'"
               />
 
 
               <LazyCommonStackedList
-                  v-if="!lookupPendingList && !lookupPendingPage"
+                  v-if="lookupStatusList !== 'pending' && lookupStatusPage !== 'pending'"
                   :model-data="modelData"
+                  @onDblClick="onDblCLick"
               />
               <LazyCommonPagination
                   :total-pages="lookupDataPage?.data?.totalPages"
@@ -83,30 +84,41 @@ const props = defineProps({
       text: null,
       search: ''
     }
+  },
+  selectedId: {
+    default: null
   }
 })
+
+const emit = defineEmits<{
+  (e: 'update:dialogOpen', value: boolean): void,
+  (e: 'onSelectedValue', value: any): void
+}>()
+
 
 const modelData = useState(() => [])
 const page = useState('page', () => 0)
 const searchLookup = useState('searchLookup', () => '')
 
 const changePage = async (pageNumber: number, totPage: number) => {
-  if (pageNumber < 1 || pageNumber > totPage) {
-    return
+  if (props.isPage) {
+    if (pageNumber < 1 || pageNumber > totPage) {
+      return
+    }
+    page.value = pageNumber - 1
+    await lookupRefreshPage()
   }
-  page.value = pageNumber - 1
-  await lookupRefreshPage()
 }
 
 
-const {data: lookupDataPage, pending: lookupPendingPage, refresh: lookupRefreshPage} = await useLazyAsyncData(
-    `${props.id}Page`,
+const {data: lookupDataPage, status: lookupStatusPage, refresh: lookupRefreshPage} = await useLazyAsyncData(
+    `${props.id}LookupPage`,
     () => useAPI<ResponsePageDTO>(`${props.urlApi}`, {
           query: {
             page: page.value,
             size: 10,
             [props.mapping.search]: searchLookup.value
-          }
+          },
         }
     ),
     {
@@ -114,8 +126,8 @@ const {data: lookupDataPage, pending: lookupPendingPage, refresh: lookupRefreshP
     }
 )
 
-const {data: lookupDataList, pending: lookupPendingList, refresh: lookupRefreshList} = await useLazyAsyncData(
-    `${props.id}List`,
+const {data: lookupDataList, status: lookupStatusList, refresh: lookupRefreshList} = await useLazyAsyncData(
+    `${props.id}LookupList`,
     () => useAPI<ResponseDTO>(`${props.urlApi}`, {}),
     {
       immediate: false
@@ -158,10 +170,17 @@ watch([lookupDataPage, lookupDataList], ([dataPage, dataList]) => {
 const refreshData = async () => {
   if (props.isPage) {
     page.value = 0
+    console.log('Refresh page')
     await lookupRefreshPage()
   } else {
+    console.log('Refresh list')
     await lookupRefreshList()
   }
+}
+
+const onDblCLick = (value: any) => {
+  emit('update:dialogOpen', false)
+  emit('onSelectedValue', value)
 }
 
 onMounted(async () => {

@@ -1,4 +1,4 @@
-import {defineNuxtPlugin, useCookie, useState} from "#app";
+import {defineNuxtPlugin, useCookie, useNuxtApp, useState} from "#app";
 import {getAuth} from "firebase/auth";
 
 export default defineNuxtPlugin(() => {
@@ -22,12 +22,20 @@ export default defineNuxtPlugin(() => {
                 }
             ))
             signInDialogOpen.value = false
-            await refreshNuxtData()
+            await refreshData()
         } else {
             isLoggedIn.value = false
             credential.value = null
             animizeSessionCookie.value = null
-            await refreshNuxtData()
+            await refreshData()
         }
     })
+
+    const refreshData = async () =>{
+
+        let keys = Object.keys(useNuxtApp().payload.data)
+
+        await refreshNuxtData(keys)
+    }
+
 })

@@ -9,11 +9,13 @@
           <LazyCommonTextInput
               label="Anime Name"
               id="animeName"
+              :model-value="dataPackage?.data?.name"
               @click.prevent="lookupAnimeOpen = true"
           />
           <LazyCommonDialogLookup
               id="lookupAnime"
               v-model:dialog-open="lookupAnimeOpen"
+              @onSelectedValue="(value) => selectedID = value"
               :url-api="urlAPI"
               title="Select Anime"
               :is-page="true"
@@ -61,6 +63,13 @@ const episodeCreate = useState('episodeCreate', () => <EpisodesDTO>{})
 const config = useRuntimeConfig()
 const urlAPI = `${config.public.API_BASE_URL}/packages/page`
 const lookupAnimeOpen = useState(() => false)
+const selectedID = useState(() => null)
+
+const {data: dataPackage} = await useLazyAsyncData(
+    () => useAPI<ResponseDTO>(`${config.public.API_BASE_URL}/packages/by-id/${selectedID.value}`, {}), {
+      immediate: false,
+      watch: [selectedID]
+    })
 
 const renderLookup = {
   key: "id",
