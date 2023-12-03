@@ -1,7 +1,8 @@
 type PackagesDTO = {
     id: string | undefined,
     name: string,
-    maxEpisode: string,
+    maxEpisode: number,
+    currentEpisode: number,
     malId: number,
     rating: number,
     synopsis: string,
@@ -12,4 +13,7 @@ type PackagesDTO = {
 
 interface ResponsePackagesPage extends ResponseDTO {
     data: PageDTO<PackagesDTO>
+}
+interface ResponsePackages extends ResponseDTO {
+    data: PackagesDTO
 }

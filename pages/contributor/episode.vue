@@ -7,25 +7,27 @@
       <form id="form-create-anime" class="grid grid-cols-6 gap-3 dark:text-white text-gray-900 mt-4">
         <div class="col-span-3">
           <LazyCommonTextInput
-              label="Anime Name"
               id="animeName"
               :model-value="dataPackage?.data?.name"
+              :readonly="true"
+              label="Anime Name"
               @click.prevent="lookupAnimeOpen = true"
           />
           <LazyCommonDialogLookup
               id="lookupAnime"
               v-model:dialog-open="lookupAnimeOpen"
-              @onSelectedValue="(value) => selectedID = value"
-              :url-api="urlAPI"
-              title="Select Anime"
               :is-page="true"
               :mapping="renderLookup"
+              :url-api="urlAPI"
+              title="Select Anime"
+              @onSelectedValue="(value) => selectedID = value"
           />
         </div>
         <div class="col-span-3">
           <LazyCommonTextInput
-              label="Episode"
               id="episode"
+              v-model="episodeCreate.episode"
+              label="Episode"
               type="number"
           />
         </div>
@@ -57,7 +59,7 @@
     </div>
   </div>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 
 const episodeCreate = useState('episodeCreate', () => <EpisodesDTO>{})
 const config = useRuntimeConfig()
@@ -66,10 +68,19 @@ const lookupAnimeOpen = useState(() => false)
 const selectedID = useState(() => null)
 
 const {data: dataPackage} = await useLazyAsyncData(
-    () => useAPI<ResponseDTO>(`${config.public.API_BASE_URL}/packages/by-id/${selectedID.value}`, {}), {
+    () => useAPI<ResponsePackages>(`${config.public.API_BASE_URL}/packages/by-id/${selectedID.value}`, {}), {
       immediate: false,
       watch: [selectedID]
     })
+
+watch(dataPackage, () => {
+  let currentEpisode = dataPackage.value?.data?.currentEpisode ?? 0
+  let maxEpisode = dataPackage.value?.data?.maxEpisode ?? 0
+  if (currentEpisode < maxEpisode && maxEpisode !== 0) {
+    episodeCreate.value.episode = currentEpisode + 1
+  }
+
+})
 
 const renderLookup = {
   key: "id",

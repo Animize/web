@@ -4,3 +4,7 @@ type EpisodesDTO = {
     episode: number,
     sources: Array<SourcesDTO>
 }
+
+interface ResponseEpisodes extends ResponseDTO {
+    data: EpisodesDTO | undefined
+}
