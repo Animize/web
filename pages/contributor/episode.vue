@@ -40,6 +40,32 @@
           <label>Sources</label>
 
         </div>
+        <div class="col-span-6">
+          <ul>
+            <li v-for="x in 10" class="grid grid-cols-6 mt-2 gap-3">
+              <LazyCommonTextInput
+                  id="source"
+                  class="col-span-2"
+                  label="URL Source"
+              />
+              <LazyCommonCombobox
+                  id="language"
+                  v-model:selected-value="sourcesCreate[x].contentLang"
+                  :default-value="supportedLanguage()[0]"
+                  :model="supportedLanguage()"
+                  class="col-span-2"
+              />
+              <LazyCommonCombobox
+                  id="resolution"
+                  v-model:selected-value="sourcesCreate[x].contentQuality"
+                  :default-value="supportedResolution()[0]"
+                  :model="supportedResolution()"
+                  class="col-span-2"
+              />
+
+            </li>
+          </ul>
+        </div>
         <hr class="col-span-6 border-gray-800"/>
         <div class="col-start-3 col-span-2">
           <LazyNuxtLink
@@ -61,7 +87,12 @@
 </template>
 <script lang="ts" setup>
 
-const episodeCreate = useState('episodeCreate', () => <EpisodesDTO>{})
+import {supportedLanguage, supportedResolution} from "~/composables/util/Constant";
+
+const episodeCreate = useState<EpisodesDTO>('episodeCreate', () => <EpisodesDTO>{})
+const sourcesCreate = useState<SourcesDTO[]>('sourcesCreate', () => [
+  <SourcesDTO>{}
+])
 const config = useRuntimeConfig()
 const urlAPI = `${config.public.API_BASE_URL}/packages/page`
 const lookupAnimeOpen = useState(() => false)

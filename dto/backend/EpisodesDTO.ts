@@ -2,7 +2,7 @@ type EpisodesDTO = {
     id: string | undefined,
     packageID: string,
     episode: number,
-    sources: Array<SourcesDTO>
+    sources: SourcesDTO[]
 }
 
 interface ResponseEpisodes extends ResponseDTO {
