@@ -1,5 +1,5 @@
 <template>
-  <Listbox v-model="selectedValue" by="id" class="col-span-2">
+  <Listbox v-model="modelValue" :default-value="defaultValue" by="id" class="col-span-2">
     <div class="relative">
       <ListboxButton
           class="relative w-full cursor-default rounded-lg animize-background
@@ -7,7 +7,7 @@
                        focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm
                        border-gray-300 dark:border-gray-600 border-2
                        pl-2">
-        <span class="block truncate">{{ selectedValue.name }}</span>
+        <span class="block truncate">{{ modelValue?.name }}</span>
         <span
             class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                       <ChevronUpDownIcon
@@ -58,25 +58,20 @@ const props = defineProps({
   id: {
     default: 'combobox'
   },
-  selectedValue: {
-    default: null
-  },
   model: {
     default: []
   },
-  defaultValue : {
+  defaultValue: {
     default: null
   }
 })
 
-const selectedValue = useState(`selectedValue-${props.id}`, () => props.defaultValue)
-const emit = defineEmits<{
-  (e: 'update:selectedValue', value: any): void,
-}>()
+const modelValue = defineModel('modelValue')
 
-watch(selectedValue,() =>{
-  emit('update:selectedValue',selectedValue.value)
+onMounted(() =>{
+  console.log(props.defaultValue)
 })
+
 
 </script>
 

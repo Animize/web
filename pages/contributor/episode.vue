@@ -4,7 +4,11 @@
       <div class="animize-text-title text-3xl">
         Upload Episode
       </div>
-      <form id="form-create-anime" class="grid grid-cols-6 gap-3 dark:text-white text-gray-900 mt-4">
+      <form
+          id="form-create-anime"
+          class="grid grid-cols-6 gap-3 dark:text-white text-gray-900 mt-4"
+          @submit.prevent=""
+      >
         <div class="col-span-3">
           <LazyCommonTextInput
               id="animeName"
@@ -38,33 +42,48 @@
         </div>
         <div class="col-span-6">
           <label>Sources</label>
-
         </div>
         <div class="col-span-6">
           <ul>
-            <li v-for="x in 10" class="grid grid-cols-6 mt-2 gap-3">
+            <li v-for="(item,index) in sourcesCreate" :key="item.id" class="grid grid-cols-10 mt-2 gap-3">
               <LazyCommonTextInput
                   id="source"
-                  class="col-span-2"
+                  v-model="item.sourcesURL"
+                  class="col-span-3"
                   label="URL Source"
               />
               <LazyCommonCombobox
                   id="language"
-                  v-model:selected-value="sourcesCreate[x].contentLang"
+                  v-model="item.contentLang"
                   :default-value="supportedLanguage()[0]"
                   :model="supportedLanguage()"
-                  class="col-span-2"
+                  class="col-span-3"
               />
               <LazyCommonCombobox
                   id="resolution"
-                  v-model:selected-value="sourcesCreate[x].contentQuality"
+                  v-model="item.contentQuality"
                   :default-value="supportedResolution()[0]"
                   :model="supportedResolution()"
-                  class="col-span-2"
+                  class="col-span-3"
               />
+              <button
+                  class="button-red col-span-1 grid place-items-center"
+                  @click.prevent="deleteSources(index)">
+                <TrashIcon class="h-6 w-6"/>
+              </button>
 
             </li>
           </ul>
+        </div>
+        <div class="col-span-6 grid grid-cols-6 mt-2 gap-3">
+          <button
+              class="col-span-6 grid place-items-center border-dashed border-4 p-2 select-none"
+              @click.prevent="addEmptySources()"
+          >
+            <PlusIcon class="h-6 w-6"/>
+            <label>Add new source</label>
+          </button>
+
         </div>
         <hr class="col-span-6 border-gray-800"/>
         <div class="col-start-3 col-span-2">
@@ -88,11 +107,11 @@
 <script lang="ts" setup>
 
 import {supportedLanguage, supportedResolution} from "~/composables/util/Constant";
+import {PlusIcon, TrashIcon} from '@heroicons/vue/24/solid'
+
 
 const episodeCreate = useState<EpisodesDTO>('episodeCreate', () => <EpisodesDTO>{})
-const sourcesCreate = useState<SourcesDTO[]>('sourcesCreate', () => [
-  <SourcesDTO>{}
-])
+const sourcesCreate = useState<SourcesDTO[]>('sourcesCreate', () => [])
 const config = useRuntimeConfig()
 const urlAPI = `${config.public.API_BASE_URL}/packages/page`
 const lookupAnimeOpen = useState(() => false)
@@ -118,6 +137,18 @@ const renderLookup = {
   cover: "cover",
   text: "name",
   search: "name",
+}
+
+const deleteSources = (index: number) => {
+  console.log(index)
+  sourcesCreate.value.splice(index, 1)
+}
+
+const addEmptySources = () => {
+  console.log('Add')
+  sourcesCreate.value.push(<SourcesDTO>{
+    id: (sourcesCreate.value.length - 1).toString()
+  })
 }
 
 </script>
