@@ -7,7 +7,7 @@
       <form
           id="form-create-anime"
           class="grid grid-cols-6 gap-3 dark:text-white text-gray-900 mt-4"
-          @submit.prevent=""
+          @submit.prevent="onSubmit"
       >
         <div class="col-span-3">
           <LazyCommonTextInput
@@ -129,6 +129,10 @@ watch(dataPackage, () => {
   if (currentEpisode < maxEpisode && maxEpisode !== 0) {
     episodeCreate.value.episode = currentEpisode + 1
   }
+  let packageID = dataPackage.value?.data?.id
+  if (packageID) {
+    episodeCreate.value.packageID = packageID
+  }
 
 })
 
@@ -140,15 +144,36 @@ const renderLookup = {
 }
 
 const deleteSources = (index: number) => {
-  console.log(index)
   sourcesCreate.value.splice(index, 1)
 }
 
 const addEmptySources = () => {
-  console.log('Add')
-  sourcesCreate.value.push(<SourcesDTO>{
-    id: (sourcesCreate.value.length - 1).toString()
-  })
+  sourcesCreate.value.push(<SourcesDTO>{})
 }
+
+const onSubmit = async () => {
+
+  episodeCreate.value.sources = sourcesCreate.value.map(value => {
+    value.contentLang = value.contentLang.id
+    value.contentQuality = value.contentQuality.id
+    return value
+  })
+
+  const {status} = await useLazyAsyncData('reqEpisodeCreate', () => useAPI<any>('/episodes',
+      {
+        method: 'POST',
+        body: episodeCreate.value
+      }, {
+        logging: true,
+        showToast: true
+      }
+  ))
+
+  if (status.value == 'success') {
+    episodeCreate.value = <EpisodesDTO>{}
+    await navigateTo("/contributor")
+  }
+}
+
 
 </script>

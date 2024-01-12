@@ -63,13 +63,13 @@ const props = defineProps({
   },
   defaultValue: {
     default: null
-  }
+  },
 })
 
 const modelValue = defineModel('modelValue')
 
-onMounted(() =>{
-  console.log(props.defaultValue)
+onMounted(() => {
+  modelValue.value = props.defaultValue
 })
 
 
