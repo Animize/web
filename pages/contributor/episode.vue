@@ -171,6 +171,7 @@ const onSubmit = async () => {
 
   if (status.value == 'success') {
     episodeCreate.value = <EpisodesDTO>{}
+    sourcesCreate.value = []
     await navigateTo("/contributor")
   }
 }
